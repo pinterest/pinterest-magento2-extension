@@ -1,0 +1,11 @@
+<?php /** @var Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml\Setup $block */
+$config = $block->scriptConfigBeforeConnect()
+?>
+<div>
+    <script type="text/javascript">
+        require(['setup_script'], function(initScript) {
+            initScript(<?php print(json_encode($config, JSON_UNESCAPED_SLASHES)) ?>);
+        });
+    </script>
+    <iframe id="pinterest-iframe" src="<?= $config['pinterestBaseUrl'] ?>/business/commerce-integrations/apps/v1/connect/" width="500px" height="800px" frameBorder="0"></iframe>
+</div>

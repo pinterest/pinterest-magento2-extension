@@ -1,0 +1,42 @@
+<?php /* @var Pinterest\PinterestBusinessConnectPlugin\Block\Tag\AddToCart $block */ ?>
+<?php if ($block->isUserConnected()) { ?>
+    <!-- Pinterest Add to Cart Tag Code -->
+    <script>
+        require([
+            "jquery"
+        ], function ($) {
+            function trackAddToCart(eventId, value, currency, line_items) {
+                pintrk("track", "AddToCart", {
+                    event_id: eventId,
+                    value: value,
+                    currency: currency,
+                    line_items: line_items
+                });
+            }
+            
+            var product_info_url = "<?= /* @noEscape */ $block->getProductInfoUrl() ?>";
+
+            $(document).on("ajax:addToCart", function (event, data) {
+                if (data && data.sku && product_info_url) {
+                    $.ajax({
+                        url: product_info_url,
+                        data: {
+                            product_sku: data.sku
+                        },
+                        type: "post",
+                        dataType: "json",
+                        success: function (res) {
+                            trackAddToCart(
+                                res.event_id,
+                                res.value,
+                                res.currency,
+                                res.line_items,
+                            );
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <!-- End of Pinterest Add to Cart Tag Code -->
+<?php } ?>

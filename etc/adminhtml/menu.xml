@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+      <add
+        id="Pinterest_PinterestBusinessConnectPlugin::pinterest"
+        title="Pinterest"
+        translate="title"
+        module="Pinterest_PinterestBusinessConnectPlugin"
+        parent="Magento_Backend::stores"
+        sortOrder="50"
+        dependsOnModule="Pinterest_PinterestBusinessConnectPlugin"
+        resource="Pinterest_PinterestBusinessConnectPlugin::PinterestConfig"/>
+      <add
+        id="Pinterest_PinterestBusinessConnectPlugin::pinterest_PinterestBusinessConnectPlugin"
+        title="Setup"
+        translate="title"
+        module="Pinterest_PinterestBusinessConnectPlugin"
+        parent="Pinterest_PinterestBusinessConnectPlugin::pinterest"
+        sortOrder="10"
+        dependsOnModule="Pinterest_PinterestBusinessConnectPlugin"
+        action="pinterestadmin/setup/index"
+        resource="Pinterest_PinterestBusinessConnectPlugin::PinterestConfig"/>
+    </menu>
+</config>

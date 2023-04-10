@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="index">
+        <job instance="Pinterest\PinterestBusinessConnectPlugin\Cron\Catalog"
+            method="execute" name="pinterest_export_catalog">
+            <schedule>20 */12 * * *</schedule> <!-- At minute 20 past every 12th hour -->
+        </job>
+        <job instance="Pinterest\PinterestBusinessConnectPlugin\Cron\RefreshTokens"
+            method="execute" name="pinterest_refresh_tokens">
+            <schedule> 0 0 */15 * * </schedule> <!-- At 00:00 on every 15th day-of-month -->
+        </job>
+    </group>
+</config>

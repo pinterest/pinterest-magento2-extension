@@ -1,0 +1,24 @@
+<?php /* @var Pinterest\PinterestBusinessConnectPlugin\Block\Tag\PageVisit $block */ ?>
+<?php if ($block->isUserConnected()) {
+    $eventId = Pinterest\PinterestBusinessConnectPlugin\Helper\EventIdGenerator::guidv4();
+    $productDetails = $block->getProductDetails();
+    $currency = $block->getCurrency();
+    $block->trackPageVisitEvent($eventId, $productDetails, $currency);
+    ?>
+    <!-- Pinterest Page Visit Tag Code -->
+    <script>
+        pintrk('track', 'pagevisit', {
+            event_id: "<?= $eventId ?>",
+            line_items: [{
+                product_id: "<?= $productDetails["product_id"]  ?>",
+                product_price: <?= $productDetails["product_price"] ?>,
+                product_name: "<?= $productDetails["product_name"] ?>",
+                product_quantity: 1,
+                product_category: <?= json_encode($productDetails["product_category"]) ?>
+            }],
+            order_quantity: 1,
+            currency: "<?= $currency ?>"
+        });
+    </script>
+    <!-- End of Pinterest Page Visit Tag Code -->
+<?php } ?>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="pinterest_commereceintegrationextension_page_visit_after">
+        <observer name="pinterest_commereceintegrationextension_page_visit_after_observer" instance="Pinterest\PinterestBusinessConnectPlugin\Observer\ConversionsApiObserver"/>
+    </event>
+    <event name="pinterest_commereceintegrationextension_search_after">
+        <observer name="pinterest_commereceintegrationextension_search_after_observer" instance="Pinterest\PinterestBusinessConnectPlugin\Observer\ConversionsApiObserver"/>
+    </event>
+    <event name="pinterest_commereceintegrationextension_checkout_after">
+        <observer name="pinterest_commereceintegrationextension_checkout_after_observer" instance="Pinterest\PinterestBusinessConnectPlugin\Observer\ConversionsApiObserver"/>
+    </event>
+    <event name="pinterest_commereceintegrationextension_add_to_cart_after">
+        <observer name="pinterest_commereceintegrationextension_add_to_cart_after_observer" instance="Pinterest\PinterestBusinessConnectPlugin\Observer\ConversionsApiObserver"/>
+    </event>
+</config>

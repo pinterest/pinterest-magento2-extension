@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="pinterest_commereceintegrationextension_website_claiming">
+        <observer name="pinterest_commereceintegrationextension_website_claiming_observer"
+            instance="Pinterest\PinterestBusinessConnectPlugin\Observer\WebsiteClaimingObserver"/>
+    </event>
+    <event name="pinterest_commereceintegrationextension_create_catalog_feeds">
+        <observer name="pinterest_commereceintegrationextension_feed_creating_observer"
+            instance="Pinterest\PinterestBusinessConnectPlugin\Observer\CreateFeedObserver"/>
+    </event>
+</config>

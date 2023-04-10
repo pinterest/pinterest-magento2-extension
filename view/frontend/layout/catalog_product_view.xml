@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page layout="1column"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="content">
+            <block class="Pinterest\PinterestBusinessConnectPlugin\Block\Tag\AddToCart"
+                   name="pinterest.add_to_cart"
+                   template="Pinterest_PinterestBusinessConnectPlugin::add_to_cart.phtml" />
+            <block 
+                class="Pinterest\PinterestBusinessConnectPlugin\Block\Tag\PageVisit"
+                name="pinterest.page_visit"
+                template="Pinterest_PinterestBusinessConnectPlugin::page_visit.phtml" />
+        </referenceBlock>
+    </body>
+</page>

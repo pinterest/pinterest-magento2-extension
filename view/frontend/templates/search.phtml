@@ -1,0 +1,15 @@
+<?php /* @var Pinterest\PinterestBusinessConnectPlugin\Block\Tag\Search $block */ ?>
+<?php if ($block->isUserConnected()) {
+    $eventId = Pinterest\PinterestBusinessConnectPlugin\Helper\EventIdGenerator::guidv4();
+    $search_query = $block->getSearchQuery();
+    $block->trackSearchEvent($eventId, $search_query);
+    ?>
+    <!-- Pinterest Tag Search Code -->
+    <script>
+        pintrk('track', 'search', {
+            event_id: "<?= $eventId ?>",
+            search_query: "<?= $search_query ?>"
+        });
+    </script>
+    <!-- End of Pinterest Tag Search Code -->
+<?php } ?>

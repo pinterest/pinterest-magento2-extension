@@ -1,0 +1,13 @@
+{
+    "pinterest_integration_extension_metadata": {
+        "column": {
+            "metadata_key": true,
+            "metadata_value": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="pinterest" type="host">*.pinterest.com</value>
+                <value id="pinterdev" type="host">*.pinterdev.com</value>
+                <value id="pinterest-commerce-app" type="host">commerce-app.pintergration.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="pinterest" type="host">*.pinterest.com</value>
+                <value id="pinterdev" type="host">*.pinterdev.com</value>
+                <value id="pinterest-commerce-app" type="host">commerce-app.pintergration.com</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="pinterest" type="host">*.pinterest.com</value>
+                <value id="pinterdev" type="host">*.pinterdev.com</value>
+                <value id="pinterest-commerce-app" type="host">commerce-app.pintergration.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="pinterest" type="host">*.pinterest.com</value>
+                <value id="pinterdev" type="host">*.pinterdev.com</value>
+                <value id="pin-image" type="host">*.pinimg.com</value>
+                <value id="pinterest-commerce-app" type="host">commerce-app.pintergration.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>
