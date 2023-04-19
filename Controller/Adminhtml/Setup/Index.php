@@ -1,12 +1,12 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Controller\Adminhtml\Setup;
+namespace Pinterest\PinterestMagento2Extension\Controller\Adminhtml\Setup;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 
 /**
  * Controller for the page to connect to Pinterest account

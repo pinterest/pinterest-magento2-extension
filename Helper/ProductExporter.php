@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -15,12 +15,12 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use SimpleXMLElement;
-use Pinterest\PinterestBusinessConnectPlugin\Constants\IntegrationErrorId;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\LocaleList;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PluginErrorHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\SavedFile;
-use Pinterest\PinterestBusinessConnectPlugin\Logger\Logger;
+use Pinterest\PinterestMagento2Extension\Constants\IntegrationErrorId;
+use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
+use Pinterest\PinterestMagento2Extension\Helper\SavedFile;
+use Pinterest\PinterestMagento2Extension\Logger\Logger;
 
 class ProductExporter
 {
@@ -132,6 +132,9 @@ class ProductExporter
      */
     public function processExport()
     {
+        $time_start = microtime(true);
+        $this->pinterestHelper->logInfo("processExport Started at microseconds =".$time_start);
+
         $data = [];
         $success = 0;
         $stores = $this->storeManager->getStores();
@@ -145,18 +148,26 @@ class ProductExporter
             $data[$key] = array_merge($data[$key] ?? [], $content);
             $this->appLogger->info("Store{$store->getId()} processed,locale={$country_locale}");
         }
+
+        $this->pinterestHelper->logInfo("Processed all stores. Advanced = ".(microtime(true) - $time_start));
         
         if (!$this->savedFile->isEnabled()) {
             return true;
         }
-        // sort by the size of value array, from big to small
+
         uasort($data, function ($v1, $v2) {
             return count($v2) - count($v1);
         });
 
+        $this->pinterestHelper->logInfo("Sorted data. Advanced = ".(microtime(true) - $time_start));
+        $this->pinterestHelper->logInfo("Deleting all catalogs before creating XML from: ".SavedFile::DIRECTORY_NAME_PATH);
+        $this->savedFile->deleteCatalogs();
+        $this->pinterestHelper->logInfo("Deleted data. Advanced = ".(microtime(true) - $time_start));
+
         foreach ($data as $key => $content) {
             $success += $this->saveXml($key, $content) ? 1 : 0;
         }
+        $this->pinterestHelper->logInfo("Wrote data to file. Advanced = ".(microtime(true) - $time_start));
         return $success;
     }
 

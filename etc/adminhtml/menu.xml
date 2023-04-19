@@ -3,23 +3,23 @@
   xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
       <add
-        id="Pinterest_PinterestBusinessConnectPlugin::pinterest"
+        id="Pinterest_PinterestMagento2Extension::pinterest"
         title="Pinterest"
         translate="title"
-        module="Pinterest_PinterestBusinessConnectPlugin"
+        module="Pinterest_PinterestMagento2Extension"
         parent="Magento_Backend::stores"
         sortOrder="50"
-        dependsOnModule="Pinterest_PinterestBusinessConnectPlugin"
-        resource="Pinterest_PinterestBusinessConnectPlugin::PinterestConfig"/>
+        dependsOnModule="Pinterest_PinterestMagento2Extension"
+        resource="Pinterest_PinterestMagento2Extension::PinterestConfig"/>
       <add
-        id="Pinterest_PinterestBusinessConnectPlugin::pinterest_PinterestBusinessConnectPlugin"
+        id="Pinterest_PinterestMagento2Extension::Pinterest_PinterestMagento2Extension"
         title="Setup"
         translate="title"
-        module="Pinterest_PinterestBusinessConnectPlugin"
-        parent="Pinterest_PinterestBusinessConnectPlugin::pinterest"
+        module="Pinterest_PinterestMagento2Extension"
+        parent="Pinterest_PinterestMagento2Extension::pinterest"
         sortOrder="10"
-        dependsOnModule="Pinterest_PinterestBusinessConnectPlugin"
+        dependsOnModule="Pinterest_PinterestMagento2Extension"
         action="pinterestadmin/setup/index"
-        resource="Pinterest_PinterestBusinessConnectPlugin::PinterestConfig"/>
+        resource="Pinterest_PinterestMagento2Extension::PinterestConfig"/>
     </menu>
 </config>

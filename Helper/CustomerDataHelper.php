@@ -1,5 +1,5 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Customer\Model\Session;
 

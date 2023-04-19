@@ -1,5 +1,5 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Model;
+namespace Pinterest\PinterestMagento2Extension\Model;
 
 class Metadata extends \Magento\Framework\Model\AbstractModel implements \Magento\Framework\DataObject\IdentityInterface
 {
@@ -12,7 +12,7 @@ class Metadata extends \Magento\Framework\Model\AbstractModel implements \Magent
     */
     protected function _construct()
     {
-        $this->_init('Pinterest\PinterestBusinessConnectPlugin\Model\ResourceModel\Metadata');
+        $this->_init('Pinterest\PinterestMagento2Extension\Model\ResourceModel\Metadata');
     }
 
     /**

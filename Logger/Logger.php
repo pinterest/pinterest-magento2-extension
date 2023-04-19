@@ -1,5 +1,5 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Logger;
+namespace Pinterest\PinterestMagento2Extension\Logger;
 
 use Magento\Framework\ObjectManagerInterface;
 
@@ -14,6 +14,6 @@ class Logger extends \Monolog\Logger
         ObjectManagerInterface $objectManager
     ) {
         $handler = $objectManager->create(Handler::class);
-        parent::__construct('Pinterest_PinterestBusinessConnectPlugin', [$handler]);
+        parent::__construct('Pinterest_PinterestMagento2Extension', [$handler]);
     }
 }

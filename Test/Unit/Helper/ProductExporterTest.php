@@ -1,6 +1,6 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Test\Unit\Helper;
+namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
 use SimpleXMLElement;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
@@ -16,12 +16,12 @@ use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PluginErrorHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\ProductExporter;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\LocaleList;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\SavedFile;
-use Pinterest\PinterestBusinessConnectPlugin\Logger\Logger;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
+use Pinterest\PinterestMagento2Extension\Helper\ProductExporter;
+use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
+use Pinterest\PinterestMagento2Extension\Helper\SavedFile;
+use Pinterest\PinterestMagento2Extension\Logger\Logger;
 
 class ProductExporterTest extends \PHPUnit\Framework\TestCase
 {

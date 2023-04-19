@@ -1,10 +1,10 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Observer;
+namespace Pinterest\PinterestMagento2Extension\Observer;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CatalogFeedClient;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\ProductExporter;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
+use Pinterest\PinterestMagento2Extension\Helper\ProductExporter;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
@@ -49,8 +49,15 @@ class CreateFeedObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        if (filter_var($this->_pinterestHelper
+                ->getConfig("disable_create_feeds_on_connection"), FILTER_VALIDATE_BOOLEAN)
+            || ! $this->_pinterestHelper->isUserConnected()) {
+            return;
+        }
+
         $success_count = $this->_productExporter->processExport();
         $this->_pinterestHelper->logInfo("Pinterest catalog generated {$success_count} feed(s).");
+        
         $this->_catalogFeedClient->createAllFeeds();
     }
 }

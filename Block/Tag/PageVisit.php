@@ -1,8 +1,8 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Block\Tag;
+namespace Pinterest\PinterestMagento2Extension\Block\Tag;
 
-use Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml\Setup;
+use Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup;
 
 class PageVisit extends Setup
 {

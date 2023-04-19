@@ -1,6 +1,6 @@
-<?php /* @var Pinterest\PinterestBusinessConnectPlugin\Block\Tag\Checkout $block */ ?>
-<?php if ($block->isUserConnected()) {
-    $eventId = Pinterest\PinterestBusinessConnectPlugin\Helper\EventIdGenerator::guidv4();
+<?php /* @var Pinterest\PinterestMagento2Extension\Block\Tag\Checkout $block */ ?>
+<?php if ($block->isTagEnabled()) {
+    $eventId = Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator::guidv4();
     $productDetails = $block->getProductDetails();
     $currency = $block->getCurrency();
     $block->trackCheckoutEvent($eventId, $productDetails, $currency);

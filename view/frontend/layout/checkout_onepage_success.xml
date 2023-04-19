@@ -5,9 +5,9 @@
     <body>
         <referenceContainer name="before.body.end">
             <block 
-                class="Pinterest\PinterestBusinessConnectPlugin\Block\Tag\Checkout"
+                class="Pinterest\PinterestMagento2Extension\Block\Tag\Checkout"
                 name="pinterest.checkout"
-                template="Pinterest_PinterestBusinessConnectPlugin::checkout.phtml" />
+                template="Pinterest_PinterestMagento2Extension::checkout.phtml" />
         </referenceContainer>
     </body>
 </page>

@@ -1,10 +1,10 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml;
+namespace Pinterest\PinterestMagento2Extension\Block\Adminhtml;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PluginErrorHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CustomerDataHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Registry;
@@ -90,6 +90,12 @@ class Setup extends Template
         return $this->_pinterestHelper->isUserConnected();
     }
 
+    public function isTagEnabled()
+    {
+        return $this->isUserConnected() &&
+            !filter_var($this->_pinterestHelper->getConfig("disable_tag"), FILTER_VALIDATE_BOOLEAN);
+    }
+
     public function getMetaTag()
     {
         return $this->_pinterestHelper->getMetadataValue("pinterest/website_claiming/meta_tag");
@@ -109,6 +115,7 @@ class Setup extends Template
             "clientId" => $this->_pinterestHelper->getClientId(),
             "state" => $this->_pinterestHelper->getRandomState(),
             "partnerMetadata" => $this->_pinterestHelper->getPartnerMetadata(),
+            "adminhtmlSetupUri" => $this->_pinterestHelper->getUrl(PinterestHelper::ADMINHTML_SETUP_URI),
         ];
     }
     public function scriptConfigAfterConnect()
@@ -119,9 +126,9 @@ class Setup extends Template
             "advertiserId" => $this->_pinterestHelper->getAdvertiserId(),
             "merchantId" => $this->_pinterestHelper->getMerchantId(),
             "tagId" => $this ->_pinterestHelper->getTagId(),
-            "adminhtmlSetupUri" => $this->_pinterestHelper->getUrl(PinterestHelper::ADMINHTML_SETUP_URI),
             "disconnectURL" => $this->_pinterestHelper->getUrl("pinterestadmin/Setup/Disconnect"),
             "errors" => $this->_pluginErrorHelper->getAllStoredErrors(),
+            "partnerMetadata" => $this->_pinterestHelper->getPartnerMetadata(),
         ];
     }
 }

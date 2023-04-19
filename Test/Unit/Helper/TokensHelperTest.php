@@ -1,13 +1,13 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Test\Unit\Helper;
+namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\TokensHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Model\Metadata;
-use Pinterest\PinterestBusinessConnectPlugin\Model\MetadataFactory;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\TokensHelper;
+use Pinterest\PinterestMagento2Extension\Model\Metadata;
+use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
 use Magento\Framework\Model\AbstractModel;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 
 class TokensHelperTest extends \PHPUnit\Framework\TestCase
 {

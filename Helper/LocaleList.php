@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;

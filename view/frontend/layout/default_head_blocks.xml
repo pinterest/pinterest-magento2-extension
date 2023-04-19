@@ -3,9 +3,9 @@
     <body>
         <referenceBlock name="head.additional">
             <block 
-                class="Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml\Setup" 
+                class="Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup" 
                 name="pinterest.header"
-                template="Pinterest_PinterestBusinessConnectPlugin::meta.phtml"
+                template="Pinterest_PinterestMagento2Extension::meta.phtml"
                 before="-"
             />
         </referenceBlock>

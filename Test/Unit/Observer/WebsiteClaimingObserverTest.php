@@ -1,11 +1,11 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Test\Unit\Observer;
+namespace Pinterest\PinterestMagento2Extension\Test\Unit\Observer;
 
-use Pinterest\PinterestBusinessConnectPlugin\Observer\WebsiteClaimingObserver;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PluginErrorHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Observer\WebsiteClaimingObserver;
+use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 use PHPUnit\Framework\TestCase;
 
 use Magento\Framework\Event\Observer;

@@ -1,5 +1,5 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Model\ResourceModel;
+namespace Pinterest\PinterestMagento2Extension\Model\ResourceModel;
 
 class Metadata extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {

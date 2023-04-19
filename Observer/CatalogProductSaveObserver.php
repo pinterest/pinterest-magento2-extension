@@ -1,6 +1,6 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Observer;
+namespace Pinterest\PinterestMagento2Extension\Observer;
 
 use Magento\Framework\App\CacheInterface;
 use Magento\Framework\Event\Observer;
@@ -8,9 +8,9 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Action\Context;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\LocaleList;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CatalogFeedClient;
-use Pinterest\PinterestBusinessConnectPlugin\Logger\Logger;
+use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
+use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
+use Pinterest\PinterestMagento2Extension\Logger\Logger;
 
 class CatalogProductSaveObserver implements ObserverInterface
 {

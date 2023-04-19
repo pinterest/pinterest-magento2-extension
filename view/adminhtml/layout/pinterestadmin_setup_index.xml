@@ -7,7 +7,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml\Setup" template="Pinterest_PinterestBusinessConnectPlugin::setup.phtml"/>
+            <block class="Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup" template="Pinterest_PinterestMagento2Extension::setup.phtml"/>
         </referenceContainer>
     </body>
 </page>

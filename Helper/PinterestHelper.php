@@ -1,6 +1,6 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -12,10 +12,9 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Checkout\Model\Cart;
 use Magento\Framework\Module\ModuleListInterface;
-use Pinterest\PinterestBusinessConnectPlugin\Model\MetadataFactory;
-use Pinterest\PinterestBusinessConnectPlugin\Logger\Logger;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\EventIdGenerator;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
+use Pinterest\PinterestMagento2Extension\Logger\Logger;
+use Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Cache\Manager;
@@ -26,7 +25,8 @@ class PinterestHelper extends AbstractHelper
     public const PINTEREST_BASE_URL_PATH='PinterestConfig/general/pinterest_base_url';
     public const REDIRECT_URI='pinterestadmin/Setup/PinterestToken';
     public const ADMINHTML_SETUP_URI='pinterestadmin/Setup/Index';
-    public const MODULE_NAME='Pinterest_PinterestBusinessConnectPlugin';
+    public const MODULE_NAME='Pinterest_PinterestMagento2Extension';
+    public const CONFIG_METADATA_KEY='pinterest/info/config';
 
     /**
      * @var Session
@@ -79,11 +79,6 @@ class PinterestHelper extends AbstractHelper
     protected $_categoryFactory;
 
     /**
-     * @var PinterestHttpClient $pinterestHttpClient
-     */
-    protected $_pinterestHttpClient;
-
-    /**
      * @var Manager
      */
     protected $_cacheManager;
@@ -101,7 +96,6 @@ class PinterestHelper extends AbstractHelper
      * @param ProductRepositoryInterface $productRepository
      * @param Cart $cart
      * @param Session $session
-     * @param PinterestHttpClient $pinterestHttpClient
      * @param Manager $cacheManager
      */
     public function __construct(
@@ -116,7 +110,6 @@ class PinterestHelper extends AbstractHelper
         ProductRepositoryInterface $productRepository,
         Cart $cart,
         Session $session,
-        PinterestHttpClient $pinterestHttpClient,
         Manager $cacheManager
     ) {
         parent::__construct($context);
@@ -130,7 +123,6 @@ class PinterestHelper extends AbstractHelper
         $this->_productRepository = $productRepository;
         $this->_cart = $cart;
         $this->_session = $session;
-        $this->_pinterestHttpClient = $pinterestHttpClient;
         $this->_cacheManager = $cacheManager;
     }
 
@@ -154,41 +146,6 @@ class PinterestHelper extends AbstractHelper
     {
 
         return $this->scopeConfig->getValue(self::PINTEREST_BASE_URL_PATH);
-    }
-
-    /**
-     * Send partner metadata to Pinterest V5 API
-     *
-     * @param array $info
-     */
-    public function exchangeMetadata($info)
-    {
-        try {
-            $this->resetApiErrorState("errors/metadata_post");
-            $params = [
-                "external_business_id" => $this->getExternalBusinessId(),
-                "connected_merchant_id" => $info['merchant_id'],
-                "connected_advertiser_id" => $info['advertiser_id'],
-                "connected_tag_id" => $info['tag_id'],
-                "partner_primary_email" => $this->getStoreEmail(),
-                // TODO add partner_access_token COIN-1895
-            ];
-    
-            $url = $this->_pinterestHttpClient->getV5ApiEndpoint("integrations/commerce");
-    
-            $response = $this->_pinterestHttpClient->post($url, $params, $this->getAccessToken());
-            
-            if (isset($response->code)) {
-                $this->logError("Failed to send metadata to V5 API");
-                $this->logAndSaveAPIErrors($response, "errors/metadata_post");
-                return false;
-            } else {
-                $this->logInfo("V5 API data sent successfully");
-                return true;
-            }
-        } catch (\Exception $e) {
-            $this->logException($e);
-        }
     }
 
     /**
@@ -685,5 +642,34 @@ class PinterestHelper extends AbstractHelper
     public function flushCache()
     {
         $this->_cacheManager->clean(["config","layout","block_html","full_page"]);
+    }
+
+    /**
+     * Get config value
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function getConfig($key)
+    {
+        $config_str = $this->getMetadataValue(self::CONFIG_METADATA_KEY)?? "";
+        $config_json = json_decode($config_str, true);
+        $value = $config_json[$key] ?? null;
+        return $value;
+    }
+
+    /**
+     * Save to config
+     *
+     * @param string $key
+     * @param string $value
+     */
+    public function setConfig($key, $value)
+    {
+        $config_str = $this->getMetadataValue(self::CONFIG_METADATA_KEY)?? "";
+        $config_json = json_decode($config_str, true);
+        $config_json[$key] = $value;
+        $this->saveMetadata(self::CONFIG_METADATA_KEY, json_encode($config_json));
+        return true;
     }
 }

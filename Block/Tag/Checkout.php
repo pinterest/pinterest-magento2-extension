@@ -1,11 +1,11 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Block\Tag;
+namespace Pinterest\PinterestMagento2Extension\Block\Tag;
 
-use Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml\Setup;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PluginErrorHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CustomerDataHelper;
+use Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
+use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use Magento\Framework\View\Element\Template\Context;

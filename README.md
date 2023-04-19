@@ -13,21 +13,21 @@ The Pinterest (Alpha) Integration Plugin allows Adobe Commerce Cloud store owner
 
 ## Extension installation
 
-The extension is available in Adobe marketplace at https://marketplace.magento.com/pinterest-pinterestbusinessconnectplugin.html
+The extension is available in Adobe marketplace at https://marketplace.magento.com/
 
 To install this extension manually run the following command from the top level magento folder
 
 - `cd app/code`
-- `mkdir Pinterest/PinterestBusinessConnectPlugin`
+- `mkdir pinterest/pinterestmagento2extension`
 - clone this repo
-- `cd Pinterest/PinterestBusinessConnectPlugin`
+- `cd pinterest/pinterestmagento2extension`
 - `sh install-pinterest-magento-extension.sh`
 
 ## Unit tests
 
 To run a unit tests from this module (replace app/code with vendor if you installed from compser)
 
-vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist app/code/Pinterest/PinterestBusinessConnectPlugin/Test/Unit/
+vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist app/code/Pinterest/PinterestMagento2Extension/Test/Unit/
 
 ## Cron tasks
 
@@ -45,11 +45,11 @@ Perform `vendor/composer/composer/bin/composer update` when you make composer ch
 
 From the magento root directory run the following command to see code sniffer issues
 
-`vendor/bin/phpcs --standard=Magento2 --ignore=./app/code/Pinterest/PinterestBusinessConnectPlugin/vendor ./app/code/Pinterest/PinterestBusinessConnectPlugin/`
+`vendor/bin/phpcs --standard=Magento2 --ignore=./app/code/Pinterest/PinterestMagento2Extension/vendor ./app/code/Pinterest/PinterestMagento2Extension/`
 
 To auto fix some issues
 
-`vendor/bin/phpcbf --standard=Magento2 --ignore=./app/code/Pinterest/PinterestBusinessConnectPlugin/vendor ./app/code/Pinterest/PinterestBusinessConnectPlugin/`
+`vendor/bin/phpcbf --standard=Magento2 --ignore=./app/code/Pinterest/PinterestMagento2Extension/vendor ./app/code/Pinterest/PinterestMagento2Extension/`
 
 The following page explains the coding standards - https://developer.adobe.com/commerce/php/coding-standards/
 

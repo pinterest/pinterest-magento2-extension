@@ -1,6 +1,6 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Framework\HTTP\Client\Curl;
 use Zend\Http\Headers;

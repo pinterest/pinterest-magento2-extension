@@ -1,12 +1,12 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CatalogFeedClient;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\SavedFile;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
+use Pinterest\PinterestMagento2Extension\Helper\SavedFile;
 use Magento\Framework\Controller\Result\JsonFactory;
 
 class DisconnectHelper

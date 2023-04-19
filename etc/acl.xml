@@ -3,7 +3,7 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Pinterest_PinterestBusinessConnectPlugin::PinterestConfig" title="Pinterest Config" sortOrder="51"/>
+                <resource id="Pinterest_PinterestMagento2Extension::PinterestConfig" title="Pinterest Config" sortOrder="51"/>
             </resource>
         </resources>
     </acl>

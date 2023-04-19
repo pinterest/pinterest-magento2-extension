@@ -1,10 +1,10 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Cron;
+namespace Pinterest\PinterestMagento2Extension\Cron;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\ProductExporter;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CatalogFeedClient;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\ProductExporter;
+use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 
 use Psr\Log\LoggerInterface;
 

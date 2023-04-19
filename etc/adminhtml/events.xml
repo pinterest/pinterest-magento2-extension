@@ -2,6 +2,6 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="catalog_product_save_commit_after">
-        <observer name="pinterest_integration_product_save_commit_after" instance="Pinterest\PinterestBusinessConnectPlugin\Observer\CatalogProductSaveObserver" />
+        <observer name="pinterest_integration_product_save_commit_after" instance="Pinterest\PinterestMagento2Extension\Observer\CatalogProductSaveObserver" />
     </event>
 </config>
