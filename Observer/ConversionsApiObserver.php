@@ -1,8 +1,8 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Observer;
+namespace Pinterest\PinterestMagento2Extension\Observer;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\ConversionEventHelper;
+use Pinterest\PinterestMagento2Extension\Helper\ConversionEventHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 

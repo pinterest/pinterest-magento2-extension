@@ -1,11 +1,11 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\CacheInterface;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CustomerDataHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
 
 class ConversionEventHelper
 {
@@ -40,6 +40,16 @@ class ConversionEventHelper
     protected $cache;
 
     /**
+     * @var bool
+     */
+    protected $_disableTag;
+
+    /**
+     * @var array
+     */
+    protected $_lastEventEnqueued;
+
+    /**
      * @param HTTP $request
      * @param PinterestHttpClient $pinterestHttpClient
      * @param PinterestHelper $pinterestHelper
@@ -58,6 +68,11 @@ class ConversionEventHelper
         $this->_pinterestHelper = $pinterestHelper;
         $this->_customerDataHelper = $customerDataHelper;
         $this->_cache = $cache;
+        $this->_disableTag = filter_var(
+            $pinterestHelper->getConfig("disable_tag"),
+            FILTER_VALIDATE_BOOLEAN
+        );
+        $this->_lastEventEnqueued = [];
     }
 
     /**
@@ -156,8 +171,12 @@ class ConversionEventHelper
      */
     public function processConversionEvent($eventId, $eventName, $customData = [])
     {
+        if ($this->_disableTag) {
+            return;
+        }
         try {
             $eventData = $this->createEventPayload($eventId, $eventName, $customData);
+            $this->_lastEventEnqueued = $eventData;
             $this->enqueueEvent($eventData);
         } catch (\Exception $e) {
             $this->_pinterestHelper->logException($e);
@@ -242,5 +261,13 @@ class ConversionEventHelper
         } catch (\Exception $e) {
             $this->_pinterestHelper->logException($e);
         }
+    }
+
+    /**
+     * Test only function to get the last event enqueued
+     */
+    public function getLastEventEnqueued()
+    {
+        return $this->_lastEventEnqueued;
     }
 }

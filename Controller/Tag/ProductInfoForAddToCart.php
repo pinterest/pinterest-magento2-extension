@@ -1,9 +1,9 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Controller\Tag;
+namespace Pinterest\PinterestMagento2Extension\Controller\Tag;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\EventIdGenerator;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use \Magento\Framework\App\Action\Action;

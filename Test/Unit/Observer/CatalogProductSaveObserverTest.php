@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Observer;
+namespace Pinterest\PinterestMagento2Extension\Observer;
 
-use Pinterest\PinterestBusinessConnectPlugin\Observer\CatalogProductSaveObserver;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\LocaleList;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CatalogFeedClient;
-use Pinterest\PinterestBusinessConnectPlugin\Logger\Logger;
+use Pinterest\PinterestMagento2Extension\Observer\CatalogProductSaveObserver;
+use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
+use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
+use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Magento\Framework\App\CacheInterface;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\DataObject;

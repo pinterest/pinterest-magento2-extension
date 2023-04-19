@@ -1,6 +1,6 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 /**
  * Creates the Event Ids needed for deduping conversion events from

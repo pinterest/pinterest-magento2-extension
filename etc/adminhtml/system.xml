@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="Pinterest_PinterestBusinessConnectPlugin" translate="label" sortOrder="1000">
+        <tab id="Pinterest_PinterestMagento2Extension" translate="label" sortOrder="1000">
             <label>Pinterest Commerce Integration Extension</label>
         </tab>
         <section id="PinterestConfig" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Config</label>
-            <tab>Pinterest_PinterestBusinessConnectPlugin</tab>
-            <resource>Pinterest_PinterestBusinessConnectPlugin::PinterestConfig</resource>
+            <tab>Pinterest_PinterestMagento2Extension</tab>
+            <resource>Pinterest_PinterestMagento2Extension::PinterestConfig</resource>
             <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>General</label>
                 <field id="client_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <comment>Client id for pinterest. Used to identify Adobe/Magento clients at pinterest</comment>
                     <validate>required-entry no-whitespace integer</validate>
-                    <frontend_model>Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml\System\Config\DisableField</frontend_model>
+                    <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
                 </field>
                 <field id="pinterest_base_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <comment>Base URL path for pinterest</comment>
                     <validate>required-entry no-whitespace</validate>
-                    <frontend_model>Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml\System\Config\DisableField</frontend_model>
+                    <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
                 </field>
             </group>
         </section>

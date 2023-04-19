@@ -1,9 +1,9 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Cron;
+namespace Pinterest\PinterestMagento2Extension\Cron;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\TokensHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\TokensHelper;
 
 class RefreshTokens
 {

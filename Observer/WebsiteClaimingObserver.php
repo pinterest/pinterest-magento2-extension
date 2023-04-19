@@ -1,11 +1,11 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Observer;
+namespace Pinterest\PinterestMagento2Extension\Observer;
 
-use Pinterest\PinterestBusinessConnectPlugin\Constants\IntegrationErrorId;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PluginErrorHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Constants\IntegrationErrorId;
+use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\UrlInterface;

@@ -1,10 +1,10 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Setup;
+namespace Pinterest\PinterestMagento2Extension\Setup;
 
 use Magento\Framework\Setup\UninstallInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\DisconnectHelper;
+use Pinterest\PinterestMagento2Extension\Helper\DisconnectHelper;
 
 class Uninstall implements UninstallInterface
 {

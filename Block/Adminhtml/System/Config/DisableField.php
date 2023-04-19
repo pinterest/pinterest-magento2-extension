@@ -1,5 +1,5 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Block\Adminhtml\System\Config;
+namespace Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config;
 
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Config\Block\System\Config\Form\Field;

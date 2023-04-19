@@ -1,5 +1,5 @@
 <?php
-namespace Pinterest\PinterestBusinessConnectPlugin\Logger;
+namespace Pinterest\PinterestMagento2Extension\Logger;
 
 use Monolog\Logger;
 

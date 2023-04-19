@@ -1,9 +1,9 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Model\MetadataFactory;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
 
 class PluginErrorHelper
 {
@@ -17,6 +17,11 @@ class PluginErrorHelper
      */
     protected $_metadataFactory;
 
+    /**
+     *
+     * @param PinterestHelper $pinterestHelper
+     * @param MetadataFactory $metadataFactory
+     */
     public function __construct(
         PinterestHelper $pinterestHelper,
         MetadataFactory $metadataFactory
@@ -62,8 +67,7 @@ class PluginErrorHelper
     }
 
     /**
-     * Get all errors stored in the database -- currently only website claiming until we implement
-     * other errors
+     * Get all errors stored in the database
      *
      * @return array error JSON objects with integration_error_id and data
      */

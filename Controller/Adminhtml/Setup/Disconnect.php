@@ -1,10 +1,10 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Controller\Adminhtml\Setup;
+namespace Pinterest\PinterestMagento2Extension\Controller\Adminhtml\Setup;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\DisconnectHelper;
+use Pinterest\PinterestMagento2Extension\Helper\DisconnectHelper;
 
 /**
  * Controller for the main Pinterest App page

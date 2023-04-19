@@ -1,5 +1,5 @@
 {
-    "name": "pinterest/pinterestbusinessconnectplugin",
+    "name": "pinterest/pinterest-magento2-extension",
     "description": "Pinterest business connect plugin for magento 2",
     "keywords": [
       "magento 2",
@@ -9,7 +9,7 @@
       "business connect"
     ],
     "type": "magento2-module",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "license": "Apache-2.0",
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -19,7 +19,7 @@
     "autoload": {
       "files": [ "registration.php" ],
       "psr-4": {
-        "Pinterest\\PinterestBusinessConnectPlugin\\": "",
+        "Pinterest\\PinterestMagento2Extension\\": "",
         "Magento\\Framework\\": "lib/internal/Magento/Framework/",
         "Magento\\Setup\\": "setup/src/Magento/Setup/",
         "Magento\\": "app/code/Magento/"

@@ -1,11 +1,11 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Test\Unit\Helper;
+namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\ConversionEventHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CustomerDataHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\ConversionEventHelper;
+use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
 use Magento\Framework\App\CacheInterface;
 use Magento\Framework\App\Request\Http;
 use PHPUnit\Framework\TestCase;

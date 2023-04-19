@@ -3,9 +3,9 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="content">
-            <block class="Pinterest\PinterestBusinessConnectPlugin\Block\Tag\AddToCart"
+            <block class="Pinterest\PinterestMagento2Extension\Block\Tag\AddToCart"
                    name="pinterest.extension.add_to_cart"
-                   template="Pinterest_PinterestBusinessConnectPlugin::add_to_cart.phtml" />
+                   template="Pinterest_PinterestMagento2Extension::add_to_cart.phtml" />
         </referenceBlock>
     </body>
 </page>

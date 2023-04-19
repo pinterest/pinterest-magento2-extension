@@ -1,12 +1,13 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Test\Unit\Observer;
+namespace Pinterest\PinterestMagento2Extension\Test\Unit\Observer;
 
-use Pinterest\PinterestBusinessConnectPlugin\Observer\ConversionsApiObserver;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\ConversionEventHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CustomerDataHelper;
+use Pinterest\PinterestMagento2Extension\Observer\ConversionsApiObserver;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\ConversionEventHelper;
+use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
+use Magento\Framework\App\CacheInterface;
 use Magento\Framework\App\Request\Http;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\Event\Observer;
@@ -45,6 +46,11 @@ class ConversionsApiObserverTest extends TestCase
     protected $_customerDataHelper;
 
     /**
+     * @var CacheInterface
+     */
+    protected $cache;
+
+    /**
      * Used to set the values before running a test
      *
      * @return void
@@ -58,11 +64,13 @@ class ConversionsApiObserverTest extends TestCase
         $this->_request->method("getClientIp")->willReturn("0.0.0.0");
         $this->_pinterestHttpClient = $this->createMock(PinterestHttpClient::class);
         $this->_customerDataHelper = $this->createMock(CustomerDataHelper::class);
+        $this->_cache = $this->createMock(CacheInterface::class);
         $this->_conversionEventHelper = new ConversionEventHelper(
             $this->_request,
             $this->_pinterestHttpClient,
             $this->_pinterestHelper,
-            $this->_customerDataHelper
+            $this->_customerDataHelper,
+            $this->_cache
         );
         $this->_conversionsApiObserver = new ConversionsApiObserver($this->_conversionEventHelper);
     }
@@ -82,15 +90,15 @@ class ConversionsApiObserverTest extends TestCase
 
         ]);
         $this->_conversionsApiObserver->execute($observer);
-        $event_data = $this->_conversionEventHelper->getTrackedEvents();
-        $this->assertEquals("1234", $event_data["eventId"]);
-        $this->assertEquals("page_visit", $event_data["eventName"]);
-        $this->assertEquals("ss-adobe", $event_data["customData"]["np"]);
-        $this->assertEquals(1, count($event_data["customData"]["content_ids"]));
-        $this->assertEquals("sample_id", $event_data["customData"]["content_ids"][0]);
-        $this->assertEquals(1, count($event_data["customData"]["contents"]));
-        $this->assertEquals("USD", $event_data["customData"]["currency"]);
-        $this->assertEquals("99.00", $event_data["customData"]["contents"][0]["item_price"]);
+        $event_data = $this->_conversionEventHelper->getLastEventEnqueued();
+        $this->assertEquals("1234", $event_data["event_id"]);
+        $this->assertEquals("page_visit", $event_data["event_name"]);
+        $this->assertEquals("ss-adobe", $event_data["custom_data"]["np"]);
+        $this->assertEquals(1, count($event_data["custom_data"]["content_ids"]));
+        $this->assertEquals("sample_id", $event_data["custom_data"]["content_ids"][0]);
+        $this->assertEquals(1, count($event_data["custom_data"]["contents"]));
+        $this->assertEquals("USD", $event_data["custom_data"]["currency"]);
+        $this->assertEquals("99.00", $event_data["custom_data"]["contents"][0]["item_price"]);
     }
 
     public function testSearchEventCreated()
@@ -104,11 +112,11 @@ class ConversionsApiObserverTest extends TestCase
         ]);
 
         $this->_conversionsApiObserver->execute($observer);
-        $event_data = $this->_conversionEventHelper->getTrackedEvents();
-        $this->assertEquals("1234", $event_data["eventId"]);
-        $this->assertEquals("search", $event_data["eventName"]);
-        $this->assertEquals("pants", $event_data["customData"]["search_string"]);
-        $this->assertEquals("ss-adobe", $event_data["customData"]["np"]);
+        $event_data = $this->_conversionEventHelper->getLastEventEnqueued();
+        $this->assertEquals("1234", $event_data["event_id"]);
+        $this->assertEquals("search", $event_data["event_name"]);
+        $this->assertEquals("pants", $event_data["custom_data"]["search_string"]);
+        $this->assertEquals("ss-adobe", $event_data["custom_data"]["np"]);
     }
 
     public function testCheckoutEventCreated()
@@ -132,27 +140,27 @@ class ConversionsApiObserverTest extends TestCase
         ]);
 
         $this->_conversionsApiObserver->execute($observer);
-        $event_data = $this->_conversionEventHelper->getTrackedEvents();
-        $this->assertEquals("1234", $event_data["eventId"]);
-        $this->assertEquals("checkout", $event_data["eventName"]);
-        $this->assertEquals("ss-adobe", $event_data["customData"]["np"]);
+        $event_data = $this->_conversionEventHelper->getLastEventEnqueued();
+        $this->assertEquals("1234", $event_data["event_id"]);
+        $this->assertEquals("checkout", $event_data["event_name"]);
+        $this->assertEquals("ss-adobe", $event_data["custom_data"]["np"]);
 
         // Content Ids
-        $this->assertEquals(2, count($event_data["customData"]["content_ids"]));
-        $this->assertEquals("sample_id", $event_data["customData"]["content_ids"][0]);
-        $this->assertEquals("sample_id_2", $event_data["customData"]["content_ids"][1]);
+        $this->assertEquals(2, count($event_data["custom_data"]["content_ids"]));
+        $this->assertEquals("sample_id", $event_data["custom_data"]["content_ids"][0]);
+        $this->assertEquals("sample_id_2", $event_data["custom_data"]["content_ids"][1]);
 
         // Contents
-        $contents = $event_data["customData"]["contents"];
+        $contents = $event_data["custom_data"]["contents"];
         $this->assertEquals(2, count($contents));
         $this->assertEquals("99.00", $contents[0]["item_price"]);
         $this->assertEquals(3, $contents[0]["quantity"]);
         $this->assertEquals("49.00", $contents[1]["item_price"]);
         $this->assertEquals(1, $contents[1]["quantity"]);
         
-        $this->assertEquals("346.00", $event_data["customData"]["value"]);
-        $this->assertEquals(2, $event_data["customData"]["num_items"]);
-        $this->assertEquals("USD", $event_data["customData"]["currency"]);
+        $this->assertEquals("346.00", $event_data["custom_data"]["value"]);
+        $this->assertEquals(2, $event_data["custom_data"]["num_items"]);
+        $this->assertEquals("USD", $event_data["custom_data"]["currency"]);
     }
 
     public function testAddToCartEventCreated()
@@ -169,15 +177,15 @@ class ConversionsApiObserverTest extends TestCase
         ]);
 
         $this->_conversionsApiObserver->execute($observer);
-        $event_data = $this->_conversionEventHelper->getTrackedEvents();
-        $this->assertEquals("1234", $event_data["eventId"]);
-        $this->assertEquals(2, count($event_data["customData"]["content_ids"]));
-        $this->assertEquals("sample_id", $event_data["customData"]["content_ids"][0]);
-        $this->assertEquals("sample_id_2", $event_data["customData"]["content_ids"][1]);
-        $this->assertEquals("34.89", $event_data["customData"]["value"]);
-        $this->assertEquals(3, $event_data["customData"]["num_items"]);
-        $this->assertEquals("USD", $event_data["customData"]["currency"]);
-        $this->assertEquals("add_to_cart", $event_data["eventName"]);
-        $this->assertEquals("ss-adobe", $event_data["customData"]["np"]);
+        $event_data = $this->_conversionEventHelper->getLastEventEnqueued();
+        $this->assertEquals("1234", $event_data["event_id"]);
+        $this->assertEquals(2, count($event_data["custom_data"]["content_ids"]));
+        $this->assertEquals("sample_id", $event_data["custom_data"]["content_ids"][0]);
+        $this->assertEquals("sample_id_2", $event_data["custom_data"]["content_ids"][1]);
+        $this->assertEquals("34.89", $event_data["custom_data"]["value"]);
+        $this->assertEquals(3, $event_data["custom_data"]["num_items"]);
+        $this->assertEquals("USD", $event_data["custom_data"]["currency"]);
+        $this->assertEquals("add_to_cart", $event_data["event_name"]);
+        $this->assertEquals("ss-adobe", $event_data["custom_data"]["np"]);
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Test\Unit\Helper;
+namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\LocaleList;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\SavedFile;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\CatalogFeedClient;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
+use Pinterest\PinterestMagento2Extension\Helper\SavedFile;
+use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
 
 use Magento\Framework\App\Request\Http;
 use PHPUnit\Framework\TestCase;
@@ -61,7 +61,7 @@ class CatalogFeedClientTest extends TestCase
         "default_currency": "USD",
         "default_availability": "IN_STOCK",
         "format": "XML",
-        "location": "https://abc.com/export/Pinterest/PinterestBusinessConnectPlugin/catalogs/en_US/catalog.xml",
+        "location": "https://abc.com/media/Pinterest/catalogs/en_US/catalog.xml",
         "status": "ACTIVE"
       }';
 
@@ -69,7 +69,7 @@ class CatalogFeedClientTest extends TestCase
     {
         $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode(CatalogFeedClientTest::POST_RESPONSE_200));
         $ret = $this->_catalogFeedClient->createFeed(
-            "https://abc.com/export/Pinterest/PinterestBusinessConnectPlugin/catalogs/en_US/catalog.xml",
+            "https://abc.com/media/Pinterest//catalogs/en_US/catalog.xml",
             []
         );
         $this->assertTrue($ret);
@@ -83,7 +83,7 @@ class CatalogFeedClientTest extends TestCase
           }';
         $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode($response_401));
         $ret = $this->_catalogFeedClient->createFeed(
-            "https://abc.com/export/Pinterest/PinterestBusinessConnectPlugin/catalogs/en_US/catalog.xml",
+            "https://abc.com/media/Pinterest/catalogs/en_US/catalog.xml",
             []
         );
         $this->assertFalse($ret);
@@ -94,7 +94,7 @@ class CatalogFeedClientTest extends TestCase
         $this->_localeList->method('getListLocaleForAllStores')->willReturn([1=>"US\nen_US", 2=>"GB\nen_GB"]);
         $this->_pinterestHelper->method('getMediaBaseUrlByStoreId')->willReturn("https://abc.com/");
         $this->_savedFile->method('getFileSystemPath')->willReturn("/dev/null");
-        $this->_savedFile->method('getExportUrl')->willReturn("www.pinterest.com/export/Pinterest/PinterestBusinessConnectPlugin/catalogs");
+        $this->_savedFile->method('getExportUrl')->willReturn("www.pinterest.com/media/Pinterest/catalogs");
         $this->_pinterestHttpClient->method("post")->willReturn(json_decode(CatalogFeedClientTest::POST_RESPONSE_200));
         $ret = $this->_catalogFeedClient->createAllFeeds(true);
         $this->assertEquals(2, $ret);
@@ -105,7 +105,7 @@ class CatalogFeedClientTest extends TestCase
         $this->_localeList->method('getListLocaleForAllStores')->willReturn([1=>"US\nen_US", 2=>"GB\nen_GB"]);
         $this->_pinterestHelper->method('getMediaBaseUrlByStoreId')->willReturn("https://abc.com/");
         $this->_savedFile->method('getFileSystemPath')->willReturn("/dev/null");
-        $this->_savedFile->method('getExportUrl')->willReturn("www.pinterest.com/export/Pinterest/PinterestBusinessConnectPlugin/catalogs");
+        $this->_savedFile->method('getExportUrl')->willReturn("www.pinterest.com/media/Pinterest/catalogs");
         $response_401 ='{
                 "code": 29,
                 "message": "You are not permitted to access that resource."

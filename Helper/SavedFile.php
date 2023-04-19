@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Helper;
+namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -130,6 +130,7 @@ class SavedFile extends AbstractHelper
      */
     public function deleteCatalogs()
     {
-        $this->_file->rmdirRecursive(SavedFile::DIRECTORY_NAME_PATH);
+        $filesystem_prefix = $this->getFileSystemPrefix(DirectoryList::MEDIA);
+        $this->_file->rmdirRecursive($filesystem_prefix.SavedFile::DIRECTORY_NAME_PATH);
     }
 }

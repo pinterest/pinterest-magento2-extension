@@ -1,11 +1,11 @@
 <?php
 
-namespace Pinterest\PinterestBusinessConnectPlugin\Test\Unit\Helper;
+namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHelper;
-use Pinterest\PinterestBusinessConnectPlugin\Logger\Logger;
-use Pinterest\PinterestBusinessConnectPlugin\Model\Metadata;
-use Pinterest\PinterestBusinessConnectPlugin\Model\MetadataFactory;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Logger\Logger;
+use Pinterest\PinterestMagento2Extension\Model\Metadata;
+use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Cart;
 use Magento\Framework\App\Helper\Context;
@@ -17,7 +17,6 @@ use Magento\Framework\Module\ModuleListInterface;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Backend\Model\Auth\Session;
-use Pinterest\PinterestBusinessConnectPlugin\Helper\PinterestHttpClient;
 use Magento\Framework\App\Cache\Manager;
 
 class PinterestHelperTest extends \PHPUnit\Framework\TestCase
@@ -78,11 +77,6 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
     protected $_categoryFactory;
 
     /**
-     * @var PinterestHttpClient $pinterestHttpClient
-     */
-    protected $_pinterestHttpClient;
-
-    /**
      * @var Manager
      */
     protected $_cacheManager;
@@ -100,7 +94,6 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_productRepositoryInterface = $this->createMock(ProductRepositoryInterface::class);
         $this->_cart = $this->createMock(Cart::class);
         $this->_session = $this->sessionMock();
-        $this->_pinterestHttpClient = $this->createMock(PinterestHttpClient::class);
         $this->_cacheManager = $this->createMock(Manager::class);
         
         $this->_pinterestHelper = new PinterestHelper(
@@ -115,7 +108,6 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
             $this->_productRepositoryInterface,
             $this->_cart,
             $this->_session,
-            $this->_pinterestHttpClient,
             $this->_cacheManager
         );
     }
@@ -218,5 +210,21 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_storeManagerInterface->method("getStores")->willReturn([$storeMock]);
         $baseUrls = $this->_pinterestHelper->getBaseUrls();
         $this->assertEquals(["www.pinterest.com"], $baseUrls);
+    }
+
+    public function testGetConfig()
+    {
+        $this->_metadataFactory->method('create')->willReturn($this->createRowWithValue([
+            'pinterest/info/config' => '{
+                    "disable_website_claim":false,
+                    "disable_conversion":1,
+                    "enable_encryption": "true",
+                    "product_update_batch_size": 20
+                    }'
+        ]));
+        $this->assertFalse(filter_var($this->_pinterestHelper->getConfig('disable_website_claim'), FILTER_VALIDATE_BOOLEAN));
+        $this->assertTrue(filter_var($this->_pinterestHelper->getConfig('disable_conversion'), FILTER_VALIDATE_BOOLEAN));
+        $this->assertEquals(null, $this->_pinterestHelper->getConfig('disable_encryption'));
+        $this->assertEquals(20, $this->_pinterestHelper->getConfig('product_update_batch_size'));
     }
 }

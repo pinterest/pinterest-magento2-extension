@@ -2,7 +2,7 @@
 echo "Starting Pinterest Magento Extension installation"
 
 echo "Enabling extension..."
-php bin/magento module:enable Pinterest_PinterestBusinessConnectPlugin
+php bin/magento module:enable Pinterest_PinterestMagento2Extension
 
 echo "Deploying static files..."
 php bin/magento setup:static-content:deploy
