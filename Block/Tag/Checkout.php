@@ -99,13 +99,13 @@ class Checkout extends Setup
                 $price = $this->_pricingHelper->currency($product->getPrice(), false, false);
                 $contents[] = [
                     "quantity" => (int) $item->getQtyOrdered(),
-                    "item_price" => (string) ($price * (int)$item->getQtyOrdered()),
+                    "item_price" => (string) $price,
                 ];
                 $lineItems[] = [
                     "product_category" => $this->_pinterestHelper->getCategoryNamesFromIds($product->getCategoryIds()),
                     "product_id" => $product->getId(),
                     "product_quantity" => (int) $item->getQtyOrdered(),
-                    "product_price" => (string) ($price * (int)$item->getQtyOrdered()),
+                    "product_price" => (string) $price,
                     "product_name" => $product->getName(),
                 ];
             }

@@ -11,6 +11,7 @@ use Magento\Framework\App\Action\Context;
 use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
 use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
 use Pinterest\PinterestMagento2Extension\Logger\Logger;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 
 class CatalogProductSaveObserver implements ObserverInterface
 {
@@ -39,6 +40,11 @@ class CatalogProductSaveObserver implements ObserverInterface
     private $_productloader;
 
     /**
+     * @var PinterestHelper
+     */
+    protected $_pinterestHelper;
+
+    /**
      * @var ManagerInterface
      */
     private $_messageManager;
@@ -59,10 +65,17 @@ class CatalogProductSaveObserver implements ObserverInterface
     private $_appLogger;
 
     /**
-     * Construct
+     * @param ProductRepositoryInterface $productloader
+     * @param   PinterestHelper $pinterestHelper
+     * @param   ManagerInterface $messageManager
+     * @param   LocaleList $localelist
+     * @param   CatalogFeedClient $catalogFeedClient
+     * @param   Logger $appLogger
+     * @param  CacheInterface $cache
      */
     public function __construct(
         ProductRepositoryInterface $productloader,
+        PinterestHelper $pinterestHelper,
         ManagerInterface $messageManager,
         LocaleList $localelist,
         CatalogFeedClient $catalogFeedClient,
@@ -70,6 +83,7 @@ class CatalogProductSaveObserver implements ObserverInterface
         CacheInterface $cache
     ) {
         $this->_productloader = $productloader;
+        $this->_pinterestHelper = $pinterestHelper;
         $this->_messageManager = $messageManager;
         $this->_localehelper = $localelist;
         $this->_catalogFeedClient = $catalogFeedClient;
@@ -88,7 +102,7 @@ class CatalogProductSaveObserver implements ObserverInterface
      *
      * @return array product_ids to be emitted
      */
-    protected function emit_ids($new_id)
+    protected function emitIds($new_id)
     {
         $data = $this->cache->load(self::RECENT_SAVE) ?? "";
         if ($data == "") {
@@ -108,23 +122,22 @@ class CatalogProductSaveObserver implements ObserverInterface
         return [];
     }
 
-
     /**
+     * Hold or send product updates, see emitIds() for rules
      *
-     * Hold or send product updates, see emit_ids() for rules
-     *
-     *
+     * @param $locale
+     * @param $new_id
      */
-    protected function check_queue($locale, $new_id)
+    protected function checkQueue($locale, $new_id)
     {
         $empty_json = json_decode("");
-        $emit_ids = $this->emit_ids($new_id);
-        if (count($emit_ids) > 0) {
+        $emitIds = $this->emitIds($new_id);
+        if (count($emitIds) > 0) {
             // reset cache in case other updates happend before we send updates.
             $this->cache->save(json_encode(["start_time" => time()]), self::RECENT_SAVE, self::CACHE_TAGS);
 
             $items = [];
-            foreach ($emit_ids as $product_id) {
+            foreach ($emitIds as $product_id) {
                 $items [] = json_decode($this->cache->load(self::CACHE_KEY_PREFIX . $product_id)) ?? $empty_json;
             }
 
@@ -148,8 +161,12 @@ class CatalogProductSaveObserver implements ObserverInterface
      *
      * CacheInterface is preferred over EA as it is much faster and more flexible.
      *
+     * @param $product_id
+     * @param $json_data
+     *
+     * @return bool
      */
-    protected function is_changed($product_id, $json_data)
+    protected function isChanged($product_id, $json_data)
     {
         $cacheKey = self::CACHE_KEY_PREFIX . $product_id;
         $cacheValue = $this->cache->load($cacheKey);
@@ -169,10 +186,10 @@ class CatalogProductSaveObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $is_updated = false;
+
         try {
-            if (!$this->_catalogFeedClient->isUserConnected()) {
-                return $is_updated;
+            if (!$this->_pinterestHelper->isCatalogAndRealtimeUpdatesEnabled()) {
+                return false;
             }
 
             /**
@@ -215,15 +232,15 @@ class CatalogProductSaveObserver implements ObserverInterface
             ];
             $json_data = json_encode($data);
             $this->data_for_unittest = $json_data;
-            $is_updated = $this->is_changed($product_id, $json_data);
-            $this->check_queue($locale, $is_updated? $product_id : null);
+            $is_updated = $this->isChanged($product_id, $json_data);
+            $this->checkQueue($locale, $is_updated? $product_id : null);
+            return $is_updated;
         } catch (Exception $e) {
             $this->_messageManager->addError(
                 "Exception when sending notification, message: {$e}"
             );
             $is_updated = false;
         }
-        return $is_updated;
     }
 
      /**

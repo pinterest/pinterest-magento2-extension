@@ -6,6 +6,7 @@ namespace Pinterest\PinterestMagento2Extension\Observer;
 
 use Pinterest\PinterestMagento2Extension\Observer\CatalogProductSaveObserver;
 use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
 use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Magento\Framework\App\CacheInterface;
@@ -19,6 +20,11 @@ use Magento\Catalog\Api\Data\ProductInterface;
 
 class CatalogProductSaveObserverTest extends TestCase
 {
+    /**
+     * @var PinterestHelper
+     */
+    protected $_pinterestHelper;
+
     /**
      * @var ProductRepositoryInterface
      */
@@ -62,6 +68,7 @@ class CatalogProductSaveObserverTest extends TestCase
     public function setUp() : void
     {
         $this->productloader = $this->createMock(ProductRepositoryInterface::class);
+        $this->pinterestHelper = $this->createMock(PinterestHelper::class);
         $this->messageManager = $this->createMock(ManagerInterface::class);
         $this->catalogFeedClient = $this->createMock(CatalogFeedClient::class);
         $this->localehelper = $this->createMock(LocaleList::class);
@@ -70,11 +77,12 @@ class CatalogProductSaveObserverTest extends TestCase
 
         $this->catalogProductSaveObserver = new CatalogProductSaveObserver(
             $this->productloader,
+            $this->pinterestHelper,
             $this->messageManager,
             $this->localehelper,
             $this->catalogFeedClient,
             $this->logger,
-            $this->cache,
+            $this->cache
         );
     }
     public function testExecute()
@@ -109,6 +117,7 @@ class CatalogProductSaveObserverTest extends TestCase
         $this->localehelper->method('getLocale')->willReturn("en_US");
         $this->catalogFeedClient->method('isUserConnected')->willReturn(true);
         $this->catalogFeedClient->method('updateCatalogItems')->willReturn(true);
+        $this->pinterestHelper->method('isCatalogAndRealtimeUpdatesEnabled')->willReturn(true);
 
         $success = $this->catalogProductSaveObserver->execute($observer);
         $this->assertTrue($success);

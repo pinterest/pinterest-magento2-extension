@@ -38,7 +38,7 @@ class PageVisit extends Setup
         if ($product) {
             return [
                 "product_id" => $product->getId(),
-                "product_price" => $product->getPrice(),
+                "product_price" => $this->_pinterestHelper->getProductPrice($product),
                 "product_name" => $product->getName(),
                 "product_category" => $this->_pinterestHelper->getCategoryNamesFromIds($product->getCategoryIds()),
             ];

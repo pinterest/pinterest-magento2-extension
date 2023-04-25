@@ -128,7 +128,8 @@ class CatalogFeedClient
     /**
      * Deletes stale feeds from Pinterest
      *
-     * It checks if there is any feedName in the previous snapshot (on magento) that is not present in the latest snapshot.
+     * It checks if there is any feedName in the previous snapshot (on magento)
+     * that is not present in the latest snapshot.
      * If that is the case, we delete that feedName
      *
      * @param array $existingFeedsSavedToMetadata
@@ -137,8 +138,8 @@ class CatalogFeedClient
     public function deleteStaleFeedsFromPinterest($existingFeedsSavedToMetadata, $feedsRegisteredOnPinterest)
     {
         foreach ($existingFeedsSavedToMetadata as $feedId) {
-            // If the feedname is not in the latest snapshot of feeds registered on Pinterest means that it is stale and must
-            // be deleted
+            /* If the feedname is not in the latest snapshot of feeds registered on Pinterest,
+                that means that it is stale and must be deleted */
             if (!in_array($feedId, $feedsRegisteredOnPinterest)) {
                 $this->_pinterestHelper->logInfo("Should remove feed with id {$feedId} as it is no longer needed");
                 // We should clean up this feed but for now it is still expected
@@ -152,7 +153,7 @@ class CatalogFeedClient
     }
 
     /**
-     * Return feed Ids of the any exxisting pinterest feed that has the same name as $feedName
+     * Return feed ids of the any existing Pinterest feed that has the same name as $feedName
      *
      * @param string $feedName
      * @param array $existingPinterestFeed
@@ -168,7 +169,7 @@ class CatalogFeedClient
     }
 
     /**
-     * Checks if the user has valid connection to pinterest
+     * Checks if the user has valid connection to Pinterest
      *
      * @return bool
      */

@@ -18,6 +18,7 @@ use Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Cache\Manager;
+use Magento\Catalog\Model\Product\Type;
 
 class PinterestHelper extends AbstractHelper
 {
@@ -671,5 +672,49 @@ class PinterestHelper extends AbstractHelper
         $config_json[$key] = $value;
         $this->saveMetadata(self::CONFIG_METADATA_KEY, json_encode($config_json));
         return true;
+    }
+
+    /**
+     * Get if catalogs and realtime updates are enabled in the config
+     *
+     * @return bool
+     */
+    public function isCatalogAndRealtimeUpdatesEnabled()
+    {
+        $isDisabled =
+            filter_var(
+                $this->getConfig("disable_catalogs_and_realtime_updates"),
+                FILTER_VALIDATE_BOOLEAN
+            )
+                || !$this->isUserConnected();
+        return !$isDisabled;
+    }
+
+    /**
+     * Get product price
+     *
+     * @param ProductInterface $product
+     */
+    public function getProductPrice($product)
+    {
+        $price = null;
+
+        if ($product) {
+            $price = $product
+                ->getPriceInfo()
+                ->getPrice('regular_price')
+                ->getAmount()
+                ->getBaseAmount() ?: null;
+        }
+
+        if ($price == null) {
+            if ($product->getTypeId() == Type::TYPE_SIMPLE) {
+                $price = $product->getPrice();
+            } else {
+                $price = $product->getFinalPrice();
+            }
+        }
+
+        return $price;
     }
 }

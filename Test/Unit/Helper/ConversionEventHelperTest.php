@@ -6,6 +6,7 @@ use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\ConversionEventHelper;
 use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\App\CacheInterface;
 use Magento\Framework\App\Request\Http;
 use PHPUnit\Framework\TestCase;
@@ -42,6 +43,11 @@ class ConversionEventHelperTest extends TestCase
      */
     protected $cache;
 
+    /**
+     * @var CookieManagerInterface
+     */
+    protected $_customCookieManager;
+
     public function setUp() : void
     {
         $this->_pinterestHelper = $this->createMock(PinterestHelper::class);
@@ -52,12 +58,15 @@ class ConversionEventHelperTest extends TestCase
         $this->_pinterestHttpClient = $this->createMock(PinterestHttpClient::class);
         $this->_customerDataHelper = $this->createMock(CustomerDataHelper::class);
         $this->_cache = $this->createMock(CacheInterface::class);
+        $this->_customCookieManager = $this->createMock(CookieManagerInterface::class);
+        $this->_customCookieManager->method('getCookie')->willReturn("randomCookieValue");
         $this->_conversionEventHelper = new ConversionEventHelper(
             $this->_request,
             $this->_pinterestHttpClient,
             $this->_pinterestHelper,
             $this->_customerDataHelper,
-            $this->_cache
+            $this->_cache,
+            $this->_customCookieManager
         );
     }
 
@@ -109,6 +118,15 @@ class ConversionEventHelperTest extends TestCase
         $this->assertEquals("0.0.0.0", $userIpAddress);
     }
 
+    public function testUserExternalIdInEventPayload()
+    {
+        $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", [
+            "search_term" => "Pants"
+        ]);
+        $userExternalId = $payload["user_data"]["external_id"];
+        $this->assertEquals("randomCookieValue", $userExternalId[0]);
+    }
+
     public function testLoggedInUserEventPayload()
     {
         $this->_customerDataHelper->method("isUserLoggedIn")->willReturn(1);
@@ -145,8 +163,8 @@ class ConversionEventHelperTest extends TestCase
             "search_term" => "Pants"
         ]);
         $user_data = $payload["user_data"];
-        // User Agent and Ip Address
-        $this->assertEquals(2, count($user_data));
+        // User Agent, Ip Address and Cookie Value
+        $this->assertEquals(3, count($user_data));
     }
 
     public function testEventDataisQueuedIfConditionsAreNotMet()
