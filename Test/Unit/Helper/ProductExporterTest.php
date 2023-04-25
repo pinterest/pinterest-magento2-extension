@@ -8,6 +8,7 @@ use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable as ConfigurableProductType;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Io\File;
@@ -38,6 +39,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
     protected $storeMock1;
     protected $storeMock2;
     protected $_pluginErrorHelper;
+    protected $configurableProductType;
 
     public function setUp() : void
     {
@@ -51,6 +53,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
         $this->_storeManager = $this->createMock(StoreManagerInterface::class);
         $this->_logger = $this->createMock(Logger::class);
         $this->_pluginErrorHelper = $this->createMock(PluginErrorHelper::class);
+        $this->configurableProductType = $this->createMock(ConfigurableProductType::class);
 
         $this->_productExporter = new ProductExporter(
             $this->_categoryRepository,
@@ -62,7 +65,8 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
             $this->_collectionFactory,
             $this->_stockRegistryInterface,
             $this->_pluginErrorHelper,
-            $this->_storeManager
+            $this->_storeManager,
+            $this->configurableProductType
         );
         $this->_reflection = new \ReflectionClass($this->_productExporter);
 

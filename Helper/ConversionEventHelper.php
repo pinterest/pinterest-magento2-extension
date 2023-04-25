@@ -6,6 +6,7 @@ use Magento\Framework\App\CacheInterface;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 
 class ConversionEventHelper
 {
@@ -50,24 +51,32 @@ class ConversionEventHelper
     protected $_lastEventEnqueued;
 
     /**
+     * @var CookieManagerInterface
+     */
+    protected $_customCookieManager;
+
+    /**
      * @param HTTP $request
      * @param PinterestHttpClient $pinterestHttpClient
      * @param PinterestHelper $pinterestHelper
      * @param CustomerDataHelper $customerDataHelper
      * @param CacheInterface $cache
+     * @param CookieManagerInterface $customCookieManager
      */
     public function __construct(
         Http $request,
         PinterestHttpClient $pinterestHttpClient,
         PinterestHelper $pinterestHelper,
         CustomerDataHelper $customerDataHelper,
-        CacheInterface $cache
+        CacheInterface $cache,
+        CookieManagerInterface $customCookieManager
     ) {
         $this->_request = $request;
         $this->_pinterestHttpClient = $pinterestHttpClient;
         $this->_pinterestHelper = $pinterestHelper;
         $this->_customerDataHelper = $customerDataHelper;
         $this->_cache = $cache;
+        $this->_customCookieManager = $customCookieManager;
         $this->_disableTag = filter_var(
             $pinterestHelper->getConfig("disable_tag"),
             FILTER_VALIDATE_BOOLEAN
@@ -92,13 +101,22 @@ class ConversionEventHelper
     }
 
     /**
+     * Get the pinterest 1p cookie
+     */
+    private function getPinterestCookie()
+    {
+        return $this->_customCookieManager->getCookie("_pin_unauth") || "";
+    }
+
+    /**
      * Creates all the data required to captures user info
      */
     private function createUserData()
     {
         $user_data = [
             "client_ip_address" => $this->getClientIP(),
-            "client_user_agent" => $this->getUserAgent()
+            "client_user_agent" => $this->getUserAgent(),
+            "external_id" => [$this->getPinterestCookie()]
         ];
         if ($this->_customerDataHelper->isUserLoggedIn()) {
             if ($this->_customerDataHelper->getEmail()) {
@@ -256,7 +274,6 @@ class ConversionEventHelper
                 $this->_pinterestHelper->logError("Failed to send events via conversion API");
             } else {
                 $this->_pinterestHelper->logInfo("Events sent successfully via conversion API");
-                $this->_pinterestHelper->logInfo(json_encode($response));
             }
         } catch (\Exception $e) {
             $this->_pinterestHelper->logException($e);

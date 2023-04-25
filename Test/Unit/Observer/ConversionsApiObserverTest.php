@@ -7,6 +7,7 @@ use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\ConversionEventHelper;
 use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\App\CacheInterface;
 use Magento\Framework\App\Request\Http;
 use PHPUnit\Framework\TestCase;
@@ -20,9 +21,9 @@ class ConversionsApiObserverTest extends TestCase
      */
     protected $_conversionsApiObserver;
 
-        /**
-         * @var ConversionEventHelper
-         */
+    /**
+     * @var ConversionEventHelper
+     */
     protected $_conversionEventHelper;
 
     /**
@@ -51,6 +52,11 @@ class ConversionsApiObserverTest extends TestCase
     protected $cache;
 
     /**
+     * @var CookieManagerInterface
+     */
+    protected $_customCookieManager;
+
+    /**
      * Used to set the values before running a test
      *
      * @return void
@@ -65,12 +71,15 @@ class ConversionsApiObserverTest extends TestCase
         $this->_pinterestHttpClient = $this->createMock(PinterestHttpClient::class);
         $this->_customerDataHelper = $this->createMock(CustomerDataHelper::class);
         $this->_cache = $this->createMock(CacheInterface::class);
+        $this->_customCookieManager = $this->createMock(CookieManagerInterface::class);
+        $this->_customCookieManager->method('getCookie')->willReturn("randomCookieValue");
         $this->_conversionEventHelper = new ConversionEventHelper(
             $this->_request,
             $this->_pinterestHttpClient,
             $this->_pinterestHelper,
             $this->_customerDataHelper,
-            $this->_cache
+            $this->_cache,
+            $this->_customCookieManager
         );
         $this->_conversionsApiObserver = new ConversionsApiObserver($this->_conversionEventHelper);
     }

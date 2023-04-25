@@ -14,6 +14,7 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable as ConfigurableProductType;
 use SimpleXMLElement;
 use Pinterest\PinterestMagento2Extension\Constants\IntegrationErrorId;
 use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
@@ -24,6 +25,11 @@ use Pinterest\PinterestMagento2Extension\Logger\Logger;
 
 class ProductExporter
 {
+    /**
+     * @var ConfigurableProductType
+     */
+    protected $configurableProductType;
+
     /**
      * @var PluginErrorHelper
      */
@@ -90,15 +96,15 @@ class ProductExporter
     /**
      * @param CategoryRepositoryInterface $categoryRepository
      * @param SavedFile $savedFile
-     * @param File $file
-     * @param LocaleList $localelist
      * @param PinterestHelper $pinterestHelper
+     * @param Logger $appLogger
+     * @param LocaleList $localelist
      * @param ProductRepositoryInterface $productRepository
      * @param CollectionFactory $collectionFactory
      * @param StockRegistryInterface $stockRegistryInterface
-     * @param StoreManagerInterface $storeManager
      * @param PluginErrorHelper $pluginErrorHelper
-     * @param Logger $appLogger
+     * @param StoreManagerInterface $storeManager
+     * @param ConfigurableProductType $configurableProductType
      */
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
@@ -110,23 +116,26 @@ class ProductExporter
         CollectionFactory $collectionFactory,
         StockRegistryInterface $stockRegistryInterface,
         PluginErrorHelper $pluginErrorHelper,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        ConfigurableProductType $configurableProductType
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->savedFile = $savedFile;
         $this->pinterestHelper = $pinterestHelper;
+        $this->appLogger = $appLogger;
         $this->localelist = $localelist;
         $this->productLoader = $productRepository;
         $this->collectionFactory = $collectionFactory;
         $this->stockRegistryInterface = $stockRegistryInterface;
+        $this->pluginErrorHelper = $pluginErrorHelper;
         $this->storeManager = $storeManager;
+        $this->configurableProductType = $configurableProductType;
         $this->lastProcessTime = 0;
         $this->productsData = null;
-        $this->appLogger = $appLogger;
-        $this->pluginErrorHelper = $pluginErrorHelper;
     }
 
     /**
+     *
      * @return void
      * @throws NoSuchEntityException
      */
@@ -172,6 +181,7 @@ class ProductExporter
     }
 
     /**
+     *
      * @return string
      */
     public function getOutputUrls()
@@ -194,10 +204,29 @@ class ProductExporter
     }
 
     /**
+     * Return compiled array of simple and configurable product data for feed xml
+     *
+     * @param string $storeId
+     *
      * @return array
      * @throws NoSuchEntityException
      */
     private function prepareData($storeId)
+    {
+        $simpleProducts = $this->prepareSimpleProductData($storeId);
+        $variableProducts = $this->prepareConfigurableProductData($storeId, count($simpleProducts));
+        return array_merge($simpleProducts, $variableProducts);
+    }
+
+    /**
+     * Return simple product data for feed xml
+     *
+     * @param string $storeId
+     *
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    private function prepareSimpleProductData($storeId)
     {
         $content = [];
         $counter = 0;
@@ -214,8 +243,8 @@ class ProductExporter
         $products = $collection->getItems();
         foreach ($products as $product) {
             $productValues = [
-                "xmlns:g:id" => $this->getSkuId($product),
-                "item_group_id" => $this->getItemGroupId($product),
+                "xmlns:g:id" => "v_".$this->getUniqueId($product),
+                "item_group_id" => $this->getUniqueId($product),
                 "title" => $this->getProductName($product),
                 "description" => $this->getProductDescription($product),
                 "link" => $this->getProductUrl($product),
@@ -230,6 +259,11 @@ class ProductExporter
             if ($product->getSpecialPrice() != 0 && $product->getSpecialPrice() < $product->getPrice()) {
                 $productValues["sale_price"] = $this->getProductSalePrice($product);
             }
+            $additionalImages = $this->getAdditionalImages($product);
+            if ($additionalImages) {
+                $productValues["additional_image_link"] = $additionalImages;
+            }
+
             $content["item" . $counter] = $productValues;
             $counter++;
         }
@@ -237,7 +271,94 @@ class ProductExporter
     }
 
     /**
-     * @param $product
+     * Return configurable product data for feed xml
+     *
+     * @param string $storeId
+     * @param int $counter
+     *
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    private function prepareConfigurableProductData($storeId, $counter)
+    {
+        $content = [];
+        $configurableCollection = $this->collectionFactory->create();
+
+        // Get configurable products
+        $configurableCollection->setStoreId($storeId)
+                            ->addAttributeToFilter('status', Status::STATUS_ENABLED)
+                            ->addAttributeToFilter('type_id', 'configurable')
+                            ->addFieldToFilter([['attribute'=>'visibility',
+                            'neq'=>Visibility::VISIBILITY_NOT_VISIBLE]])
+                            ->addUrlRewrite()
+                            ->addAttributeToSelect('*');
+        $configurableProducts = $configurableCollection->getItems();
+        
+        foreach ($configurableProducts as $configurableProduct) {
+            $productTypeInstance = $configurableProduct->getTypeInstance();
+            $productAttributeOptions = $productTypeInstance->getConfigurableAttributesAsArray($configurableProduct);
+            
+            $variantNames = [];
+            foreach ($productAttributeOptions as $option) {
+                array_push($variantNames, $option['frontend_label']);
+            }
+
+            $itemGroupId = $this->getUniqueId($configurableProduct);
+            $itemLink = $this->getProductUrl($configurableProduct);
+
+            // Get variable products from configurable product
+            $variableProductsForCurrentConfigurable =
+                $this->configurableProductType->getChildrenIds($configurableProduct->getId());
+            foreach ($variableProductsForCurrentConfigurable[0] as $key => $productId) {
+                $product = $this->productLoader->getById($productId);
+
+                // Get variant values from simple product
+                $variantValues = [];
+                foreach ($variantNames as $variantName) {
+                    array_push($variantValues, $this->getConfigurableProductValue($product, $variantName));
+                }
+
+                $productValues = [
+                    "xmlns:g:id" => $this->getUniqueId($product),
+                    "item_group_id" => $itemGroupId,
+                    "title" => $this->getProductName($product),
+                    "description" => $this->getProductDescription($product),
+                    "link" => $itemLink,
+                    "xmlns:g:image_link" => $this->getProductImageUrl($storeId, $product),
+                    "xmlns:g:price" => $this->getProductPrice($product),
+                    "xmlns:g:product_type" => $this->getProductCategories($product),
+                    "xmlns:g:availability" => $this->getProductAvailability($product),
+                    "variant_names" => implode(",", $variantNames),
+                    "variant_values" => implode(",", $variantValues),
+                ];
+                if ($this->getConfigurableProductValue($product, "color")) {
+                    $productValues["color"] = $this->getConfigurableProductValue($product, "color");
+                }
+                if ($this->getConfigurableProductValue($product, "size")) {
+                    $productValues["size"] = $this->getConfigurableProductValue($product, "size");
+                }
+                if ($productValues["link"] == null) {
+                    continue;
+                }
+                if ($product->getSpecialPrice() != 0 && $product->getSpecialPrice() < $product->getPrice()) {
+                    $productValues["sale_price"] = $this->getProductSalePrice($product);
+                }
+                $additionalImages = $this->getAdditionalImages($product);
+                if ($additionalImages) {
+                    $productValues["additional_image_link"] = $additionalImages;
+                }
+
+                $content["item" . $counter] = $productValues;
+                $counter++;
+            }
+        }
+        return $content;
+    }
+
+    /**
+     * Return categories for a given product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return string
      * @throws NoSuchEntityException
@@ -266,6 +387,7 @@ class ProductExporter
     }
 
     /**
+     *
      * @return void
      */
     private function saveXml($key, $content)
@@ -304,6 +426,7 @@ class ProductExporter
     }
 
     /**
+     *
      * @param $data
      * @param $xml
      *
@@ -322,27 +445,52 @@ class ProductExporter
     }
 
     /**
-     * @param $product
+     * Return unique id for product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return string
      */
-    private function getSkuId($product)
+    private function getUniqueId($product)
     {
-        return $product->getSku();
+        $productId = $product->getId();
+        return $productId."_".$product->getSku();
     }
 
     /**
-     * @param $product
+     * Return list of all additional images associated with a product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return string
      */
-    private function getItemGroupId($product)
+    public function getAdditionalImages($product)
     {
-        return "magento_".$product->getSku();
+        $allImages = [];
+        $productId = $product->getId();
+        $loadedProduct = $this->productLoader->getById($productId);
+        $images = $loadedProduct->getMediaGalleryImages();
+    
+        foreach ($images as $image) {
+            // Only add image to array if less than allowed number
+            if (isset($image['url']) && $image['url'] !== '') {
+                if (count($allImages) > 10) {
+                    break;
+                }
+                array_push($allImages, $image->getUrl());
+            }
+        }
+
+        // Remove first image link
+        if (count($allImages) > 0) {
+            array_shift($allImages);
+        }
+        return implode(",", $allImages);
     }
 
     /**
-     * @param $product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return mixed
      */
@@ -352,7 +500,8 @@ class ProductExporter
     }
 
     /**
-     * @param $product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return mixed
      */
@@ -362,7 +511,8 @@ class ProductExporter
     }
 
     /**
-     * @param $product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return mixed
      */
@@ -376,7 +526,9 @@ class ProductExporter
     }
 
     /**
-     * @param $product
+     *
+     * @param string $storeId
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return string
      * @throws NoSuchEntityException
@@ -388,7 +540,8 @@ class ProductExporter
     }
 
     /**
-     * @param $product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return string
      * @throws NoSuchEntityException
@@ -404,7 +557,8 @@ class ProductExporter
     }
 
     /**
-     * @param $product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return string
      * @throws NoSuchEntityException
@@ -420,7 +574,8 @@ class ProductExporter
     }
 
     /**
-     * @param $product
+     *
+     * @param \Magento\Catalog\Model\Product $product
      *
      * @return string
      */
@@ -431,5 +586,30 @@ class ProductExporter
         } else {
             return "out of stock";
         }
+    }
+
+    /**
+     * Get product values for configurable product
+     *
+     * @param \Magento\Catalog\Model\Product $product
+     * @param string $variantName
+     *
+     * @return string
+     */
+    private function getConfigurableProductValue($product, $variantName)
+    {
+        $product->getResource()->load($product, $product->getId(), [strtolower($variantName)]);
+
+        $attribute = $product->getResource()->getAttribute(strtolower($variantName));
+        if (!$attribute) {
+            return null;
+        }
+
+        $frontend = $attribute->getFrontend();
+        if (!$frontend) {
+            return null;
+        }
+
+        return $frontend->getValue($product);
     }
 }

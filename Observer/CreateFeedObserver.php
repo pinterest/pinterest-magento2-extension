@@ -49,9 +49,7 @@ class CreateFeedObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if (filter_var($this->_pinterestHelper
-                ->getConfig("disable_create_feeds_on_connection"), FILTER_VALIDATE_BOOLEAN)
-            || ! $this->_pinterestHelper->isUserConnected()) {
+        if (!$this->_pinterestHelper->isCatalogAndRealtimeUpdatesEnabled()) {
             return;
         }
 
