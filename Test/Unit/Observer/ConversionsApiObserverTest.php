@@ -65,6 +65,7 @@ class ConversionsApiObserverTest extends TestCase
     {
         $this->_pinterestHelper = $this->createMock(PinterestHelper::class);
         $this->_pinterestHelper->method("getMetadataValue")->willReturn("1234");
+        $this->_pinterestHelper->method("isConversionConfigEnabled")->willReturn(true);
         $this->_request = $this->createMock(Http::class);
         $this->_request->method("getServer")->willReturn("safari");
         $this->_request->method("getClientIp")->willReturn("0.0.0.0");

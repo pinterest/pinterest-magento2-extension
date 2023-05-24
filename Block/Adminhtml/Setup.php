@@ -93,7 +93,7 @@ class Setup extends Template
     public function isTagEnabled()
     {
         return $this->isUserConnected() &&
-            !filter_var($this->_pinterestHelper->getConfig("disable_tag"), FILTER_VALIDATE_BOOLEAN);
+            $this->_pinterestHelper->isConversionConfigEnabled();
     }
 
     public function getMetaTag()

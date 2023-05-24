@@ -18,6 +18,7 @@ use Magento\Framework\Model\AbstractModel;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Cache\Manager;
+use Magento\Catalog\Model\ProductFactory;
 
 class PinterestHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -81,6 +82,11 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
      */
     protected $_cacheManager;
 
+    /**
+     * @var ProductFactory
+     */
+    protected $_productFactory;
+
     public function setUp() : void
     {
         $this->_context = $this->createMock(Context::class);
@@ -95,6 +101,7 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_cart = $this->createMock(Cart::class);
         $this->_session = $this->sessionMock();
         $this->_cacheManager = $this->createMock(Manager::class);
+        $this->_productFactory = $this->createMock(ProductFactory::class);
         
         $this->_pinterestHelper = new PinterestHelper(
             $this->_context,
@@ -108,7 +115,8 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
             $this->_productRepositoryInterface,
             $this->_cart,
             $this->_session,
-            $this->_cacheManager
+            $this->_cacheManager,
+            $this->_productFactory
         );
     }
 
@@ -210,21 +218,5 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_storeManagerInterface->method("getStores")->willReturn([$storeMock]);
         $baseUrls = $this->_pinterestHelper->getBaseUrls();
         $this->assertEquals(["www.pinterest.com"], $baseUrls);
-    }
-
-    public function testGetConfig()
-    {
-        $this->_metadataFactory->method('create')->willReturn($this->createRowWithValue([
-            'pinterest/info/config' => '{
-                    "disable_website_claim":false,
-                    "disable_conversion":1,
-                    "enable_encryption": "true",
-                    "product_update_batch_size": 20
-                    }'
-        ]));
-        $this->assertFalse(filter_var($this->_pinterestHelper->getConfig('disable_website_claim'), FILTER_VALIDATE_BOOLEAN));
-        $this->assertTrue(filter_var($this->_pinterestHelper->getConfig('disable_conversion'), FILTER_VALIDATE_BOOLEAN));
-        $this->assertEquals(null, $this->_pinterestHelper->getConfig('disable_encryption'));
-        $this->assertEquals(20, $this->_pinterestHelper->getConfig('product_update_batch_size'));
     }
 }

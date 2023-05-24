@@ -19,15 +19,18 @@ use Magento\Catalog\Model\CategoryFactory;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Cache\Manager;
 use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
 
 class PinterestHelper extends AbstractHelper
 {
     public const CLIENT_ID_PATH='PinterestConfig/general/client_id';
     public const PINTEREST_BASE_URL_PATH='PinterestConfig/general/pinterest_base_url';
+    public const PINTEREST_CATALOG_ENABLED_PATH='PinterestConfig/general/pinterest_catalog_enabled';
+    public const PINTEREST_CONVERSION_ENABLED_PATH='PinterestConfig/general/pinterest_conversion_enabled';
     public const REDIRECT_URI='pinterestadmin/Setup/PinterestToken';
     public const ADMINHTML_SETUP_URI='pinterestadmin/Setup/Index';
     public const MODULE_NAME='Pinterest_PinterestMagento2Extension';
-    public const CONFIG_METADATA_KEY='pinterest/info/config';
 
     /**
      * @var Session
@@ -84,6 +87,11 @@ class PinterestHelper extends AbstractHelper
      */
     protected $_cacheManager;
 
+     /**
+      * @var ProductFactory
+      */
+    protected $_productFactory;
+
     /**
      *
      * @param Context $context
@@ -98,6 +106,7 @@ class PinterestHelper extends AbstractHelper
      * @param Cart $cart
      * @param Session $session
      * @param Manager $cacheManager
+     * @param ProductFactory $productFactory
      */
     public function __construct(
         Context $context,
@@ -111,7 +120,8 @@ class PinterestHelper extends AbstractHelper
         ProductRepositoryInterface $productRepository,
         Cart $cart,
         Session $session,
-        Manager $cacheManager
+        Manager $cacheManager,
+        ProductFactory $productFactory
     ) {
         parent::__construct($context);
         $this->_objectManager = $objectManager;
@@ -125,6 +135,7 @@ class PinterestHelper extends AbstractHelper
         $this->_cart = $cart;
         $this->_session = $session;
         $this->_cacheManager = $cacheManager;
+        $this->_productFactory = $productFactory;
     }
 
     /**
@@ -147,6 +158,26 @@ class PinterestHelper extends AbstractHelper
     {
 
         return $this->scopeConfig->getValue(self::PINTEREST_BASE_URL_PATH);
+    }
+
+    /**
+     * Returns true if catalog is enabled in config
+     *
+     * @retun boolean true/false
+     */
+    public function isCatalogConfigEnabled()
+    {
+        return strcmp($this->scopeConfig->getValue(self::PINTEREST_CATALOG_ENABLED_PATH), "enabled") == 0;
+    }
+
+    /**
+     * Returns true if conversion is enabled in config
+     *
+     * @retun boolean true/false
+     */
+    public function isConversionConfigEnabled()
+    {
+        return strcmp($this->scopeConfig->getValue(self::PINTEREST_CONVERSION_ENABLED_PATH), "enabled") == 0;
     }
 
     /**
@@ -182,6 +213,26 @@ class PinterestHelper extends AbstractHelper
     public function getProductWithSku($productSku)
     {
         return $this->_productRepository->get($productSku);
+    }
+
+    /**
+     * Get total number of products in all stores
+     *
+     * @return Integer
+     */
+    public function getProductCountInAllStores()
+    {
+        $stores = $this->_storeManager->getStores();
+        $count = 0;
+        foreach ($stores as $store) {
+            $storeId = $store->getId();
+            $collection = $this->_productFactory->create()->getCollection();
+            $filteredCollection = $collection->setStoreId($storeId)->addAttributeToFilter('status', Status::STATUS_ENABLED);
+            $count = $count + $filteredCollection->count();
+
+            $this->logInfo("getProductCountInAllStores total_count = ".$count." storeid=".$storeId);
+        }
+        return $count;
     }
 
     /**
@@ -646,48 +697,13 @@ class PinterestHelper extends AbstractHelper
     }
 
     /**
-     * Get config value
-     *
-     * @param string $key
-     * @return mixed
-     */
-    public function getConfig($key)
-    {
-        $config_str = $this->getMetadataValue(self::CONFIG_METADATA_KEY)?? "";
-        $config_json = json_decode($config_str, true);
-        $value = $config_json[$key] ?? null;
-        return $value;
-    }
-
-    /**
-     * Save to config
-     *
-     * @param string $key
-     * @param string $value
-     */
-    public function setConfig($key, $value)
-    {
-        $config_str = $this->getMetadataValue(self::CONFIG_METADATA_KEY)?? "";
-        $config_json = json_decode($config_str, true);
-        $config_json[$key] = $value;
-        $this->saveMetadata(self::CONFIG_METADATA_KEY, json_encode($config_json));
-        return true;
-    }
-
-    /**
      * Get if catalogs and realtime updates are enabled in the config
      *
      * @return bool
      */
     public function isCatalogAndRealtimeUpdatesEnabled()
     {
-        $isDisabled =
-            filter_var(
-                $this->getConfig("disable_catalogs_and_realtime_updates"),
-                FILTER_VALIDATE_BOOLEAN
-            )
-                || !$this->isUserConnected();
-        return !$isDisabled;
+        return $this->isCatalogConfigEnabled() && $this->isUserConnected();
     }
 
     /**

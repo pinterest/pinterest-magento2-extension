@@ -32,7 +32,9 @@ class RefreshTokens
     }
     public function execute()
     {
+        $this->_pinterestHelper->logInfo("Pinterest token refresh cron job started");
         if ($this->_pinterestHelper->isUserConnected()) {
+            $this->_pinterestHelper->logInfo("Pinterest token refresh cron job calling API");
             $success = $this->_tokensHelper->refreshTokens();
             if ($success) {
                 $this->_pinterestHelper->logInfo("Job to refresh Pinterest tokens successful.");
@@ -40,5 +42,6 @@ class RefreshTokens
                 $this->_pinterestHelper->logError("Job to refresh Pinterest tokens failed.");
             }
         }
+        $this->_pinterestHelper->logInfo("Pinterest token refresh cron job ended");
     }
 }
