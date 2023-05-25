@@ -155,7 +155,7 @@ class PinterestToken extends Action
             // Website claiming
             $this->_eventManager->dispatch("pinterest_commereceintegrationextension_website_claiming");
 
-            // Catalog feed creating
+            // Catalog feed - create if numbers of products < 5000 to avoid a time out. Run cron job for larger size
             $productsCount = $this->_pinterestHelper->getProductCountInAllStores();
             $this->_pinterestHelper->logInfo("PinterestToken action - products count = ".$productsCount);
             if ($productsCount < 5000) {
