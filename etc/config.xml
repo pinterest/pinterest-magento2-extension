@@ -4,6 +4,8 @@
             <general>
                 <client_id>1484912</client_id>
                 <pinterest_base_url>https://commerce-app.pintergration.com</pinterest_base_url>
+                <pinterest_catalog_enabled>enabled</pinterest_catalog_enabled>
+                <pinterest_conversion_enabled>enabled</pinterest_conversion_enabled>
             </general>
         </PinterestConfig>
     </default>

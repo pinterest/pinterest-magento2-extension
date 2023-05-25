@@ -74,6 +74,9 @@ class PinterestToken extends Action
         return $resultRedirect;
     }
 
+    /**
+     * Main function which executes when controller is called
+     */
     public function execute()
     {
         $this->_pinterestHelper->logInfo("Entered PinterestToken action");
@@ -119,8 +122,11 @@ class PinterestToken extends Action
         
                 $info = json_decode(rawurldecode(base64_decode($this->_request->getParam('info'))), true);
                 $this->_pinterestHelper->saveMetadata('pinterest/info/advertiser_id', $info['advertiser_id']);
+                $this->_pinterestHelper->logInfo("PinterestToken action - advertiser_id = ".$info['advertiser_id']);
                 $this->_pinterestHelper->saveMetadata('pinterest/info/tag_id', $info['tag_id']);
+                $this->_pinterestHelper->logInfo("PinterestToken action - tag_id = ".$info['tag_id']);
                 $this->_pinterestHelper->saveMetadata('pinterest/info/merchant_id', $info['merchant_id']);
+                $this->_pinterestHelper->logInfo("PinterestToken action - merchant_id = ".$info['merchant_id']);
                 
                 $this->_pinterestHelper->saveEncryptedMetadata('pinterest/info/client_hash', $info['clientHash']);
                 
@@ -139,22 +145,27 @@ class PinterestToken extends Action
 
             // Send metadata to Pinterest API...
             $this->_exchangeMetadata->exchangeMetadata($info);
+            $this->_pinterestHelper->logInfo("PinterestToken action - exchanged metadata");
 
             // flush cache before claiming website
             $this->_pinterestHelper->logInfo("flush cache during connect");
             $this->_pinterestHelper->flushCache();
+            $this->_pinterestHelper->logInfo("cache flush completed");
 
             // Website claiming
             $this->_eventManager->dispatch("pinterest_commereceintegrationextension_website_claiming");
 
-            // Catalog feed creating
-            $this->_eventManager->dispatch("pinterest_commereceintegrationextension_create_catalog_feeds");
+            // Catalog feed - create if numbers of products < 5000 to avoid a time out. Run cron job for larger size
+            $productsCount = $this->_pinterestHelper->getProductCountInAllStores();
+            $this->_pinterestHelper->logInfo("PinterestToken action - products count = ".$productsCount);
+            if ($productsCount < 5000) {
+                $this->_pinterestHelper->logInfo("PinterestToken action - dispatching create catalog feeds event.");
+                $this->_eventManager->dispatch("pinterest_commereceintegrationextension_create_catalog_feeds");
+            }
 
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('pinterestadmin/setup/index');
-
             return $resultRedirect;
-    
         }
     }
 }

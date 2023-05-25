@@ -83,8 +83,10 @@ class Catalog
      */
     public function execute()
     {
+        $this->_pinterestHelper->logInfo("Pinterest catalog cron job started");
         try {
             if ($this->_pinterestHelper->isUserConnected()) {
+                $this->_pinterestHelper->logInfo("Pinterest catalog cron job calling productExporter");
                 $success_count = $this->_productExporter->processExport();
                 $this->_pinterestHelper->logInfo("Pinterest catalog generated {$success_count} feed(s).");
                 $this->_catalogFeedClient->createAllFeeds(false);
@@ -92,5 +94,6 @@ class Catalog
         } catch (Exception $e) {
             $this->_pinterestHelper->logException($e);
         }
+        $this->_pinterestHelper->logInfo("Pinterest catalog cron job completed");
     }
 }

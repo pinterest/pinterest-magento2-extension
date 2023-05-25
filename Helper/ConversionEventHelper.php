@@ -77,10 +77,7 @@ class ConversionEventHelper
         $this->_customerDataHelper = $customerDataHelper;
         $this->_cache = $cache;
         $this->_customCookieManager = $customCookieManager;
-        $this->_disableTag = filter_var(
-            $pinterestHelper->getConfig("disable_tag"),
-            FILTER_VALIDATE_BOOLEAN
-        );
+        $this->_disableTag = !$pinterestHelper->isConversionConfigEnabled();
         $this->_lastEventEnqueued = [];
     }
 
@@ -105,7 +102,7 @@ class ConversionEventHelper
      */
     private function getPinterestCookie()
     {
-        return $this->_customCookieManager->getCookie("_pin_unauth") || "";
+        return $this->_customCookieManager->getCookie("_pin_unauth");
     }
 
     /**
@@ -116,8 +113,10 @@ class ConversionEventHelper
         $user_data = [
             "client_ip_address" => $this->getClientIP(),
             "client_user_agent" => $this->getUserAgent(),
-            "external_id" => [$this->getPinterestCookie()]
         ];
+        if ($this->getPinterestCookie()) {
+            $user_data["external_id"] = [$this->getPinterestCookie()];
+        }
         if ($this->_customerDataHelper->isUserLoggedIn()) {
             if ($this->_customerDataHelper->getEmail()) {
                 $user_data["em"] = [$this->_customerDataHelper->hash($this->_customerDataHelper->getEmail())];

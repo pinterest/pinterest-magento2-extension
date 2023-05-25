@@ -135,6 +135,7 @@ class ProductExporter
     }
 
     /**
+     * The main function called to export products
      *
      * @return void
      * @throws NoSuchEntityException
@@ -153,6 +154,7 @@ class ProductExporter
             $baseUrl = $this->pinterestHelper->getMediaBaseUrlByStoreId($storeId) ?? "";
             $country_locale = $country_locales[$storeId];
             $key = "{$country_locale}\n{$baseUrl}";
+            $this->appLogger->info("Store{$store->getId()} processing started,locale={$country_locale}");
             $content = $this->productsData ?? $this->prepareData($storeId);
             $data[$key] = array_merge($data[$key] ?? [], $content);
             $this->appLogger->info("Store{$store->getId()} processed,locale={$country_locale}");
@@ -181,6 +183,7 @@ class ProductExporter
     }
 
     /**
+     * Returns the output urls for the store to be used in catalog construction
      *
      * @return string
      */
@@ -241,6 +244,7 @@ class ProductExporter
                    ->addUrlRewrite()
                    ->addAttributeToSelect('*');
         $products = $collection->getItems();
+        $this->appLogger->info("Store{$storeId} prepareSimpleProductData ".count($products));
         foreach ($products as $product) {
             $productValues = [
                 "xmlns:g:id" => "v_".$this->getUniqueId($product),
@@ -266,6 +270,9 @@ class ProductExporter
 
             $content["item" . $counter] = $productValues;
             $counter++;
+            if ($counter % 1000 == 0) {
+                $this->appLogger->info("Store{$storeId} prepareSimpleProductData processed ".$counter);
+            }
         }
         return $content;
     }
@@ -294,6 +301,7 @@ class ProductExporter
                             ->addAttributeToSelect('*');
         $configurableProducts = $configurableCollection->getItems();
         
+        $this->appLogger->info("Store{$storeId} prepareConfigurableProductData ".count($configurableProducts));
         foreach ($configurableProducts as $configurableProduct) {
             $productTypeInstance = $configurableProduct->getTypeInstance();
             $productAttributeOptions = $productTypeInstance->getConfigurableAttributesAsArray($configurableProduct);
@@ -489,6 +497,7 @@ class ProductExporter
     }
 
     /**
+     * Get product name given product object
      *
      * @param \Magento\Catalog\Model\Product $product
      *
@@ -500,6 +509,7 @@ class ProductExporter
     }
 
     /**
+     * Get product description given product object
      *
      * @param \Magento\Catalog\Model\Product $product
      *
@@ -511,6 +521,7 @@ class ProductExporter
     }
 
     /**
+     * Get product url given product object or return null
      *
      * @param \Magento\Catalog\Model\Product $product
      *
@@ -526,6 +537,7 @@ class ProductExporter
     }
 
     /**
+     * Get product image given product object
      *
      * @param string $storeId
      * @param \Magento\Catalog\Model\Product $product
@@ -540,6 +552,7 @@ class ProductExporter
     }
 
     /**
+     * Get product price given product object
      *
      * @param \Magento\Catalog\Model\Product $product
      *
@@ -557,6 +570,7 @@ class ProductExporter
     }
 
     /**
+     * Get product sale price given product object
      *
      * @param \Magento\Catalog\Model\Product $product
      *
@@ -574,6 +588,7 @@ class ProductExporter
     }
 
     /**
+     * Get product availablity given product object
      *
      * @param \Magento\Catalog\Model\Product $product
      *

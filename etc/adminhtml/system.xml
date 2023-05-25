@@ -16,10 +16,20 @@
                     <validate>required-entry no-whitespace integer</validate>
                     <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
                 </field>
-                <field id="pinterest_base_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="pinterest_base_url" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
                     <comment>Base URL path for pinterest</comment>
                     <validate>required-entry no-whitespace</validate>
                     <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
+                </field>
+                <field id="pinterest_catalog_enabled" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <comment>Enable or disable pinterest catalog and realtime updates</comment>
+                    <validate>required-entry no-whitespace</validate>
+                    <source_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestCatalogConfigList</source_model>
+                </field>
+                <field id="pinterest_conversion_enabled" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <comment>Enable or disable pinterest conversions</comment>
+                    <validate>required-entry no-whitespace</validate>
+                    <source_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestConversionConfigList</source_model>
                 </field>
             </group>
         </section>
