@@ -57,6 +57,14 @@ The following page explains the coding standards - https://developer.adobe.com/c
 
 The default values are in `/etc/config.xml` . You can modify the file during development locally to suit your needs. To check new changes, remove it temporarily from .gitignore and then add it back so that developer env can modify that file.
 
+## Translations
+
+To translate new strings run the below command from magento root instalation
+
+`bin/magento i18n:collect-phrases --output="app/code/Pinterest/PinterestMagento2Extension/i18n/en_US.csv" app/code/Pinterest/PinterestMagento2Extension/`
+
+https://devdocs.magento.com/guides/v2.3/config-guide/cli/config-cli-subcommands-i18n.html#config-cli-subcommands-xlate-dict
+
 ## Frequently Asked Questions (FAQs)
 Q: Can I use the plugin with a personal Pinterest account?
 A: No, the plugin is designed to work only with Pinterest business accounts.

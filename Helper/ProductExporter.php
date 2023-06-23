@@ -222,6 +222,33 @@ class ProductExporter
     }
 
     /**
+     * Get attribute=value hash to be appended in the product URL
+     *
+     * @param $simpleProduct
+     * @param $configurableProduct
+     * @return string
+     */
+    private function getAttributeHash($simpleProduct, $configurableProduct)
+    {
+        try {
+            $configurableType = $configurableProduct->getTypeInstance();
+            $attributes = $configurableType->getConfigurableAttributesAsArray($configurableProduct);
+            $options = [];
+            foreach ($attributes as $attribute) {
+                $id = $attribute['attribute_id'];
+                if (in_array(strtolower($attribute['frontend_label']), ['size', 'color'])) {
+                    $value = $simpleProduct->getData($attribute['attribute_code']);
+                    $options[$id] = $value;
+                }
+            }
+            $options = http_build_query($options);
+            return $options ? '#' . $options : '';
+        } catch (\Exception $e) {
+            $this->appLogger->error("Error generating attribute hash for product ID = " . $simpleProduct->getId() . $e->getMessage());
+        }
+    }
+
+    /**
      * Return simple product data for feed xml
      *
      * @param string $storeId
@@ -253,7 +280,7 @@ class ProductExporter
                 "description" => $this->getProductDescription($product),
                 "link" => $this->getProductUrl($product),
                 "xmlns:g:image_link" => $this->getProductImageUrl($storeId, $product),
-                "xmlns:g:price" => $this->getProductPrice($product),
+                "xmlns:g:price" => $this->getFormatedRegularProductPrice($product),
                 "xmlns:g:product_type" => $this->getProductCategories($product),
                 "xmlns:g:availability" => $this->getProductAvailability($product),
             ];
@@ -318,46 +345,53 @@ class ProductExporter
             $variableProductsForCurrentConfigurable =
                 $this->configurableProductType->getChildrenIds($configurableProduct->getId());
             foreach ($variableProductsForCurrentConfigurable[0] as $key => $productId) {
-                $product = $this->productLoader->getById($productId);
-
-                // Get variant values from simple product
-                $variantValues = [];
-                foreach ($variantNames as $variantName) {
-                    array_push($variantValues, $this->getConfigurableProductValue($product, $variantName));
+                try {
+                    $product = $this->productLoader->getById($productId);
+    
+                    // Get variant values from simple product
+                    $variantValues = [];
+                    foreach ($variantNames as $variantName) {
+                        array_push($variantValues, $this->getConfigurableProductValue($product, $variantName));
+                    }
+    
+                    $productValues = [
+                        "xmlns:g:id" => $this->getUniqueId($product),
+                        "item_group_id" => $itemGroupId,
+                        "title" => $this->getProductName($product),
+                        "description" => $this->getProductDescription($product),
+                        "link" => $itemLink.$this->getAttributeHash($product, $configurableProduct),
+                        "xmlns:g:image_link" => $this->getProductImageUrl($storeId, $product),
+                        "xmlns:g:price" => $this->getFormatedRegularProductPrice($product),
+                        "xmlns:g:product_type" => $this->getProductCategories($product),
+                        "xmlns:g:availability" => $this->getProductAvailability($product),
+                        "variant_names" => implode(",", $variantNames),
+                        "variant_values" => implode(",", $variantValues),
+                    ];
+                    if ($this->getConfigurableProductValue($product, "color")) {
+                        $productValues["color"] = $this->getConfigurableProductValue($product, "color");
+                    }
+                    if ($this->getConfigurableProductValue($product, "size")) {
+                        $productValues["size"] = $this->getConfigurableProductValue($product, "size");
+                    }
+                    if ($productValues["link"] == null) {
+                        continue;
+                    }
+                    if ($product->getSpecialPrice() != 0 && $product->getSpecialPrice() < $product->getPrice()) {
+                        $productValues["sale_price"] = $this->getProductSalePrice($product);
+                    }
+                    $additionalImages = $this->getAdditionalImages($product);
+                    if ($additionalImages) {
+                        $productValues["additional_image_link"] = $additionalImages;
+                    }
+    
+                    $content["item" . $counter] = $productValues;
+                    $counter++;
+                    if ($counter % 1000 == 0) {
+                        $this->appLogger->info("Store{$storeId} prepareConfigurableProductData processed ".$counter);
+                    }
+                } catch (\Exception $e) {
+                    $this->appLogger->error("Error parsing variable product ID = " . $product->getId() . $e->getMessage());
                 }
-
-                $productValues = [
-                    "xmlns:g:id" => $this->getUniqueId($product),
-                    "item_group_id" => $itemGroupId,
-                    "title" => $this->getProductName($product),
-                    "description" => $this->getProductDescription($product),
-                    "link" => $itemLink,
-                    "xmlns:g:image_link" => $this->getProductImageUrl($storeId, $product),
-                    "xmlns:g:price" => $this->getProductPrice($product),
-                    "xmlns:g:product_type" => $this->getProductCategories($product),
-                    "xmlns:g:availability" => $this->getProductAvailability($product),
-                    "variant_names" => implode(",", $variantNames),
-                    "variant_values" => implode(",", $variantValues),
-                ];
-                if ($this->getConfigurableProductValue($product, "color")) {
-                    $productValues["color"] = $this->getConfigurableProductValue($product, "color");
-                }
-                if ($this->getConfigurableProductValue($product, "size")) {
-                    $productValues["size"] = $this->getConfigurableProductValue($product, "size");
-                }
-                if ($productValues["link"] == null) {
-                    continue;
-                }
-                if ($product->getSpecialPrice() != 0 && $product->getSpecialPrice() < $product->getPrice()) {
-                    $productValues["sale_price"] = $this->getProductSalePrice($product);
-                }
-                $additionalImages = $this->getAdditionalImages($product);
-                if ($additionalImages) {
-                    $productValues["additional_image_link"] = $additionalImages;
-                }
-
-                $content["item" . $counter] = $productValues;
-                $counter++;
             }
         }
         return $content;
@@ -472,7 +506,7 @@ class ProductExporter
      *
      * @return string
      */
-    public function getAdditionalImages($product)
+    private function getAdditionalImages($product)
     {
         $allImages = [];
         $productId = $product->getId();
@@ -559,10 +593,11 @@ class ProductExporter
      * @return string
      * @throws NoSuchEntityException
      */
-    private function getProductPrice($product)
+    private function getFormatedRegularProductPrice($product)
     {
+        $price = $this->pinterestHelper->getProductPrice($product);
         return $this->storeManager->getStore()->getBaseCurrencyCode() . number_format(
-            (float)$product->getPrice(),
+            (float)$price,
             2,
             '.',
             ''

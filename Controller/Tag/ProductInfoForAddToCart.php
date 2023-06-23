@@ -71,22 +71,24 @@ class ProductInfoForAddToCart extends Action
      */
     public function execute()
     {
-        $product_sku = $this->getRequest()->getParam("product_sku", null);
-        if ($product_sku) {
-            $response_data = $this->getProductInfo($product_sku);
-            try {
-                if (count($response_data) > 0) {
-                    $event_id = EventIdGenerator::guidv4();
-                    $response_data["event_id"] = $event_id;
-                    $this->trackAddToCartEvent($event_id, $response_data, $product_sku);
-                    // Send data back to Tag event sender
-                    $result = $this->_resultJsonFactory->create();
-                    $result->setData(array_filter($response_data));
-                    return $result;
+        try {
+            if (!$this->_pinterestHelper->isUserOptedOutOfTracking()) {
+                $product_sku = $this->getRequest()->getParam("product_sku", null);
+                if ($product_sku) {
+                    $response_data = $this->getProductInfo($product_sku);
+                    if (count($response_data) > 0) {
+                        $event_id = EventIdGenerator::guidv4();
+                        $response_data["event_id"] = $event_id;
+                        $this->trackAddToCartEvent($event_id, $response_data, $product_sku);
+                        // Send data back to Tag event sender
+                        $result = $this->_resultJsonFactory->create();
+                        $result->setData(array_filter($response_data));
+                        return $result;
+                    }
                 }
-            } catch (\Exception $e) {
-                $this->_pinterestHelper->logException($e);
             }
+        } catch (\Exception $e) {
+            $this->_pinterestHelper->logException($e);
         }
     }
 

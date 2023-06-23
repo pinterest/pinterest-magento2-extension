@@ -188,7 +188,7 @@ class ConversionEventHelper
      */
     public function processConversionEvent($eventId, $eventName, $customData = [])
     {
-        if ($this->_disableTag) {
+        if ($this->_disableTag || $this->_pinterestHelper->isUserOptedOutOfTracking()) {
             return;
         }
         try {
@@ -245,8 +245,12 @@ class ConversionEventHelper
      */
     public function enqueueEvent($eventData)
     {
+        if (str_contains($this->getUserAgent(), 'Pinterestbot')) {
+            return;
+        }
+
         $meta = json_decode($this->getCacheMetadata(), true);
-        $meta["data"] [] = $eventData;
+        $meta["data"][] = $eventData;
         // If batch processing criteria is met, we post the event and reset the queue
         if (time() - $meta["start_time"] > self::MAX_HOLD_SECONDS || count($meta["data"]) >= self::CACHE_MAX_ITEMS) {
             $this->resetCacheMetadata();
@@ -267,12 +271,9 @@ class ConversionEventHelper
     {
         try {
             $numberOfEvents = count($params["data"]);
-            $this->_pinterestHelper->logInfo("Trying to send {$numberOfEvents} event(s) via conversion API");
             $response = $this->_pinterestHttpClient->post($this->getAPIEndPoint(), $params, $this->getAccessToken());
             if (isset($response->code)) {
                 $this->_pinterestHelper->logError("Failed to send events via conversion API");
-            } else {
-                $this->_pinterestHelper->logInfo("Events sent successfully via conversion API");
             }
         } catch (\Exception $e) {
             $this->_pinterestHelper->logException($e);

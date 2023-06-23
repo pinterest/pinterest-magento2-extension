@@ -106,6 +106,11 @@ class Setup extends Template
         return $this->_pinterestHelper->getMetadataValue("pinterest/info/tag_id");
     }
 
+    public function isUserOptedOutOfTracking()
+    {
+        return $this->_pinterestHelper->isUserOptedOutOfTracking();
+    }
+
     public function scriptConfigBeforeConnect()
     {
         return [
@@ -116,6 +121,7 @@ class Setup extends Template
             "state" => $this->_pinterestHelper->getRandomState(),
             "partnerMetadata" => $this->_pinterestHelper->getPartnerMetadata(),
             "adminhtmlSetupUri" => $this->_pinterestHelper->getUrl(PinterestHelper::ADMINHTML_SETUP_URI),
+            "locale" => $this->_pinterestHelper->getUserLocale()
         ];
     }
     public function scriptConfigAfterConnect()
@@ -129,6 +135,8 @@ class Setup extends Template
             "disconnectURL" => $this->_pinterestHelper->getUrl("pinterestadmin/Setup/Disconnect"),
             "errors" => $this->_pluginErrorHelper->getAllStoredErrors(),
             "partnerMetadata" => $this->_pinterestHelper->getPartnerMetadata(),
+            "clientId" => $this->_pinterestHelper->getClientId(),
+            "locale" => $this->_pinterestHelper->getUserLocale()
         ];
     }
 }

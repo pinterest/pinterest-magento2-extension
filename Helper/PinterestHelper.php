@@ -21,6 +21,7 @@ use Magento\Framework\App\Cache\Manager;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
+use Magento\Cookie\Helper\Cookie;
 
 class PinterestHelper extends AbstractHelper
 {
@@ -93,6 +94,11 @@ class PinterestHelper extends AbstractHelper
     protected $_productFactory;
 
     /**
+     * @var Cookie
+     */
+    protected $_cookie;
+
+    /**
      *
      * @param Context $context
      * @param ObjectManagerInterface $objectManager
@@ -107,6 +113,7 @@ class PinterestHelper extends AbstractHelper
      * @param Session $session
      * @param Manager $cacheManager
      * @param ProductFactory $productFactory
+     * @param Cookie $cookie
      */
     public function __construct(
         Context $context,
@@ -121,7 +128,8 @@ class PinterestHelper extends AbstractHelper
         Cart $cart,
         Session $session,
         Manager $cacheManager,
-        ProductFactory $productFactory
+        ProductFactory $productFactory,
+        Cookie $cookie
     ) {
         parent::__construct($context);
         $this->_objectManager = $objectManager;
@@ -136,6 +144,7 @@ class PinterestHelper extends AbstractHelper
         $this->_session = $session;
         $this->_cacheManager = $cacheManager;
         $this->_productFactory = $productFactory;
+        $this->_cookie = $cookie;
     }
 
     /**
@@ -650,8 +659,8 @@ class PinterestHelper extends AbstractHelper
      */
     public function logAndSaveAPIErrors($response, $dbPath)
     {
-        $code = $response->code;
-        $message =  $response->message;
+        $code = isset($response->code)? $response->code : "n/a";
+        $message = isset($response->message)? $response->message : "n/a";
         $this->_logger->error("Code: ".$code);
         $this->saveMetadata($dbPath."/code", $code);
         $this->_logger->error("Message: ".$message);
@@ -732,5 +741,25 @@ class PinterestHelper extends AbstractHelper
         }
 
         return $price;
+    }
+
+    /**
+     * Check if user has consented too tracking via cookies. Adding helper function for future changes to logic if any
+     *
+     * @return bool
+     */
+    public function isUserOptedOutOfTracking()
+    {
+        return $this->_cookie->isUserNotAllowSaveCookie();
+    }
+
+    /**
+     * Returns the locale of the admin user
+     *
+     * @return string
+     */
+    public function getUserLocale()
+    {
+        return $this->_session->getUser() ? $this->_session->getUser()->getInterfaceLocale() : null;
     }
 }

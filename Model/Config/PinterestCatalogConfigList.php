@@ -13,8 +13,8 @@ class PinterestCatalogConfigList implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
-        ['value' => 'enabled', 'label' => __('Enable catalogs and realtime updates')],
-        ['value' => 'disabled', 'label' => __('Disable catalogs and realtime updates')]
+        ['value' => 'enabled', 'label' => __('Turn on catalog ingestion')],
+        ['value' => 'disabled', 'label' => __('Turn off catalog ingestion')]
         ];
     }
 }

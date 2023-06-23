@@ -19,6 +19,7 @@ use Magento\Catalog\Model\CategoryFactory;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Cache\Manager;
 use Magento\Catalog\Model\ProductFactory;
+use Magento\Cookie\Helper\Cookie;
 
 class PinterestHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -87,6 +88,11 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
      */
     protected $_productFactory;
 
+    /**
+     * @var Cookie
+     */
+    protected $_cookie;
+
     public function setUp() : void
     {
         $this->_context = $this->createMock(Context::class);
@@ -102,6 +108,7 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_session = $this->sessionMock();
         $this->_cacheManager = $this->createMock(Manager::class);
         $this->_productFactory = $this->createMock(ProductFactory::class);
+        $this->_cookie = $this->createMock(Cookie::class);
         
         $this->_pinterestHelper = new PinterestHelper(
             $this->_context,
@@ -116,7 +123,8 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
             $this->_cart,
             $this->_session,
             $this->_cacheManager,
-            $this->_productFactory
+            $this->_productFactory,
+            $this->_cookie
         );
     }
 

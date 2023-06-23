@@ -70,7 +70,10 @@ class CatalogFeedClientTest extends TestCase
         $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode(CatalogFeedClientTest::POST_RESPONSE_200));
         $ret = $this->_catalogFeedClient->createFeed(
             "https://abc.com/media/Pinterest//catalogs/en_US/catalog.xml",
-            []
+            [
+                "location" => "www.pinterest.com",
+                "name" => "testFeedName"
+            ]
         );
         $this->assertTrue($ret);
     }
@@ -84,7 +87,10 @@ class CatalogFeedClientTest extends TestCase
         $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode($response_401));
         $ret = $this->_catalogFeedClient->createFeed(
             "https://abc.com/media/Pinterest/catalogs/en_US/catalog.xml",
-            []
+            [
+                "location" => "www.pinterest.com",
+                "name" => "testFeedName"
+            ]
         );
         $this->assertFalse($ret);
     }
