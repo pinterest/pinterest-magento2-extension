@@ -1,0 +1,12 @@
+"Turn on catalog ingestion","カタログの取得をオンにする"
+"Turn off catalog ingestion","カタログの取得をオフにする"
+"Turn on Pinterest tag and Pinterest API for Conversions","Pinterest タグと Pinterest コンバージョン API をオンにする"
+"Turn off Pinterest tag and Pinterest API for Conversions","Pinterest タグと Pinterest コンバージョン API をオフにする"
+Pinterest,Pinterest
+Setup,Setup
+Configurations,構成
+General,一般
+"Client ID","クライアント ID"
+"Base URL","ベース URL"
+"Catalog Ingestion","カタログの取得"
+"Tag and API for Conversions","コンバージョンのタグと API"

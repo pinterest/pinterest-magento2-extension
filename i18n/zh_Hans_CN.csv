@@ -1,0 +1,12 @@
+"Turn on catalog ingestion","开启目录接入"
+"Turn off catalog ingestion","关闭目录接入"
+"Turn on Pinterest tag and Pinterest API for Conversions","开启 Pinterest 标签和 Pinterest 转化 API"
+"Turn off Pinterest tag and Pinterest API for Conversions","关闭 Pinterest 标签和 Pinterest 转化 API"
+Pinterest,Pinterest
+Setup,设置
+Configurations,配置
+General,一般
+"Client ID","客户 ID"
+"Base URL","基准网址"
+"Catalog Ingestion","目录接入"
+"Tag and API for Conversions","标签和转化 API"

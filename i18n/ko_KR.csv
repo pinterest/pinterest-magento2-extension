@@ -1,0 +1,12 @@
+"Turn on catalog ingestion","카탈로그 수집 켜기"
+"Turn off catalog ingestion","카탈로그 수집 끄기"
+"Turn on Pinterest tag and Pinterest API for Conversions","Pinterest 태그 및 전환수 Pinterest API 켜기"
+"Turn off Pinterest tag and Pinterest API for Conversions","Pinterest 태그 및 전환수 Pinterest API 끄기"
+Pinterest,Pinterest
+Setup,설정
+Configurations,구성
+General,일반
+"Client ID","클라이언트 ID"
+"Base URL","기본 URL"
+"Catalog Ingestion","카탈로그 수집"
+"Tag and API for Conversions","태그 및 전환수 API"

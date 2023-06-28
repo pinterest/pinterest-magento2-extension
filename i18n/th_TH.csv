@@ -1,0 +1,12 @@
+"Turn on catalog ingestion","เปิดใช้การส่งแคตตาล็อก"
+"Turn off catalog ingestion","ปิดการส่งแคตตาล็อก"
+"Turn on Pinterest tag and Pinterest API for Conversions","เปิดแท็ก Pinterest และ Pinterest API สําหรับคอนเวอร์ชัน"
+"Turn off Pinterest tag and Pinterest API for Conversions","ปิดแท็ก Pinterest และ Pinterest API สําหรับคอนเวอร์ชัน"
+Pinterest,Pinterest
+Setup,Setup
+Configurations,ตั้ง ค่า คอน ฟิก
+General,ทั่วไป
+"Client ID","ID ไคลเอ็นต์"
+"Base URL","URL พื้นฐาน"
+"Catalog Ingestion","การนําแคตตาล็อก"
+"Tag and API for Conversions","แท็กและ API สําหรับคอนเวอร์ชัน"

@@ -65,6 +65,14 @@ To translate new strings run the below command from magento root instalation
 
 https://devdocs.magento.com/guides/v2.3/config-guide/cli/config-cli-subcommands-i18n.html#config-cli-subcommands-xlate-dict
 
+To deploy a new language you can follow the following format
+
+`php bin/magento setup:static-content:deploy es_MX -f`
+
+To get the list of locales use the following command
+
+`php bin/magento info:language:list`
+
 ## Frequently Asked Questions (FAQs)
 Q: Can I use the plugin with a personal Pinterest account?
 A: No, the plugin is designed to work only with Pinterest business accounts.

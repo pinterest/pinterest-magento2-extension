@@ -264,6 +264,7 @@ class ProductExporter
 
         // use type_id to filter out variants items here. variants will be through a different function.
         $collection->setStoreId($storeId)
+                   ->addStoreFilter($storeId)
                    ->addAttributeToFilter('status', Status::STATUS_ENABLED)
                    ->addAttributeToFilter('type_id', ProductType::TYPE_SIMPLE)
                    ->addFieldToFilter([['attribute'=>'visibility',
@@ -320,6 +321,7 @@ class ProductExporter
 
         // Get configurable products
         $configurableCollection->setStoreId($storeId)
+                            ->addStoreFilter($storeId)
                             ->addAttributeToFilter('status', Status::STATUS_ENABLED)
                             ->addAttributeToFilter('type_id', 'configurable')
                             ->addFieldToFilter([['attribute'=>'visibility',

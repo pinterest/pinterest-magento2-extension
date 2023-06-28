@@ -273,7 +273,8 @@ class ConversionEventHelper
             $numberOfEvents = count($params["data"]);
             $response = $this->_pinterestHttpClient->post($this->getAPIEndPoint(), $params, $this->getAccessToken());
             if (isset($response->code)) {
-                $this->_pinterestHelper->logError("Failed to send events via conversion API");
+                $message = isset($response->message) ? $response->message : "n/a";
+                $this->_pinterestHelper->logError("Failed to send events via conversion API with {$response->code}:{$message}");
             }
         } catch (\Exception $e) {
             $this->_pinterestHelper->logException($e);
