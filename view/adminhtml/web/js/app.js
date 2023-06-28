@@ -46,6 +46,7 @@ define(['jquery', 'domReady!'], function($){
                                 merchant_id: config.merchantId,
                                 tag_id: config.tagId,
                                 partner_metadata: config.partnerMetadata,
+                                client_id: config.clientId,
                             }
                         }, config.pinterestBaseUrl);
                         document.getElementById('pinterest-iframe').contentWindow.postMessage({

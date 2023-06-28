@@ -3,38 +3,45 @@
     <!-- Pinterest Add to Cart Tag Code -->
     <script>
         require([
-            "jquery"
+            "jquery",
+            "jquery/jquery.cookie"
         ], function ($) {
-            function trackAddToCart(eventId, value, currency, line_items) {
-                pintrk("track", "AddToCart", {
-                    event_id: eventId,
-                    value: value,
-                    currency: currency,
-                    line_items: line_items
-                });
-            }
-            
-            var product_info_url = "<?= /* @noEscape */ $block->getProductInfoUrl() ?>";
-
-            $(document).on("ajax:addToCart", function (event, data) {
-                if (data && data.sku && product_info_url) {
-                    $.ajax({
-                        url: product_info_url,
-                        data: {
-                            product_sku: data.sku
-                        },
-                        type: "post",
-                        dataType: "json",
-                        success: function (res) {
-                            trackAddToCart(
-                                res.event_id,
-                                res.value,
-                                res.currency,
-                                res.line_items,
-                            );
-                        }
+            $(document).ready(function () {
+                function trackAddToCart(eventId, value, currency, line_items) {
+                    pintrk("track", "AddToCart", {
+                        event_id: eventId,
+                        value: value,
+                        currency: currency,
+                        line_items: line_items
                     });
-                }
+                }                
+                var product_info_url = "<?= /* @noEscape */ $block->getProductInfoUrl() ?>";
+                $(document).on("ajax:addToCart", function (event, data) {
+                    if (data && data.sku && product_info_url) {
+                        $.ajax({
+                            url: product_info_url,
+                            data: {
+                                product_sku: data.sku
+                            },
+                            type: "post",
+                            dataType: "json",
+                            success: function (res) {
+                                if (res.event_id) {
+                                    // Find the product if user is allowed to track
+                                    // setconsent to true since backend checked the value
+                                    // this helps cache this file's output.
+                                    pintrk('setconsent', 'true');
+                                    trackAddToCart(
+                                        res.event_id,
+                                        res.value,
+                                        res.currency,
+                                        res.line_items,
+                                    );
+                                }
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>

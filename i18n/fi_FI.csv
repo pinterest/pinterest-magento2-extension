@@ -1,0 +1,12 @@
+"Turn on catalog ingestion","Ota luettelon käsittely käyttöön"
+"Turn off catalog ingestion","Poista luettelon käsittely käytöstä"
+"Turn on Pinterest tag and Pinterest API for Conversions","Pinterest-tunnisteen ja Pinterest-tulos-API:n ottaminen käyttöön"
+"Turn off Pinterest tag and Pinterest API for Conversions","Pinterest-tunnisteen ja Pinterest-tulos-API:n poistaminen käytöstä"
+Pinterest,Pinterest
+Setup,Setup
+Configurations,Kokoonpanoissa
+General,Yleiset
+"Client ID","Asiakkaan tunnus"
+"Base URL","Perus-URL"
+"Catalog Ingestion","Luettelon käsittely"
+"Tag and API for Conversions","Tulosten tunniste ja API"

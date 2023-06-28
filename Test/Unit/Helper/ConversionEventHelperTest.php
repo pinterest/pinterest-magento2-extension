@@ -176,6 +176,24 @@ class ConversionEventHelperTest extends TestCase
         $this->_conversionEventHelper->enqueueEvent($payload);
     }
 
+    public function testEventDataisNotQueuedIfBot()
+    {
+        $mock_request = $this->createMock(Http::class);
+        $mock_request->method("getServer")->willReturn("Pinterestbot");
+        $conversionEventHelper = new ConversionEventHelper(
+            $mock_request,
+            $this->_pinterestHttpClient,
+            $this->_pinterestHelper,
+            $this->_customerDataHelper,
+            $this->_cache,
+            $this->_customCookieManager
+        );
+        $this->_pinterestHttpClient->expects($this->never())->method("post");
+        $this->_cache->expects($this->never())->method("save");
+        $payload = $conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", []);
+        $conversionEventHelper->enqueueEvent($payload);
+    }
+
     public function testEventDataisFlushedIfMoreThan60seconds()
     {
         $this->_pinterestHttpClient->expects($this->once())->method("post");

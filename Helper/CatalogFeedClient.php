@@ -9,6 +9,12 @@ use Pinterest\PinterestMagento2Extension\Helper\SavedFile;
 
 class CatalogFeedClient
 {
+    public const ADS_SUPPORTED_COUNTRIES = [
+        "AR", "AU", "AT", "BE", "BR", "CA", "CL", "CY", "DK", "FI", "FR", "DE", "GR", "HU", "IE",
+        "IT", "JP", "LU", "MT", "MX", "NL", "NZ", "NO", "PL", "PT", "RO", "SK", "ES", "SE", "CH",
+        "GB", "US", "CO", "CZ"
+    ];
+
     /**
      * @var PinterestHttpClient
      */
@@ -71,6 +77,9 @@ class CatalogFeedClient
 
         $existingPinterestFeeds = $this->getAllFeeds();
 
+        $this->_pinterestHelper->logInfo("Country locales to register feeds for: ".json_encode($country_locales));
+        $this->_pinterestHelper->logInfo("Existing feeds saved to magento metadata: ".json_encode($existingFeedsSavedToMetadata));
+        
         foreach ($country_locales as $storeId => $country_locale) {
             $baseUrl = $this->_pinterestHelper->getMediaBaseUrlByStoreId($storeId);
             $pair = explode("\n", $country_locale);
@@ -86,6 +95,11 @@ class CatalogFeedClient
 
             $key = $baseUrl.$locale;
             if (array_key_exists($key, $created)) {
+                continue;
+            }
+
+            if (!in_array($country, self::ADS_SUPPORTED_COUNTRIES)) {
+                $this->_pinterestHelper->logInfo("Country {$country} is not supported for ads on Pinterest. Skipping");
                 continue;
             }
 
@@ -258,8 +272,11 @@ class CatalogFeedClient
      */
     public function createFeed($url, $data)
     {
+        // return $data;
         try {
+            $feedname = $data['name'];
             $this->_pinterestHelper->logInfo("Creating catalog feed on Pinterest");
+            $this->_pinterestHelper->resetApiErrorState("errors/catalog/create/{$feedname}");
             $response = $this->_pinterestHttpClient->post($this->getFeedAPI(), $data, $this->getAccessToken());
             if (isset($response->code)) {
                 $message = isset($response->message)? $response->message : "n/a";
@@ -267,7 +284,7 @@ class CatalogFeedClient
                 $this->_pinterestHelper->logError(
                     "Catalog feed creation failed for {$url}. HTTP {$status}: {$message}"
                 );
-                $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/catalog/create");
+                $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/catalog/create/{$feedname}");
             } else {
                 // Expect id to always be present in the response payload but adding as a defensive check
                 if (!isset($response->id)) {
@@ -275,7 +292,7 @@ class CatalogFeedClient
                     return false;
                 }
                 $this->feedsRegisteredOnPinterest[] = $response->id;
-                $this->_pinterestHelper->logInfo("Catalog feed creation successful");
+                $this->_pinterestHelper->logInfo("Catalog feed creation successful {$response->id}");
                 return true;
             }
         } catch (Exception $e) {

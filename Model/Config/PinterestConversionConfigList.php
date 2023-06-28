@@ -13,8 +13,8 @@ class PinterestConversionConfigList implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
-        ['value' => 'enabled', 'label' => __('Enable Client Tag and Conversion API')],
-        ['value' => 'disabled', 'label' => __('Disable Client Tag and Conversion API')]
+        ['value' => 'enabled', 'label' => __('Turn on Pinterest tag and Pinterest API for Conversions')],
+        ['value' => 'disabled', 'label' => __('Turn off Pinterest tag and Pinterest API for Conversions')]
         ];
     }
 }

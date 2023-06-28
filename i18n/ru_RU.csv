@@ -1,0 +1,12 @@
+"Turn on catalog ingestion","Включить прием данных из каталога"
+"Turn off catalog ingestion","Отключение приема данных из каталога"
+"Turn on Pinterest tag and Pinterest API for Conversions","Включение тега Pinterest и API Pinterest для конверсий"
+"Turn off Pinterest tag and Pinterest API for Conversions","Отключение тега Pinterest и API Pinterest для конверсий"
+Pinterest,Pinterest
+Setup,Setup
+Configurations,Конфигурации
+General,Общие
+"Client ID","Идентификатор клиента"
+"Base URL","Основной URL-адрес"
+"Catalog Ingestion","Прием данных из каталога"
+"Tag and API for Conversions","Тег и API для конверсий"

@@ -1,0 +1,16 @@
+"Turn on catalog ingestion","Turn on catalog ingestion"
+"Turn off catalog ingestion","Turn off catalog ingestion"
+"Turn on Pinterest tag and Pinterest API for Conversions","Turn on Pinterest tag and Pinterest API for Conversions"
+"Turn off Pinterest tag and Pinterest API for Conversions","Turn off Pinterest tag and Pinterest API for Conversions"
+Pinterest,Pinterest
+Setup,Setup
+Configurations,Configurations
+General,General
+"Client ID","Client ID"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest."
+"Base URL","Base URL"
+"Base URL path for Pinterest.","Base URL path for Pinterest."
+"Catalog Ingestion","Catalog Ingestion"
+"Turn on or off catalog ingestion to Pinterest","Turn on or off catalog ingestion to Pinterest"
+"Tag and API for Conversions","Tag and API for Conversions"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Turn on or off Pinterest tag and Pinterest API for Conversions"
