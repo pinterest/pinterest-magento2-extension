@@ -7,7 +7,6 @@
                 name="pinterest.header"
                 template="Pinterest_PinterestMagento2Extension::meta.phtml"
                 before="-"
-                cacheable="false"
             />
         </referenceBlock>
     </body>
