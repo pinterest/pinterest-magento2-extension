@@ -188,13 +188,9 @@ class ConversionEventHelper
      */
     public function processConversionEvent($eventId, $eventName, $customData = [])
     {
-        // Comment out info logs in prod. Only for debugging
-        // $this->_pinterestHelper->logInfo("processConversionEvent ".$eventName);
         if ($this->_disableTag || $this->_pinterestHelper->isUserOptedOutOfTracking()) {
-            // $this->_pinterestHelper->logInfo("skipped processConversionEvent");
             return;
         }
-        // $this->_pinterestHelper->logInfo("process processConversionEvent");
         try {
             $eventData = $this->createEventPayload($eventId, $eventName, $customData);
             $this->_lastEventEnqueued = $eventData;

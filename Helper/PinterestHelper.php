@@ -22,9 +22,6 @@ use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Cookie\Helper\Cookie;
-use Magento\Store\Model\ScopeInterface;
-use Pinterest\PinterestMagento2Extension\Model\Config\PinterestGDPROptions;
-use Magento\Framework\Stdlib\CookieManagerInterface;
 
 class PinterestHelper extends AbstractHelper
 {
@@ -32,9 +29,6 @@ class PinterestHelper extends AbstractHelper
     public const PINTEREST_BASE_URL_PATH='PinterestConfig/general/pinterest_base_url';
     public const PINTEREST_CATALOG_ENABLED_PATH='PinterestConfig/general/pinterest_catalog_enabled';
     public const PINTEREST_CONVERSION_ENABLED_PATH='PinterestConfig/general/pinterest_conversion_enabled';
-    public const PINTEREST_GDPR_COOKIE_NAME='PinterestConfig/gdpr/gdpr_cookie_name';
-    public const PINTEREST_GDPR_OPTION='PinterestConfig/gdpr/option';
-    public const PINTEREST_GDPR_ENABLED='PinterestConfig/gdpr/enabled';
     public const REDIRECT_URI='pinterestadmin/Setup/PinterestToken';
     public const ADMINHTML_SETUP_URI='pinterestadmin/Setup/Index';
     public const MODULE_NAME='Pinterest_PinterestMagento2Extension';
@@ -105,10 +99,6 @@ class PinterestHelper extends AbstractHelper
     protected $_cookie;
 
     /**
-     * @var CookieManagerInterface
-     */
-    protected $_cookieManager;
-    /**
      *
      * @param Context $context
      * @param ObjectManagerInterface $objectManager
@@ -139,8 +129,7 @@ class PinterestHelper extends AbstractHelper
         Session $session,
         Manager $cacheManager,
         ProductFactory $productFactory,
-        Cookie $cookie,
-        CookieManagerInterface $cookieManager,
+        Cookie $cookie
     ) {
         parent::__construct($context);
         $this->_objectManager = $objectManager;
@@ -156,7 +145,6 @@ class PinterestHelper extends AbstractHelper
         $this->_cacheManager = $cacheManager;
         $this->_productFactory = $productFactory;
         $this->_cookie = $cookie;
-        $this->_cookieManager = $cookieManager;
     }
 
     /**
@@ -201,44 +189,6 @@ class PinterestHelper extends AbstractHelper
         return strcmp($this->scopeConfig->getValue(self::PINTEREST_CONVERSION_ENABLED_PATH), "enabled") == 0;
     }
 
-    /**
-     * @param null $store_id
-     * @return int
-     */
-    public function getGdprOption($store_id = null)
-    {
-        return (int) $this->scopeConfig->getValue(
-            self::PINTEREST_GDPR_OPTION,
-            ScopeInterface::SCOPE_STORE,
-            $store_id
-        );
-    }
-
-    /**
-     * @param null $store_id
-     * @return string
-     */
-    public function getGDPRCookieName($store_id = null)
-    {
-        return $this->scopeConfig->getValue(
-            self::PINTEREST_GDPR_COOKIE_NAME,
-            ScopeInterface::SCOPE_STORE,
-            $store_id
-        );
-    }
-
-    /**
-     * @param null $store_id
-     * @return bool
-     */
-    public function isGdprEnabled($store_id = null)
-    {
-        return $this->scopeConfig->getValue(
-            self::PINTEREST_GDPR_ENABLED,
-            ScopeInterface::SCOPE_STORE,
-            $store_id
-        ) == 1;
-    }
     /**
      * Return admin email
      *
@@ -794,42 +744,13 @@ class PinterestHelper extends AbstractHelper
     }
 
     /**
-     * Check if user has consented to tracking via cookies.
+     * Check if user has consented too tracking via cookies. Adding helper function for future changes to logic if any
      *
      * @return bool
      */
     public function isUserOptedOutOfTracking()
     {
-        if (!$this->isGdprEnabled()) {
-            return false;
-        } elseif ($this->isCookieRestrictionModeEnabled() && $this->getGdprOption() == PinterestGDPROptions::USE_COOKIE_RESTRICTION_MODE) {
-            return $this->_cookie->isUserNotAllowSaveCookie();
-        } elseif ($this->getGdprOption() == PinterestGDPROptions::IF_COOKIE_NOT_EXIST) {
-            // Allowed to track if cookie value is not set
-            return $this->_cookieManager->getCookie($self->getGDPRCookieName(), null) != null;
-        }
-        return false;
-    }
-
-    /**
-     * Check if cookie restriction mode is enabled
-     *
-     * @return bool
-     */
-    public function isCookieRestrictionModeEnabled()
-    {
-        return $this->_cookie->isCookieRestrictionModeEnabled();
-    }
-
-    /**
-     * Return current website id.
-     *
-     * @return int
-     * @throws LocalizedException
-     */
-    public function getCurrentWebsiteId()
-    {
-        return $this->_storeManager->getWebsite()->getId();
+        return $this->_cookie->isUserNotAllowSaveCookie();
     }
 
     /**
