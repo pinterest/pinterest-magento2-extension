@@ -1,23 +1,47 @@
-<?php /* @var Pinterest\PinterestMagento2Extension\Block\Tag\PageVisit $block */ ?>
+<?php /* @var Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup $block */ ?>
 <?php if ($block->isTagEnabled()) {
-    $eventId = Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator::guidv4();
     $productDetails = $block->getProductDetails();
     $currency = $block->getCurrency();
-    $block->trackPageVisitEvent($eventId, $productDetails, $currency);
     ?>
     <!-- Pinterest Page Visit Tag Code -->
     <script>
-        pintrk('track', 'pagevisit', {
-            event_id: "<?= $eventId ?>",
-            line_items: [{
-                product_id: "<?= $productDetails["product_id"]  ?>",
-                product_price: <?= $productDetails["product_price"] ?>,
-                product_name: "<?= $productDetails["product_name"] ?>",
-                product_quantity: 1,
-                product_category: <?= json_encode($productDetails["product_category"]) ?>
-            }],
-            order_quantity: 0,
-            currency: "<?= $currency ?>"
+        require([
+            "jquery",
+            "jquery/jquery.cookie"
+        ], function ($) {
+            var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
+            $(document).ready(function () {
+                const productData = {
+                    product_id: "<?= $productDetails["product_id"]  ?>",
+                    product_price: <?= $productDetails["product_price"] ?>,
+                    product_name: "<?= $productDetails["product_name"] ?>",
+                    product_quantity: 1,
+                    product_category: <?= json_encode($productDetails["product_category"]) ?>
+                }
+                $.ajax({
+                    url: conversionEventUrl,
+                    data: {
+                        event_name: 'page_visit',
+                        data: {
+                            productData,
+                            order_quantity: 0,
+                            currency: "<?= $currency ?>"
+                        }
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.event_id) {
+                            pintrk('track', 'pagevisit', {
+                                event_id: res.event_id,
+                                line_items: [productData],
+                                order_quantity: 0,
+                                currency: "<?= $currency ?>"
+                            });
+                        }
+                    }
+                });
+            });
         });
     </script>
     <!-- End of Pinterest Page Visit Tag Code -->

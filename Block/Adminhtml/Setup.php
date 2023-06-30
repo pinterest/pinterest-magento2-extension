@@ -9,6 +9,8 @@ use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
+use Pinterest\PinterestMagento2Extension\Model\Config\PinterestGDPROptions;
+use Magento\Cookie\Helper\Cookie;
 
 class Setup extends Template
 {
@@ -106,9 +108,46 @@ class Setup extends Template
         return $this->_pinterestHelper->getMetadataValue("pinterest/info/tag_id");
     }
 
-    public function isUserOptedOutOfTracking()
+    public function isCookieRestrictionModeEnabled()
     {
-        return $this->_pinterestHelper->isUserOptedOutOfTracking();
+        return $this->_pinterestHelper->isCookieRestrictionModeEnabled();
+    }
+
+    public function getCurrentWebsiteId()
+    {
+        return $this->_pinterestHelper->getCurrentWebsiteId();
+    }
+
+    /**
+     * @param null $store_id
+     * @return int
+     */
+    public function getGdprOption($store_id = null)
+    {
+        return $this->_pinterestHelper->getGdprOption($store_id);
+    }
+
+    /**
+     * @param null $store_id
+     * @return string
+     */
+    public function getGDPRCookieName($store_id = null)
+    {
+        if ($this->_pinterestHelper->getGdprOption($store_id) == PinterestGDPROptions::USE_COOKIE_RESTRICTION_MODE) {
+            return Cookie::IS_USER_ALLOWED_SAVE_COOKIE;
+        } else {
+            return $this->_pinterestHelper->getGDPRCookieName($store_id) ?
+                $this->_pinterestHelper->getGDPRCookieName($store_id) : Cookie::IS_USER_ALLOWED_SAVE_COOKIE;
+        }
+    }
+
+    /**
+     * @param null $store_id
+     * @return int
+     */
+    public function isGdprEnabled($store_id = null)
+    {
+        return (int) $this->_pinterestHelper->isGdprEnabled($store_id);
     }
 
     public function scriptConfigBeforeConnect()
@@ -138,5 +177,16 @@ class Setup extends Template
             "clientId" => $this->_pinterestHelper->getClientId(),
             "locale" => $this->_pinterestHelper->getUserLocale()
         ];
+    }
+
+    /**
+     * Returns axios url for conversion event tracker
+     *
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getConversionEventUrl()
+    {
+        return sprintf("%spin/Tag/ConversionEvent", $this->_pinterestHelper->getBaseUrl());
     }
 }

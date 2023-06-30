@@ -1,15 +1,38 @@
 <?php /* @var Pinterest\PinterestMagento2Extension\Block\Tag\Search $block */ ?>
 <?php if ($block->isTagEnabled()) {
-    $eventId = Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator::guidv4();
     $search_query = $block->getSearchQuery();
-    $block->trackSearchEvent($eventId, $search_query);
     ?>
     <!-- Pinterest Tag Search Code -->
     <script>
-        pintrk('track', 'search', {
-            event_id: "<?= $eventId ?>",
-            search_query: "<?= $search_query ?>"
+        require([
+            "jquery",
+            "jquery/jquery.cookie"
+        ], function ($) {
+            var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
+            $(document).ready(function () {
+                const search_query = "<?= $search_query ?>"
+                $.ajax({
+                    url: conversionEventUrl,
+                    data: {
+                        event_name: 'search',
+                        data: {
+                            search_query
+                        }
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.event_id) {
+                            pintrk('track', 'search', {
+                                event_id: res.event_id,
+                                search_query
+                            });
+                        }
+                    }
+                });
+            });
         });
+
     </script>
     <!-- End of Pinterest Tag Search Code -->
 <?php } ?>
