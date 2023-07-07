@@ -30,6 +30,10 @@ class RefreshTokens
         $this->_pinterestHelper = $pinterestHelper;
         $this->_tokensHelper = $tokensHelper;
     }
+    
+    /**
+     * Execute cron job
+     */
     public function execute()
     {
         $this->_pinterestHelper->logInfo("Pinterest token refresh cron job started");

@@ -702,6 +702,7 @@ class PinterestHelper extends AbstractHelper
 
     /**
      * Log the response code and save the code and message to the database
+     *
      * TO BE DELETED
      *
      * @param mixed $response - API response
@@ -719,6 +720,7 @@ class PinterestHelper extends AbstractHelper
 
     /**
      * Reset the API errors states for a given DB path
+     *
      * TO BE DELETED
      *
      * @param string $dbPath

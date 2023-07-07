@@ -35,6 +35,11 @@
                     <validate>required-entry no-whitespace</validate>
                     <source_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestConversionConfigList</source_model>
                 </field>
+                <field id="pinterest_regenerate_feeds" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Catalog Sync</label>
+                    <comment>Manually run catalog creation and feed registration</comment>
+                    <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\RegenerateCatalogFeeds</frontend_model>
+                </field>
             </group>
             <group id="gdpr" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Data Protection Regulation (GDPR)</label>
