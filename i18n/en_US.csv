@@ -1,9 +1,13 @@
+"Regenerate Catalog","Regenerate Catalog"
 "Turn on catalog ingestion","Turn on catalog ingestion"
 "Turn off catalog ingestion","Turn off catalog ingestion"
 "Turn on Pinterest tag and Pinterest API for Conversions","Turn on Pinterest tag and Pinterest API for Conversions"
 "Turn off Pinterest tag and Pinterest API for Conversions","Turn off Pinterest tag and Pinterest API for Conversions"
 "Use Magento Cookie Restriction Mode","Use Magento Cookie Restriction Mode"
 "Enable Tracking if Cookie Exists","Enable Tracking if Cookie Exists"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","There was an issue regenerating your catalog. Please refresh the page or trying again later."
+Success,Success
+"You must be logged into Pinterest to access this setting","You must be logged into Pinterest to access this setting"
 Pinterest,Pinterest
 Setup,Setup
 Configurations,Configurations
@@ -16,6 +20,8 @@ General,General
 "Turn on or off catalog ingestion to Pinterest","Turn on or off catalog ingestion to Pinterest"
 "Tag and API for Conversions","Tag and API for Conversions"
 "Turn on or off Pinterest tag and Pinterest API for Conversions","Turn on or off Pinterest tag and Pinterest API for Conversions"
+"Catalog Sync","Catalog Sync"
+"Manually run catalog creation and feed registration","Manually run catalog creation and feed registration"
 "General Data Protection Regulation (GDPR)","General Data Protection Regulation (GDPR)"
 "Enable GDPR","Enable GDPR"
 Options,Options

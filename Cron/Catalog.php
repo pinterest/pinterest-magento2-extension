@@ -84,16 +84,25 @@ class Catalog
     public function execute()
     {
         $this->_pinterestHelper->logInfo("Pinterest catalog cron job started");
+        $response = [];
         try {
             if ($this->_pinterestHelper->isUserConnected()) {
+                $response['user_logged_out'] = false;
                 $this->_pinterestHelper->logInfo("Pinterest catalog cron job calling productExporter");
                 $success_count = $this->_productExporter->processExport();
                 $this->_pinterestHelper->logInfo("Pinterest catalog generated {$success_count} feed(s).");
                 $this->_catalogFeedClient->createAllFeeds(false);
+                $response['success'] = true;
+            } else {
+                $this->_pinterestHelper->logInfo("Pinterest user is not connected");
+                $response['success'] = false;
+                $response['user_logged_out'] = true;
             }
         } catch (Exception $e) {
             $this->_pinterestHelper->logException($e);
+            $response['success'] = false;
         }
         $this->_pinterestHelper->logInfo("Pinterest catalog cron job completed");
+        return $response;
     }
 }
