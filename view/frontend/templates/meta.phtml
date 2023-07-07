@@ -28,11 +28,15 @@
                 if (!config.isGdprEnabled) {
                     return true;
                 } else if (config.isCookieRestrictionModeEnabled && config.gdprOption === 1) {
-                    gdprCookie = unescape(getCookie(config.cookieName));
-                    if (gdprCookie !== null) {
-                        gdprCookieObj = JSON.parse(gdprCookie);
-                        return gdprCookieObj[config.currentWebsite] === 1;
+                    const cookieValue = getCookie(config.cookieName);
+                    if (cookieValue) {
+                        gdprCookie = unescape(cookieValue);
+                        if (gdprCookie) {
+                            gdprCookieObj = JSON.parse(gdprCookie);
+                            return gdprCookieObj[config.currentWebsite] === 1;
+                        }
                     }
+                    return false;
                 } else if (config.gdprOption === 2) {
                     return getCookie(config.cookieName) === undefined || getCookie(config.cookieName) === null;
                 }
