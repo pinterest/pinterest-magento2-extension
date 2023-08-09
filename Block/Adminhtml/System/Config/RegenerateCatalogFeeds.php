@@ -4,6 +4,9 @@ namespace Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config;
 use Magento\Backend\Block\Widget\Button;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 class RegenerateCatalogFeeds extends Field
 {
@@ -11,6 +14,25 @@ class RegenerateCatalogFeeds extends Field
      * @var string
      */
     protected $_template = 'Pinterest_PinterestMagento2Extension::regenerate_feed.phtml';
+
+    /**
+     * @var PinterestHelper
+     */
+    protected $_pinterestHelper;
+
+    /**
+     * @param Context $context
+     * @param PinterestHelper $pinterestHelper
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        PinterestHelper $pinterestHelper,
+        array $data = []
+    ) {
+        $this->_pinterestHelper = $pinterestHelper;
+        parent::__construct($context, $data);
+    }
 
     /**
      * Remove scope label
@@ -21,7 +43,10 @@ class RegenerateCatalogFeeds extends Field
     public function render(AbstractElement $element)
     {
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
-        return parent::render($element);
+        if ($this->_pinterestHelper->isCatalogAndRealtimeUpdatesEnabled()) {
+            return parent::render($element);
+        }
+        return null;
     }
 
     /**

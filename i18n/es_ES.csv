@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Activar el procesamiento del catálogo"
+"Regenerate Catalog","Volver a generar catálogo"
+"Turn on catalog ingestion","Activar el procesamiento de catálogos"
 "Turn off catalog ingestion","Desactivar el procesamiento de catálogos"
-"Turn on Pinterest tag and Pinterest API for Conversions","Activa la etiqueta de Pinterest y la API de Pinterest para conversiones"
+"Turn on Pinterest tag and Pinterest API for Conversions","Activar la etiqueta de Pinterest y la API de Pinterest para conversiones"
 "Turn off Pinterest tag and Pinterest API for Conversions","Desactivar la etiqueta de Pinterest y la API de Pinterest para conversiones"
+"Use Magento Cookie Restriction Mode","Usar el modo de restricción de cookies de Magento"
+"Enable Tracking if Cookie Exists","Habilitar el seguimiento si hay una cookie"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Hubo un problema al volver a generar tu catálogo. Actualiza la página e inténtalo de nuevo."
+Success,¡Conseguido!
+"You must be logged into Pinterest to access this setting","Debes haber iniciado sesión en Pinterest para acceder a esta configuración"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Configuración
 Configurations,Configuraciones
 General,General
 "Client ID","ID de cliente"
-"Base URL","Base URL"
-"Catalog Ingestion","Procesamiento de catálogo"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID de cliente para Pinterest. Esto se utiliza para identificar a los clientes de Adobe Commerce y Magento en Pinterest."
+"Base URL","URL base"
+"Base URL path for Pinterest.","Ruta de URL base para Pinterest."
+"Catalog Ingestion","Procesamiento de catálogos"
+"Turn on or off catalog ingestion to Pinterest","Activar o desactivar el procesamiento de catálogos en Pinterest"
 "Tag and API for Conversions","Etiqueta y API para conversiones"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Desactivar la etiqueta de Pinterest y la API de Pinterest para conversiones"
+"Catalog Sync","Sincronización de catálogo"
+"Manually run catalog creation and feed registration","Ejecutar manualmente la creación de catálogos y el registro de feed"
+"General Data Protection Regulation (GDPR)","Reglamento general de protección de datos (RGPD)"
+"Enable GDPR","Activar el RGPD"
+Options,Opciones
+"Cookie Name","Nombre de la cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","El seguimiento se controla en Tiendas > Configuración > General > Web > Configuración de cookies predeterminada > Modo de restricción de cookies"

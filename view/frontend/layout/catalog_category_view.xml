@@ -2,7 +2,7 @@
 <page layout="2columns-left" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="content">
+        <referenceBlock name="before.body.end">
             <block class="Pinterest\PinterestMagento2Extension\Block\Tag\AddToCart"
                    name="pinterest.extension.add_to_cart"
                    template="Pinterest_PinterestMagento2Extension::add_to_cart.phtml" />

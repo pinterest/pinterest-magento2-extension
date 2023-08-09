@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Ativar a ingestão de catálogo"
+"Regenerate Catalog","Gerar catálogo novamente"
+"Turn on catalog ingestion","Ativar a ingestão do catálogo"
 "Turn off catalog ingestion","Desativar a ingestão do catálogo"
-"Turn on Pinterest tag and Pinterest API for Conversions","Ative a tag do Pinterest e a API do Pinterest para conversões"
+"Turn on Pinterest tag and Pinterest API for Conversions","Ativar a tag do Pinterest e a API do Pinterest para conversões"
 "Turn off Pinterest tag and Pinterest API for Conversions","Desativar a tag do Pinterest e a API do Pinterest para conversões"
+"Use Magento Cookie Restriction Mode","Usar o modo de restrição de cookies do Magento"
+"Enable Tracking if Cookie Exists","Habilitar o rastreamento se existir um cookie"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Ocorreu um problema ao gerar seu catálogo novamente. Atualize a página ou tente mais tarde."
+Success,Sucesso
+"You must be logged into Pinterest to access this setting","Você precisa fazer login no Pinterest para acessar essa configuração"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Configurar
 Configurations,Configurações
 General,Geral
 "Client ID","ID do cliente"
-"Base URL","Base URL"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID do cliente do Pinterest. Usado para identificar clientes do Adobe Commerce/Magento no Pinterest."
+"Base URL","URL de base"
+"Base URL path for Pinterest.","Caminho do URL de base para o Pinterest."
 "Catalog Ingestion","Ingestão de catálogo"
+"Turn on or off catalog ingestion to Pinterest","Ative ou desative a ingestão de catálogo no Pinterest"
 "Tag and API for Conversions","Tag e API para conversões"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Ative ou desative a tag do Pinterest e a API do Pinterest para conversões"
+"Catalog Sync","Sincronização de catálogo"
+"Manually run catalog creation and feed registration","Executar manualmente a criação de catálogo e o registro do feed"
+"General Data Protection Regulation (GDPR)","Lei Geral de Proteção de Dados Pessoais (LGPD)"
+"Enable GDPR","Habilitar a LGPD"
+Options,Opções
+"Cookie Name","Nome do cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","O rastreamento é controlado em Lojas > Configuração > Geral > Web > Configurações padrão de cookies > Modo de restrição de cookies"

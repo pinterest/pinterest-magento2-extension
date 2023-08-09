@@ -1,12 +1,29 @@
+"Regenerate Catalog","कैटलॉग फिर से जेनरेट करें"
 "Turn on catalog ingestion","कैटलॉग इंजेशन चालू करें"
 "Turn off catalog ingestion","कैटलॉग इंजेशन बंद करें"
-"Turn on Pinterest tag and Pinterest API for Conversions","रूपांतरणों के लिए Pinterest टैग और Pinterest API चालू करें"
-"Turn off Pinterest tag and Pinterest API for Conversions","रूपांतरणों के लिए Pinterest टैग और Pinterest API को बंद करें"
+"Turn on Pinterest tag and Pinterest API for Conversions","रूपांतरण के लिए Pinterest API और Pinterest टैग चालू करें"
+"Turn off Pinterest tag and Pinterest API for Conversions","रूपांतरण के लिए Pinterest API और Pinterest टैग को बंद करें"
+"Use Magento Cookie Restriction Mode","Magento कुकी प्रतिबंध मोड का उपयोग करें"
+"Enable Tracking if Cookie Exists","अगर कुकी मौजूद है तो ट्रैकिंग सक्षम करें"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","आपके कैटलॉग को फिर से उत्पन्न करने में समस्या हुई। कृपया पेज रीफ़्रेश करें या बाद में फिर से कोशिश करें।"
+Success,सफल हुआ
+"You must be logged into Pinterest to access this setting","इस सेटिंग तक पहुँचने के लिए आपको Pinterest में लॉग इन करना होगा"
 Pinterest,Pinterest
-Setup,Setup
+Setup,सेट अप करें
 Configurations,कॉन्फ़िगरेशन
 General,सामान्य
 "Client ID","क्लाइंट ID"
-"Base URL","आधार URL"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest के लिए क्लाइंट ID. इसका उपयोग Pinterest पर Adobe Commerce/Magento क्लाइंट की पहचान करने के लिए किया जाता है।"
+"Base URL","बेस URL"
+"Base URL path for Pinterest.","Pinterest के लिए बेस URL पाथ।"
 "Catalog Ingestion","कैटलॉग इंजेशन"
-"Tag and API for Conversions","रूपांतरणों के लिए टैग और API"
+"Turn on or off catalog ingestion to Pinterest","Pinterest पर कैटलॉग इंजेशन चालू या बंद करें"
+"Tag and API for Conversions","रूपांतरण के लिए API और टैग"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","रूपांतरण के लिए Pinterest API और Pinterest टैग को बंद करें"
+"Catalog Sync","कैटलॉग सिंक"
+"Manually run catalog creation and feed registration","मैन्युअल रूप से कैटलॉग बनाएँ और फ़ीड पंजीकरण चलाएँ"
+"General Data Protection Regulation (GDPR)","सामान्य डेटा संरक्षण नियम (GDPR)"
+"Enable GDPR","GDPR सक्षम करें"
+Options,विकल्प
+"Cookie Name","कुकी का नाम"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","ट्रैकिंग स्टोर > कॉन्फ़िगरेशन > सामान्य > वेब > डिफ़ॉल्ट कुकी सेटिंग > कुकी प्रतिबंध मोड पर नियंत्रित की जाती है"

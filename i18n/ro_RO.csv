@@ -1,12 +1,29 @@
+"Regenerate Catalog","Regenerează catalogul"
 "Turn on catalog ingestion","Activează ingestia din catalog"
 "Turn off catalog ingestion","Dezactivează ingestia din catalog"
-"Turn on Pinterest tag and Pinterest API for Conversions","Activează Marcajul Pinterest și API-ul Pinterest pentru conversii"
-"Turn off Pinterest tag and Pinterest API for Conversions","Dezactivează Marcajul Pinterest și API-ul Pinterest pentru conversii"
+"Turn on Pinterest tag and Pinterest API for Conversions","Activează marcajul Pinterest și API-ul Pinterest pentru conversii"
+"Turn off Pinterest tag and Pinterest API for Conversions","Dezactivează marcajul Pinterest și API-ul Pinterest pentru conversii"
+"Use Magento Cookie Restriction Mode","Folosește modul de restricționare a cookie-urilor Magento"
+"Enable Tracking if Cookie Exists","Activează urmărirea dacă există cookie-uri"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","A apărut o problemă la regenerarea catalogului. Reîmprospătează pagina sau încearcă din nou."
+Success,Succes
+"You must be logged into Pinterest to access this setting","Trebuie să fii conectat la Pinterest pentru a accesa această setare"
 Pinterest,Pinterest
-Setup,Setup
-Configurations,Configuraţii
-General,Generale
-"Client ID","Client ID"
+Setup,Configurare
+Configurations,Configurații
+General,General
+"Client ID","ID client"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID-ul clientului pentru Pinterest. Acesta este utilizat pentru identificarea clienților Adobe Commerce/Magento pe Pinterest."
 "Base URL","Adresă URL de bază"
+"Base URL path for Pinterest.","Calea URL-ului de bază pentru Pinterest."
 "Catalog Ingestion","Ingestie din catalog"
-"Tag and API for Conversions","Marcaje și API pentru conversii"
+"Turn on or off catalog ingestion to Pinterest","Activează sau dezactivează ingestia din catalog pe Pinterest"
+"Tag and API for Conversions","Marcaj și API pentru conversii"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Activează sau dezactivează marcajul Pinterest și API-ul Pinterest pentru conversii"
+"Catalog Sync","Sincronizează catalogul"
+"Manually run catalog creation and feed registration","Rulează manual crearea catalogului și înregistrarea fluxului"
+"General Data Protection Regulation (GDPR)","Regulamentul general privind protecția datelor (RGPD)"
+"Enable GDPR","Activează RGPD"
+Options,Opțiuni
+"Cookie Name","Nume cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Urmărirea este controlată în Magazine > Configurație > General > Web > Setări implicite cookie > Mod restricție cookie"

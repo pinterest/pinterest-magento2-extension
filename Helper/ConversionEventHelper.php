@@ -106,6 +106,14 @@ class ConversionEventHelper
     }
 
     /**
+     * Get the epik cookie
+     */
+    private function getEpik()
+    {
+        return $this->_customCookieManager->getCookie("_epik");
+    }
+
+    /**
      * Creates all the data required to captures user info
      */
     private function createUserData()
@@ -115,7 +123,10 @@ class ConversionEventHelper
             "client_user_agent" => $this->getUserAgent(),
         ];
         if ($this->getPinterestCookie()) {
-            $user_data["external_id"] = [$this->getPinterestCookie()];
+            $user_data["external_id"] = [$this->_customerDataHelper->hash($this->getPinterestCookie())];
+        }
+        if ($this->getEpik()) {
+            $user_data["click_id"] = $this->getEpik();
         }
         if ($this->_customerDataHelper->isUserLoggedIn()) {
             if ($this->_customerDataHelper->getEmail()) {
@@ -133,9 +144,21 @@ class ConversionEventHelper
             if ($this->_customerDataHelper->getDateOfBirth()) {
                 $user_data["db"] = [$this->_customerDataHelper->hash($this->_customerDataHelper->getDateOfBirth())];
             }
-
-            // TODO: Customer billing address information
         }
+
+        if ($this->_customerDataHelper->getCity()) {
+            $user_data["ct"] = [$this->_customerDataHelper->hash($this->_customerDataHelper->getCity())];
+        }
+        if ($this->_customerDataHelper->getState()) {
+            $user_data["st"] = [$this->_customerDataHelper->hash($this->_customerDataHelper->getState())];
+        }
+        if ($this->_customerDataHelper->getCountry()) {
+            $user_data["country"] = [$this->_customerDataHelper->hash($this->_customerDataHelper->getCountry())];
+        }
+        if ($this->_customerDataHelper->getZipCode()) {
+            $user_data["zp"] = [$this->_customerDataHelper->hash($this->_customerDataHelper->getZipCode())];
+        }
+
         return $user_data;
     }
 
@@ -274,7 +297,6 @@ class ConversionEventHelper
     private function postEvent($params)
     {
         try {
-            $numberOfEvents = count($params["data"]);
             $response = $this->_pinterestHttpClient->post($this->getAPIEndPoint(), $params, $this->getAccessToken());
             if (isset($response->code)) {
                 $message = isset($response->message) ? $response->message : "n/a";

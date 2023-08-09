@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","เปิดใช้การส่งแคตตาล็อก"
-"Turn off catalog ingestion","ปิดการส่งแคตตาล็อก"
+"Regenerate Catalog","สร้างแคตตาล็อกใหม่"
+"Turn on catalog ingestion","เปิดการนำเข้าแคตตาล็อก"
+"Turn off catalog ingestion","ปิดการนำเข้าแคตตาล็อก"
 "Turn on Pinterest tag and Pinterest API for Conversions","เปิดแท็ก Pinterest และ Pinterest API สําหรับคอนเวอร์ชัน"
 "Turn off Pinterest tag and Pinterest API for Conversions","ปิดแท็ก Pinterest และ Pinterest API สําหรับคอนเวอร์ชัน"
+"Use Magento Cookie Restriction Mode","ใช้โหมดจํากัดคุกกี้ Magento"
+"Enable Tracking if Cookie Exists","เปิดใช้งานการติดตามหากมีคุกกี้"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","เกิดปัญหาในการสร้างแคตตาล็อกใหม่ โปรดรีเฟรชหน้านี้หรือลองอีกครั้งในภายหลัง"
+Success,สำเร็จ
+"You must be logged into Pinterest to access this setting","คุณต้องเข้าสู่ระบบ Pinterest จึงจะเข้าถึงการตั้งค่านี้ได้"
 Pinterest,Pinterest
-Setup,Setup
-Configurations,ตั้ง ค่า คอน ฟิก
+Setup,ตั้งค่า
+Configurations,การกำหนดค่า
 General,ทั่วไป
 "Client ID","ID ไคลเอ็นต์"
-"Base URL","URL พื้นฐาน"
-"Catalog Ingestion","การนําแคตตาล็อก"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID ไคลเอ็นต์สําหรับ Pinterest ใช้เพื่อระบุไคลเอ็นต์ Adobe Commerce/Magento บน Pinterest"
+"Base URL","URL ฐาน"
+"Base URL path for Pinterest.","เส้นทาง URL ฐานสําหรับ Pinterest"
+"Catalog Ingestion","การนําเข้าแคตตาล็อก"
+"Turn on or off catalog ingestion to Pinterest","เปิดหรือปิดการนําเข้าแคตตาล็อกไปที่ Pinterest"
 "Tag and API for Conversions","แท็กและ API สําหรับคอนเวอร์ชัน"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","เปิดหรือปิดแท็ก Pinterest และ Pinterest API สําหรับคอนเวอร์ชัน"
+"Catalog Sync","การซิงค์แคตตาล็อก"
+"Manually run catalog creation and feed registration","เรียกใช้การสร้างแคตตาล็อกและการลงทะเบียนฟีดด้วยตนเอง"
+"General Data Protection Regulation (GDPR)","กฎหมายคุ้มครองข้อมูลส่วนบุคคล (GDPR)"
+"Enable GDPR","เปิดใช้งาน GDPR"
+Options,ตัวเลือก
+"Cookie Name","ชื่อคุกกี้"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","การติดตามได้รับการควบคุมที่ร้านค้า > การกําหนดค่า > ทั่วไป > เว็บ > การตั้งค่าคุกกี้เริ่มต้น > โหมดจํากัดคุกกี้"

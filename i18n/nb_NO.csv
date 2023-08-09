@@ -1,12 +1,29 @@
+"Regenerate Catalog","Regenerer katalogen"
 "Turn on catalog ingestion","Slå på katalogimport"
 "Turn off catalog ingestion","Slå av katalogimport"
-"Turn on Pinterest tag and Pinterest API for Conversions","Slå på Pinterest-taggen og Pinterest API for Conversions"
-"Turn off Pinterest tag and Pinterest API for Conversions","Slå av Pinterest-taggen og Pinterest-API-et for konverteringer"
+"Turn on Pinterest tag and Pinterest API for Conversions","Slå på Pinterest-taggen og Pinterests API for konverteringer"
+"Turn off Pinterest tag and Pinterest API for Conversions","Slå av Pinterest-taggen og Pinterests API for konverteringer"
+"Use Magento Cookie Restriction Mode","Bruk modus for begrensning av Magento-informasjonskapsler"
+"Enable Tracking if Cookie Exists","Aktiver sporing hvis det finnes informasjonskapsler"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Det oppsto et problem ved regenerering av katalogen din. Last inn siden på nytt, eller prøv igjen senere."
+Success,Suksess!
+"You must be logged into Pinterest to access this setting","Du må være logget på Pinterest for å få tilgang til denne innstillingen"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Konfigurer
 Configurations,Konfigurasjoner
 General,Generelt
 "Client ID","Klient-ID"
-"Base URL","Basisnettadresse"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Klient-ID for Pinterest. Dette brukes for å identifisere Adobe Commerce/Magento-klienter på Pinterest."
+"Base URL","Primær nettadresse"
+"Base URL path for Pinterest.","Bane til den primære nettadressen for Pinterest."
 "Catalog Ingestion","Import av kataloger"
+"Turn on or off catalog ingestion to Pinterest","Slå katalogimport på eller av på Pinterest"
 "Tag and API for Conversions","Tagg og API for konverteringer"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Slå på eller av Pinterest-taggen og Pinterests API for konverteringer"
+"Catalog Sync","Katalogsynkronisering"
+"Manually run catalog creation and feed registration","Kjør katalogoppretting og feedregistrering manuelt"
+"General Data Protection Regulation (GDPR)","Generell databeskyttelsesforordning (GDPR)"
+"Enable GDPR","Aktiver GDPR"
+Options,Valg
+"Cookie Name","Navn på informasjonskapsel"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Sporing kontrolleres i Butikker > Konfigurasjon > Generelt > Nett > Standardinnstillinger for informasjonskapsler > Begrensningsmodus for informasjonskapsler"

@@ -1,12 +1,29 @@
+"Regenerate Catalog","Відновлення каталогу"
 "Turn on catalog ingestion","Увімкнути завантаження даних каталогу"
-"Turn off catalog ingestion","Вимкнення завантаження даних каталогу"
-"Turn on Pinterest tag and Pinterest API for Conversions","Увімкніть тег Pinterest і API Pinterest для конверсій"
-"Turn off Pinterest tag and Pinterest API for Conversions","Вимкнення тегу Pinterest і API Pinterest для конверсій"
+"Turn off catalog ingestion","Вимкнути завантаження даних каталогу"
+"Turn on Pinterest tag and Pinterest API for Conversions","Увімкнути тег Pinterest і API Pinterest для конверсій"
+"Turn off Pinterest tag and Pinterest API for Conversions","Вимкнути тег Pinterest і API Pinterest для конверсій"
+"Use Magento Cookie Restriction Mode","Використання режиму обмеження файлів cookie Magento"
+"Enable Tracking if Cookie Exists","Увімкнення відстеження за наявності файлів cookie"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Під час відновлення каталогу сталася помилка. Оновіть сторінку або повторіть спробу пізніше."
+Success,Готово!
+"You must be logged into Pinterest to access this setting","Щоб відкрити цю настройку, увійдіть у Pinterest"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Налаштування
 Configurations,Конфігурації
 General,Загальне
 "Client ID","Ідентифікатор клієнта"
-"Base URL","Основна URL-адреса"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Ідентифікатор клієнта для Pinterest. Використовується для ідентифікації клієнтів Adobe Commerce і Magento на Pinterest."
+"Base URL","Базова URL-адреса"
+"Base URL path for Pinterest.","Шлях до базової URL-адреси для Pinterest."
 "Catalog Ingestion","Завантаження даних каталогу"
+"Turn on or off catalog ingestion to Pinterest","Увімкнення або вимкнення завантаження даних каталогу на Pinterest"
 "Tag and API for Conversions","Тег і API для конверсій"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Увімкнення або вимкнення тегу й API Pinterest для конверсій"
+"Catalog Sync","Синхронізація каталогу"
+"Manually run catalog creation and feed registration","Створення каталогу й реєстрація стрічки вручну"
+"General Data Protection Regulation (GDPR)","Загальний регламент захисту даних (GDPR)"
+"Enable GDPR","Увімкнення GDPR"
+Options,Опції
+"Cookie Name","Назва файлу cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Відстеженням можна керувати в розділі Магазини > Конфігурація > Загальне > Сайт > Стандартні настройки файлів cookie > Режим обмеження файлів cookie"

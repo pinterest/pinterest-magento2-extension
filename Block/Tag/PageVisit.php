@@ -14,7 +14,7 @@ class PageVisit extends Setup
         $product = $this->_registry->registry('current_product');
         if ($product) {
             return [
-                "product_id" => $product->getId(),
+                "product_id" => $this->_pinterestHelper->getContentId($product),
                 "product_price" => $this->_pinterestHelper->getProductPrice($product),
                 "product_name" => $product->getName(),
                 "product_category" => $this->_pinterestHelper->getCategoryNamesFromIds($product->getCategoryIds()),

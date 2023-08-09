@@ -1,6 +1,7 @@
 <?php
 namespace Pinterest\PinterestMagento2Extension\Model\Config;
 
+use Pinterest\PinterestMagento2Extension\Constants\ConfigSetting;
 use \Magento\Framework\Data\OptionSourceInterface;
 
 class PinterestCatalogConfigList implements OptionSourceInterface
@@ -13,8 +14,8 @@ class PinterestCatalogConfigList implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
-        ['value' => 'enabled', 'label' => __('Turn on catalog ingestion')],
-        ['value' => 'disabled', 'label' => __('Turn off catalog ingestion')]
+        ['value' => ConfigSetting::ENABLED, 'label' => __('Turn on catalog ingestion')],
+        ['value' => ConfigSetting::DISABLED, 'label' => __('Turn off catalog ingestion')]
         ];
     }
 }

@@ -1,12 +1,29 @@
+"Regenerate Catalog","Повторно генериране на каталог"
 "Turn on catalog ingestion","Включване на приемане на каталог"
 "Turn off catalog ingestion","Изключване на приемане на каталог"
 "Turn on Pinterest tag and Pinterest API for Conversions","Включете таг в Pinterest и API на Pinterest за конверсии"
 "Turn off Pinterest tag and Pinterest API for Conversions","Изключване на таг в Pinterest и API на Pinterest за конверсии"
+"Use Magento Cookie Restriction Mode","Използване на режим за ограничаване на бисквитки за Magento"
+"Enable Tracking if Cookie Exists","Активиране на проследяването, ако съществува бисквитка"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Възникна проблем с повторното генериране на каталога ви. Опреснете страницата или опитайте отново по-късно."
+Success,Успех
+"You must be logged into Pinterest to access this setting","Трябва да сте влезли в Pinterest, за да осъществите достъп до тази настройка"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Настройка
 Configurations,Конфигурации
 General,Общи
 "Client ID","ИД на клиент"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ИД на клиент за Pinterest. Това се използва за идентифициране на клиенти на Adobe Commerce/Magento в Pinterest."
 "Base URL","Основен URL адрес"
+"Base URL path for Pinterest.","Път до основен URL адрес за Pinterest."
 "Catalog Ingestion","Приемане на каталог"
+"Turn on or off catalog ingestion to Pinterest","Включване или изключване на приемане на каталог в Pinterest"
 "Tag and API for Conversions","Таг и API за конверсии"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Включване или изключване на таг в Pinterest и API на Pinterest за конверсии"
+"Catalog Sync","Синхронизиране на каталог"
+"Manually run catalog creation and feed registration","Ръчно изпълняване на създаване на каталог и регистрация на информационен канал"
+"General Data Protection Regulation (GDPR)","Общ регламент относно защитата на данните (GDPR)"
+"Enable GDPR","Активиране на GDPR"
+Options,Опции
+"Cookie Name","Име на бисквитка"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Проследяването се контролира в „Магазини“ > „Конфигурация“ > „Общи“ > „Уеб“ > „Настройки за бисквитки по подразбиране“ > „Режим за ограничаване на бисквитки“"

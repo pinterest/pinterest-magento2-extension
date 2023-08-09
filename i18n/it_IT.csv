@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Attiva creazione prodotti catalogo"
+"Regenerate Catalog","Rigenera catalogo"
+"Turn on catalog ingestion","Attiva creazione catalogo"
 "Turn off catalog ingestion","Disattiva creazione catalogo"
 "Turn on Pinterest tag and Pinterest API for Conversions","Attiva il tag di Pinterest e l'API di Pinterest per le conversioni"
 "Turn off Pinterest tag and Pinterest API for Conversions","Disattiva il tag di Pinterest e l'API di Pinterest per le conversioni"
+"Use Magento Cookie Restriction Mode","Utilizza la modalità di restrizione dei cookie Magento"
+"Enable Tracking if Cookie Exists","Abilita il monitoraggio se il cookie esiste"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Si è verificato un problema durante la rigenerazione del catalogo. Aggiorna la pagina o riprova."
+Success,Operazione riuscita
+"You must be logged into Pinterest to access this setting","Per accedere a questa impostazione devi aver eseguito l'accesso a Pinterest"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Configura
 Configurations,Configurazioni
 General,Generale
 "Client ID","ID cliente"
-"Base URL","Base URL"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID client per Pinterest. Viene utilizzato per identificare i client di Adobe Commerce/Magento su Pinterest."
+"Base URL","URL di base"
+"Base URL path for Pinterest.","Percorso dell'URL di base per Pinterest."
 "Catalog Ingestion","Creazione catalogo"
+"Turn on or off catalog ingestion to Pinterest","Attiva o disattiva la creazione dei cataloghi su Pinterest"
 "Tag and API for Conversions","Tag e API per conversioni"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Disattiva il tag di Pinterest e l'API di Pinterest per le conversioni"
+"Catalog Sync","Sincronizzazione catalogo"
+"Manually run catalog creation and feed registration","Esegui manualmente la creazione del catalogo e la registrazione del feed"
+"General Data Protection Regulation (GDPR)","Regolamento generale sulla protezione dei dati (GDPR)"
+"Enable GDPR","Abilita GDPR"
+Options,Opzioni
+"Cookie Name","Nome del cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Il monitoraggio è controllato nella configurazione Negozi > Configurazione > Generale > Web > Impostazioni predefinite dei cookie > Modalità di restrizione dei cookie"

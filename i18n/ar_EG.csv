@@ -1,12 +1,29 @@
+"Regenerate Catalog","إعادة إنشاء الكتالوج"
 "Turn on catalog ingestion","تشغيل استيعاب الكتالوج"
 "Turn off catalog ingestion","إيقاف استيعاب الكتالوج"
 "Turn on Pinterest tag and Pinterest API for Conversions","تشغيل علامة Pinterest وواجهة برمجة تطبيقات Pinterest للتحويلات"
 "Turn off Pinterest tag and Pinterest API for Conversions","إيقاف تشغيل علامة Pinterest وواجهة برمجة تطبيقات Pinterest للتحويلات"
+"Use Magento Cookie Restriction Mode","استخدام وضع تقييد ملفات تعريف الارتباط Magento"
+"Enable Tracking if Cookie Exists","تمكين التتبع إذا كان ملف تعريف الارتباط موجودًا"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","حدثت مشكلة في إعادة إنشاء الكتالوج لديك. يُرجى تحديث الصفحة أو المحاولة مرة أخرى لاحقًا."
+Success,تم بنجاح
+"You must be logged into Pinterest to access this setting","يجب تسجيل الدخول إلى Pinterest للوصول إلى هذا الإعداد"
 Pinterest,Pinterest
-Setup,Setup
-Configurations,تكوينات
+Setup,الإعداد
+Configurations,التكوينات
 General,عام
 "Client ID","معرف العميل"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","معرّف العميل لـ Pinterest. يتم استخدام هذا لتحديد عملاء Adobe Commerce/Magento على Pinterest."
 "Base URL","عنوان URL الأساسي"
+"Base URL path for Pinterest.","مسار عنوان URL الأساسي لـ Pinterest."
 "Catalog Ingestion","استيعاب الكتالوج"
+"Turn on or off catalog ingestion to Pinterest","تشغيل استيعاب الكتالوج أو إيقاف تشغيله إلى Pinterest"
 "Tag and API for Conversions","العلامة وواجهة برمجة التطبيقات للتحويلات"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","تشغيل علامة Pinterest أو إيقاف تشغيلها وواجهة برمجة تطبيقات Pinterest للتحويلات"
+"Catalog Sync","مزامنة الكتالوج"
+"Manually run catalog creation and feed registration","تشغيل إنشاء الكتالوج وتسجيل الخلاصة يدويًا"
+"General Data Protection Regulation (GDPR)","اللائحة العامة لحماية البيانات (GDPR)"
+"Enable GDPR","تمكين GDPR"
+Options,الخيارات
+"Cookie Name","اسم ملف تعريف الارتباط"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","يتم التحكم في التتبع في المتاجر > تكوين > عام > الويب > إعدادات ملفات تعريف الارتباط الافتراضية > وضع تقييد ملفات تعريف الارتباط"

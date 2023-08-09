@@ -1,6 +1,7 @@
 <?php
 namespace Pinterest\PinterestMagento2Extension\Model\Config;
 
+use Pinterest\PinterestMagento2Extension\Constants\ConfigSetting;
 use \Magento\Framework\Data\OptionSourceInterface;
 
 class PinterestConversionConfigList implements OptionSourceInterface
@@ -13,8 +14,8 @@ class PinterestConversionConfigList implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
-        ['value' => 'enabled', 'label' => __('Turn on Pinterest tag and Pinterest API for Conversions')],
-        ['value' => 'disabled', 'label' => __('Turn off Pinterest tag and Pinterest API for Conversions')]
+        ['value' => ConfigSetting::ENABLED, 'label' => __('Turn on Pinterest tag and Pinterest API for Conversions')],
+        ['value' => ConfigSetting::DISABLED, 'label' => __('Turn off Pinterest tag and Pinterest API for Conversions')]
         ];
     }
 }

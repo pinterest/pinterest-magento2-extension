@@ -1,12 +1,29 @@
+"Regenerate Catalog","카탈로그 다시 만들기"
 "Turn on catalog ingestion","카탈로그 수집 켜기"
 "Turn off catalog ingestion","카탈로그 수집 끄기"
 "Turn on Pinterest tag and Pinterest API for Conversions","Pinterest 태그 및 전환수 Pinterest API 켜기"
 "Turn off Pinterest tag and Pinterest API for Conversions","Pinterest 태그 및 전환수 Pinterest API 끄기"
+"Use Magento Cookie Restriction Mode","Magento 쿠키 제한 모드 사용"
+"Enable Tracking if Cookie Exists","쿠키가 있는 경우 추적 활성화"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","카탈로그를 다시 만드는 중에 문제가 발생했습니다. 페이지를 새로 고치거나 나중에 다시 시도하세요."
+Success,성공
+"You must be logged into Pinterest to access this setting","이 설정에 액세스하려면 Pinterest에 로그인해야 합니다."
 Pinterest,Pinterest
 Setup,설정
 Configurations,구성
 General,일반
 "Client ID","클라이언트 ID"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest 클라이언트 ID입니다. Pinterest에서 Adobe Commerce/Magento 클라이언트를 식별하는 데 사용됩니다."
 "Base URL","기본 URL"
+"Base URL path for Pinterest.","Pinterest의 기본 URL 경로입니다."
 "Catalog Ingestion","카탈로그 수집"
+"Turn on or off catalog ingestion to Pinterest","Pinterest 카탈로그 수집 켜기 또는 끄기"
 "Tag and API for Conversions","태그 및 전환수 API"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Pinterest 태그 및 전환수 Pinterest API 켜기 또는 끄기"
+"Catalog Sync","카탈로그 동기화"
+"Manually run catalog creation and feed registration","카탈로그 만들기 및 피드 등록을 수동으로 실행"
+"General Data Protection Regulation (GDPR)","일반 데이터 보호 규정(GDPR)"
+"Enable GDPR","GDPR 활성화"
+Options,옵션
+"Cookie Name","쿠키 이름"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","추적은 스토어 > 구성 > 일반 > 웹 > 기본 쿠키 설정 > 쿠키 제한 모드에서 관리할 수 있습니다."

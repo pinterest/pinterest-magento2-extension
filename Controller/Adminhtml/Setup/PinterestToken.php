@@ -6,6 +6,7 @@ use Magento\Security\Model\AdminSessionsManager;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\App\RequestInterface;
+use Pinterest\PinterestMagento2Extension\Helper\ConfigHelper;
 use Pinterest\PinterestMagento2Extension\Helper\ExchangeMetadata;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Magento\Framework\Event\ManagerInterface as EventManager;
@@ -39,6 +40,11 @@ class PinterestToken extends Action
     protected $_eventManager;
 
     /**
+     * @var ConfigHelper
+     */
+    protected $_configHelper;
+
+    /**
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
@@ -46,6 +52,7 @@ class PinterestToken extends Action
      * @param ExchangeMetadata $exchangeMetadata
      * @param PinterestHelper $pinterestHelper
      * @param EventManager $eventManager
+     * @param ConfigHelper $configHelper
      */
     public function __construct(
         Context $context,
@@ -53,7 +60,8 @@ class PinterestToken extends Action
         RequestInterface $request,
         ExchangeMetadata $exchangeMetadata,
         PinterestHelper $pinterestHelper,
-        EventManager $eventManager
+        EventManager $eventManager,
+        ConfigHelper $configHelper
     ) {
         parent::__construct($context);
         $this->_resultJsonFactory = $resultJsonFactory;
@@ -61,6 +69,7 @@ class PinterestToken extends Action
         $this->_exchangeMetadata = $exchangeMetadata;
         $this->_pinterestHelper = $pinterestHelper;
         $this->_eventManager = $eventManager;
+        $this->_configHelper = $configHelper;
     }
 
     /**
@@ -123,29 +132,39 @@ class PinterestToken extends Action
                 $info = json_decode(rawurldecode(base64_decode($this->_request->getParam('info'))), true);
                 $this->_pinterestHelper->saveMetadata('pinterest/info/advertiser_id', $info['advertiser_id']);
                 $this->_pinterestHelper->logInfo("PinterestToken action - advertiser_id = ".$info['advertiser_id']);
-                $this->_pinterestHelper->saveMetadata('pinterest/info/tag_id', $info['tag_id']);
+                if ($info['tag_id']) {
+                    $this->_pinterestHelper->saveMetadata('pinterest/info/tag_id', $info['tag_id']);
+                }
                 $this->_pinterestHelper->logInfo("PinterestToken action - tag_id = ".$info['tag_id']);
                 $this->_pinterestHelper->saveMetadata('pinterest/info/merchant_id', $info['merchant_id']);
                 $this->_pinterestHelper->logInfo("PinterestToken action - merchant_id = ".$info['merchant_id']);
-                
                 $this->_pinterestHelper->saveEncryptedMetadata('pinterest/info/client_hash', $info['clientHash']);
-                
-                $this->_pinterestHelper->logInfo("Successfully saved connection details to database");
-                
+
                 // Generate and store external business Id
                 $businessId = $this->_pinterestHelper->generateExternalBusinessId($info['advertiser_id']);
                 $this->_pinterestHelper->saveMetadata("pinterest/info/business_id", $businessId);
                 $this->_pinterestHelper->logInfo(
-                    "External Business ID: " . $businessId . " successfully saved to database"
+                    "External Business ID: " . $businessId
                 );
+                
+                $this->_pinterestHelper->logInfo("Successfully saved connection details to database");
             } catch (\Exception $e) {
                 $this->_pinterestHelper->logInfo("Failure saving plugin metadata.");
                 return $this->createErrorRedirect();
             }
 
+            // save feature flags to config
+            try {
+                $this->_configHelper->saveFeatureFlags($info['feature_flags']);
+            } catch (\Exception $e) {
+                $this->_pinterestHelper->logInfo("Failure saving feature flags:");
+                $this->_pinterestHelper->logInfo($e->getMessage());
+                return $this->createErrorRedirect();
+            }
+
             // Send metadata to Pinterest API...
-            $this->_exchangeMetadata->exchangeMetadata($info);
-            $this->_pinterestHelper->logInfo("PinterestToken action - exchanged metadata");
+            $this->_exchangeMetadata->postMetadata();
+            $this->_pinterestHelper->logInfo("PinterestToken action - POST metadata");
 
             // flush cache before claiming website
             $this->_pinterestHelper->logInfo("flush cache during connect");
@@ -155,12 +174,15 @@ class PinterestToken extends Action
             // Website claiming
             $this->_eventManager->dispatch("pinterest_commereceintegrationextension_website_claiming");
 
-            // Catalog feed - create if numbers of products < 5000 to avoid a time out. Run cron job for larger size
-            $productsCount = $this->_pinterestHelper->getProductCountInAllStores();
-            $this->_pinterestHelper->logInfo("PinterestToken action - products count = ".$productsCount);
-            if ($productsCount < 5000) {
-                $this->_pinterestHelper->logInfo("PinterestToken action - dispatching create catalog feeds event.");
-                $this->_eventManager->dispatch("pinterest_commereceintegrationextension_create_catalog_feeds");
+            $featureFlags = $info['feature_flags'];
+            if ($featureFlags['catalog'] === true) {
+                // Catalog feed - create if numbers of products < 5000 to avoid a time out. Run cron job for larger size
+                $productsCount = $this->_pinterestHelper->getProductCountInAllStores();
+                $this->_pinterestHelper->logInfo("PinterestToken action - products count = ".$productsCount);
+                if ($productsCount < 5000) {
+                    $this->_pinterestHelper->logInfo("PinterestToken action - dispatching create catalog feeds event.");
+                    $this->_eventManager->dispatch("pinterest_commereceintegrationextension_create_catalog_feeds");
+                }
             }
 
             $resultRedirect = $this->resultRedirectFactory->create();

@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Katalog alımını açın"
-"Turn off catalog ingestion","Katalog alımını kapatma"
-"Turn on Pinterest tag and Pinterest API for Conversions","Dönüşümler için Pinterest etiketini ve Pinterest API'lerini açın"
-"Turn off Pinterest tag and Pinterest API for Conversions","Dönüşümler için Pinterest etiketini ve Pinterest API'lerini kapatma"
+"Regenerate Catalog","Kataloğu Yeniden Oluşturma"
+"Turn on catalog ingestion","Katalog alımını aç"
+"Turn off catalog ingestion","Katalog alımını kapat"
+"Turn on Pinterest tag and Pinterest API for Conversions","Pinterest etiketini ve Dönüşümler için Pinterest API'sini açın"
+"Turn off Pinterest tag and Pinterest API for Conversions","Pinterest etiketini ve Dönüşümler için Pinterest API'sini kapatın"
+"Use Magento Cookie Restriction Mode","Magento Çerez Kısıtlama Modunu Kullanın"
+"Enable Tracking if Cookie Exists","Çerez Varsa İzlemeyi Etkinleştirme"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Kataloğunuz yeniden oluşturulurken bir sorun oluştu. Lütfen sayfayı yenileyin veya daha sonra tekrar deneyin."
+Success,Başarılı
+"You must be logged into Pinterest to access this setting","Bu ayara erişmek için Pinterest'te oturum açmış olmanız gerekir"
 Pinterest,Pinterest
 Setup,Kurulum
 Configurations,Yapılandırma
 General,Genel
 "Client ID","İstemci Kimliği"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest için İstemci Kimliği. Bu, Pinterest'teki Adobe Commerce/Magento istemcilerini tanımlamak için kullanılır."
 "Base URL","Temel URL"
+"Base URL path for Pinterest.","Pinterest için temel URL yolu."
 "Catalog Ingestion","Katalog Alımı"
-"Tag and API for Conversions","Dönüşümler için etiket ve API"
+"Turn on or off catalog ingestion to Pinterest","Pinterest'e katalog alımını açma veya kapatma"
+"Tag and API for Conversions","Etiket ve Dönüşümler için API"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Pinterest etiketini ve Dönüşümler için Pinterest API'sini açma veya kapatma"
+"Catalog Sync","Katalog Senkronizasyonu"
+"Manually run catalog creation and feed registration","Katalog oluşturmayı ve akış kaydını manuel olarak çalıştırma"
+"General Data Protection Regulation (GDPR)","Genel Veri Koruma Yönetmeliği (GDPR)"
+"Enable GDPR","GDPR'yi etkinleştir"
+Options,Seçenekler
+"Cookie Name","Çerez Adı"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","İzleme, Mağazalar > Yapılandırma > Genel > Web > Varsayılan Çerez Ayarları > Çerez Kısıtlama Modu kısmından kontrol edilir"

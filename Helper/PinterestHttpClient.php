@@ -3,16 +3,18 @@
 namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Framework\HTTP\Client\Curl;
-use Zend\Http\Headers;
-use Zend\Http\Request;
-use Zend\Http\Response;
-use Zend\Http\Client;
+use Pinterest\PinterestMagento2Extension\Helper\PinterestLaminasClient;
+use Laminas\Http\Request;
+use Laminas\Http\Headers;
+use Pinterest\PinterestMagento2Extension\Logger\Logger;
 
 /**
  * Helper class used for calling Pinterst API endpoints
  */
 class PinterestHttpClient
 {
+    // TODO note: all API request logging will be overhauled as part of larger effort
+
     public const PINTEREST_API_ENDPOINT="https://api.pinterest.com";
     public const V5_API_VERSION="v5";
 
@@ -22,12 +24,20 @@ class PinterestHttpClient
     protected $_curl;
 
     /**
-     * @param Curl $curl
+     * @var Logger
+     */
+    protected $_logger;
+
+    /**
+     * @param Curl
+     * @param Logger
      */
     public function __construct(
-        Curl $curl
+        Curl $curl,
+        Logger $logger
     ) {
-        $this->_curl= $curl;
+        $this->_curl = $curl;
+        $this->_logger = $logger;
     }
     
     /**
@@ -75,6 +85,7 @@ class PinterestHttpClient
      * @param string $contentType
      * @param string $body
      * @return mixed response object
+     * @param array $queryParams
      */
     public function post(
         $url,
@@ -82,7 +93,8 @@ class PinterestHttpClient
         $accessToken,
         $authorization = null,
         $contentType = "application/json",
-        $body = null
+        $body = null,
+        $queryParams = []
     ) {
         if ($authorization) {
             $this->_curl->addHeader("Authorization", $authorization);
@@ -94,33 +106,63 @@ class PinterestHttpClient
         if ($body) {
             $this->_curl->setOption(CURLOPT_POSTFIELDS, $body);
         }
+        if (!empty($queryParams)) {
+            $url = $url . "?" . http_build_query($queryParams);
+        }
         $this->_curl->post($url, json_encode($params));
         return json_decode($this->_curl->getBody());
     }
 
     /**
-     * Setup and send the delete request
+     * Send a PATCH request (modify as necessary)
      *
-     * The default curl library does not support delete so we are using
-     * https://developer.adobe.com/commerce/webapi/get-started/gs-web-api-request/
+     * @param string $url
+     * @param array $params body params
+     * @param string $accessToken
+     * @return Laminas\Http\Response
+     * */
+    public function patch($url, $params, $accessToken)
+    {
+        $request = new Request();
+        $request->setUri($url);
+        $request->setContent(json_encode($params));
+        $request->setMethod('PATCH');
+        $request->getHeaders()->addHeaders([
+            "Accept" => "*/*",
+            "Content-Type" => "application/json"
+        ]);
+        $client = new PinterestLaminasClient($this->getBearerAuthString($accessToken));
+        $client->clearAuth();
+        $response = $client->send($request);
+        $this->_logger->info("PATCH " . $url .": response " .$response->getStatusCode());
+        return $response;
+    }
+
+    /**
+     * Send a DELETE request
      *
      * @param string $url
      * @param string $accessToken
-     * @return Zend\Http\Response response object
+     * @return Laminas\Http\Response
      */
     public function delete($url, $accessToken)
     {
         $httpHeaders = new Headers();
         $httpHeaders->addHeaders([
             "Accept" => "application/json",
-            "Authorization" => "Bearer " . $accessToken,
         ]);
         $request = new Request();
         $request->setHeaders($httpHeaders);
         $request->setUri($url);
-        $request->setMethod(Request::METHOD_DELETE);
-        $client = new Client();
-        $res = $client->send($request);
-        return Response::fromString($res);
+        $request->setMethod('DELETE');
+        $client = new PinterestLaminasClient($this->getBearerAuthString($accessToken));
+        $response = $client->send($request);
+        $this->_logger->info("DELETE " . $url .": response " .$response->getStatusCode());
+        return $response;
+    }
+
+    private function getBearerAuthString($accessToken)
+    {
+        return 'Bearer ' . $accessToken;
     }
 }

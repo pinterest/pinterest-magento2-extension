@@ -1,12 +1,29 @@
+"Regenerate Catalog","পুনরায় ক্যাটালগ তৈরি করুন"
 "Turn on catalog ingestion","ক্যাটালগ ইনজেশন চালু করুন"
 "Turn off catalog ingestion","ক্যাটালগ ইনজেশন বন্ধ করুন"
 "Turn on Pinterest tag and Pinterest API for Conversions","রূপান্তরের জন্য Pinterest ট্যাগ এবং Pinterest API চালু করুন"
 "Turn off Pinterest tag and Pinterest API for Conversions","রূপান্তরের জন্য Pinterest ট্যাগ এবং Pinterest API বন্ধ করুন"
+"Use Magento Cookie Restriction Mode","Magento-র কুকি দিয়ে সীমাবদ্ধতা মোড ব্যবহার করুন"
+"Enable Tracking if Cookie Exists","কুকি থাকলে ট্র্যাকিং সক্রিয় করুন"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","আপনার ক্যাটালগটি পুনরায় তৈরি করার সময় কোনো সমস্যা হয়েছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন বা পরে আবার চেষ্টা করুন।"
+Success,সাফল্য
+"You must be logged into Pinterest to access this setting","এই সেটিংটি অ্যাক্সেস করতে আপনাকে অবশ্যই Pinterest এ লগ ইন অবস্থায় থাকতে হবে"
 Pinterest,Pinterest
-Setup,Setup
+Setup,সেট আপ করুন
 Configurations,কনফিগারেশনগুলি
 General,সাধারণ
-"Client ID","ক্লায়েন্ট আইডি"
-"Base URL","ভিত্তিক ইউআরএল"
+"Client ID","ক্লায়েন্টের আইডি"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest-এর জন্য ক্লায়েন্টের আইডি। এটি Pinterest-এ Adobe Commerce/Magento ক্লায়েন্ট শনাক্ত করতে ব্যবহৃত হয়।"
+"Base URL","বেস URL"
+"Base URL path for Pinterest.","Pinterest-এর জন্য বেস URL পাথ।"
 "Catalog Ingestion","ক্যাটালগ ইনজেশন"
-"Tag and API for Conversions","রূপান্তরের জন্য ট্যাগ করুন এবং API"
+"Turn on or off catalog ingestion to Pinterest","Pinterest-এ ক্যাটালগ ইনজেশন চালু বা বন্ধ করুন"
+"Tag and API for Conversions","রূপান্তরের জন্য ট্যাগ এবং API"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","রূপান্তরের জন্য Pinterest ট্যাগ এবং Pinterest API চালু বা বন্ধ করুন"
+"Catalog Sync","ক্যাটালগ সিঙ্ক"
+"Manually run catalog creation and feed registration","ক্যাটালগ তৈরি এবং ফিড নিবন্ধন নিজের হাতে করে চালান"
+"General Data Protection Regulation (GDPR)","সাধারণ ডেটা সংরক্ষণ প্রবিধান (GDPR)"
+"Enable GDPR","GDPR সক্রিয় করুন"
+Options,বিকল্পগুলি
+"Cookie Name","কুকির নাম"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","ট্র্যাকিং-এর নিয়ন্ত্রণ - স্টোর > কনফিগারেশন > সাধারণ > ওয়েব > ডিফল্ট কুকি সেটিংস > কুকি সীমাবদ্ধতা মোড থেকে করা হয়"

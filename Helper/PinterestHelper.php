@@ -12,6 +12,8 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Checkout\Model\Cart;
 use Magento\Framework\Module\ModuleListInterface;
+use Pinterest\PinterestMagento2Extension\Constants\FeatureFlag;
+use Pinterest\PinterestMagento2Extension\Constants\ConfigSetting;
 use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
 use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator;
@@ -25,6 +27,7 @@ use Magento\Cookie\Helper\Cookie;
 use Magento\Store\Model\ScopeInterface;
 use Pinterest\PinterestMagento2Extension\Model\Config\PinterestGDPROptions;
 use Magento\Framework\Stdlib\CookieManagerInterface;
+use Pinterest\PinterestMagento2Extension\Helper\ProductExporter;
 
 class PinterestHelper extends AbstractHelper
 {
@@ -38,6 +41,7 @@ class PinterestHelper extends AbstractHelper
     public const REDIRECT_URI='pinterestadmin/Setup/PinterestToken';
     public const ADMINHTML_SETUP_URI='pinterestadmin/Setup/Index';
     public const MODULE_NAME='Pinterest_PinterestMagento2Extension';
+    public const IFRAME_VERSION='v2';
 
     /**
      * @var Session
@@ -124,6 +128,7 @@ class PinterestHelper extends AbstractHelper
      * @param Manager $cacheManager
      * @param ProductFactory $productFactory
      * @param Cookie $cookie
+     * @param CookieManagerInterface $cookieManager
      */
     public function __construct(
         Context $context,
@@ -140,7 +145,7 @@ class PinterestHelper extends AbstractHelper
         Manager $cacheManager,
         ProductFactory $productFactory,
         Cookie $cookie,
-        CookieManagerInterface $cookieManager,
+        CookieManagerInterface $cookieManager
     ) {
         parent::__construct($context);
         $this->_objectManager = $objectManager;
@@ -162,7 +167,7 @@ class PinterestHelper extends AbstractHelper
     /**
      * Get the client ID for pinterest app
      *
-     * @retun string pinterest client id
+     * @return string pinterest client id
      */
     public function getClientId()
     {
@@ -173,7 +178,7 @@ class PinterestHelper extends AbstractHelper
     /**
      * Get the pinterest base URL
      *
-     * @retun string pinterest base url
+     * @return string pinterest base url
      */
     public function getPinterestBaseUrl()
     {
@@ -184,25 +189,26 @@ class PinterestHelper extends AbstractHelper
     /**
      * Returns true if catalog is enabled in config
      *
-     * @retun boolean true/false
+     * @return boolean true/false
      */
     public function isCatalogConfigEnabled()
     {
-        return strcmp($this->scopeConfig->getValue(self::PINTEREST_CATALOG_ENABLED_PATH), "enabled") == 0;
+        return strcmp($this->scopeConfig->getValue(self::PINTEREST_CATALOG_ENABLED_PATH), ConfigSetting::ENABLED) == 0;
     }
 
     /**
      * Returns true if conversion is enabled in config
      *
-     * @retun boolean true/false
+     * @return boolean true/false
      */
     public function isConversionConfigEnabled()
     {
-        return strcmp($this->scopeConfig->getValue(self::PINTEREST_CONVERSION_ENABLED_PATH), "enabled") == 0;
+        return strcmp($this->scopeConfig->getValue(self::PINTEREST_CONVERSION_ENABLED_PATH), ConfigSetting::ENABLED) == 0;
     }
 
     /**
-     * @param null $store_id
+     *
+     * @param string $store_id
      * @return int
      */
     public function getGdprOption($store_id = null)
@@ -215,7 +221,9 @@ class PinterestHelper extends AbstractHelper
     }
 
     /**
-     * @param null $store_id
+     * Get GDPR cookie name from config
+     *
+     * @param string $store_id
      * @return string
      */
     public function getGDPRCookieName($store_id = null)
@@ -228,7 +236,9 @@ class PinterestHelper extends AbstractHelper
     }
 
     /**
-     * @param null $store_id
+     * Returns true if GDPR is enabled in config for this extension
+     *
+     * @param string $store_id
      * @return bool
      */
     public function isGdprEnabled($store_id = null)
@@ -286,7 +296,8 @@ class PinterestHelper extends AbstractHelper
         foreach ($stores as $store) {
             $storeId = $store->getId();
             $collection = $this->_productFactory->create()->getCollection();
-            $filteredCollection = $collection->setStoreId($storeId)->addAttributeToFilter('status', Status::STATUS_ENABLED);
+            $filteredCollection = $collection->setStoreId($storeId)
+                                             ->addAttributeToFilter('status', Status::STATUS_ENABLED);
             $count = $count + $filteredCollection->count();
 
             $this->logInfo("getProductCountInAllStores total_count = ".$count." storeid=".$storeId);
@@ -804,7 +815,8 @@ class PinterestHelper extends AbstractHelper
     {
         if (!$this->isGdprEnabled()) {
             return false;
-        } elseif ($this->isCookieRestrictionModeEnabled() && $this->getGdprOption() == PinterestGDPROptions::USE_COOKIE_RESTRICTION_MODE) {
+        } elseif ($this->isCookieRestrictionModeEnabled()
+                    && $this->getGdprOption() == PinterestGDPROptions::USE_COOKIE_RESTRICTION_MODE) {
             return $this->_cookie->isUserNotAllowSaveCookie();
         } elseif ($this->getGdprOption() == PinterestGDPROptions::IF_COOKIE_NOT_EXIST) {
             // Allowed to track if cookie value is not set
@@ -842,5 +854,17 @@ class PinterestHelper extends AbstractHelper
     public function getUserLocale()
     {
         return $this->_session->getUser() ? $this->_session->getUser()->getInterfaceLocale() : null;
+    }
+
+    /**
+     * Get the content id for the product
+     *
+     * @param Product $product
+     * @return string content id
+     */
+    public static function getContentId($product)
+    {
+        $unique_id = ProductExporter::getUniqueId($product);
+        return ($product->getTypeId() == Type::TYPE_SIMPLE) ?  "v_".$unique_id : $unique_id;
     }
 }

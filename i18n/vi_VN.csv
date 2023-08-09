@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Bật nhập danh mục sản phẩm"
-"Turn off catalog ingestion","Tắt nhập danh mục sản phẩm"
-"Turn on Pinterest tag and Pinterest API for Conversions","Bật Thẻ Pinterest và API Pinterest cho Chuyển đổi"
-"Turn off Pinterest tag and Pinterest API for Conversions","Tắt Thẻ Pinterest và API Pinterest cho Chuyển đổi"
+"Regenerate Catalog","Tái tạo Danh mục sản phẩm"
+"Turn on catalog ingestion","Bật chức năng nhập danh mục sản phẩm"
+"Turn off catalog ingestion","Tắt chức năng nhập danh mục sản phẩm"
+"Turn on Pinterest tag and Pinterest API for Conversions","Bật Thẻ Pinterest và API Chuyển đổi của Pinterest"
+"Turn off Pinterest tag and Pinterest API for Conversions","Tắt Thẻ Pinterest và API Chuyển đổi của Pinterest"
+"Use Magento Cookie Restriction Mode","Sử dụng Chế độ hạn chế Cookie Magento"
+"Enable Tracking if Cookie Exists","Bật theo dõi nếu Cookie tồn tại"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Đã xảy ra sự cố khi tái tạo danh mục sản phẩm của bạn. Vui lòng làm mới trang hoặc thử lại sau."
+Success,Thành công
+"You must be logged into Pinterest to access this setting","Bạn phải đăng nhập vào Pinterest để truy cập cài đặt này"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Thiết lập
 Configurations,Cấu hình
 General,Tổng quan
 "Client ID","ID khách hàng"
-"Base URL","URL cơ sở"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID ứng dụng cho Pinterest. Thông tin này được sử dụng để xác định các ứng dụng của Adobe Commerce/Magento trên Pinterest."
+"Base URL","URL gốc"
+"Base URL path for Pinterest.","Đường dẫn URL cơ sở cho Pinterest."
 "Catalog Ingestion","Nhập danh mục sản phẩm"
+"Turn on or off catalog ingestion to Pinterest","Bật hoặc tắt nhập danh mục sản phẩm vào Pinterest"
 "Tag and API for Conversions","Thẻ và API Chuyển đổi"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Tắt Thẻ Pinterest và API Chuyển đổi của Pinterest"
+"Catalog Sync","Đồng bộ hóa danh mục sản phẩm"
+"Manually run catalog creation and feed registration","Chạy thủ công việc tạo danh mục sản phẩm và đăng ký nguồn cấp dữ liệu"
+"General Data Protection Regulation (GDPR)","Quy định chung về bảo vệ dữ liệu (GDPR)"
+"Enable GDPR","Bật GDPR"
+Options,Tùy chọn
+"Cookie Name","Tên cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Bạn có thể kiểm soát việc theo dõi tại Cửa hàng > Cấu hình > Chung > Web > Cài đặt cookie mặc định > Chế độ hạn chế Cookie"
