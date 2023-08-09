@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Catalogusopname inschakelen"
-"Turn off catalog ingestion","Catalogusopname uitschakelen"
-"Turn on Pinterest tag and Pinterest API for Conversions","De Pinterest-tag en de Pinterest-API inschakelen voor conversies"
+"Regenerate Catalog","Catalogus opnieuw genereren"
+"Turn on catalog ingestion","Gegevensopname uit de catalogus inschakelen"
+"Turn off catalog ingestion","Gegevensopname uit de catalogus uitschakelen"
+"Turn on Pinterest tag and Pinterest API for Conversions","De Pinterest-tag en de Pinterest-API voor conversies inschakelen"
 "Turn off Pinterest tag and Pinterest API for Conversions","De Pinterest-tag en de Pinterest-API voor conversies uitschakelen"
+"Use Magento Cookie Restriction Mode","De cookiebeperkingen van Magento gebruiken"
+"Enable Tracking if Cookie Exists","Tracking inschakelen als de cookie bestaat"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Er is een probleem opgetreden bij het opnieuw genereren van je catalogus. Vernieuw de pagina of probeer het later opnieuw."
+Success,Gelukt
+"You must be logged into Pinterest to access this setting","Je moet ingelogd zijn op Pinterest om toegang te krijgen tot deze instelling"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Instellen
 Configurations,Configuraties
 General,Algemeen
 "Client ID","Klant-ID"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Client-ID voor Pinterest. Dit wordt gebruikt om de Adobe Commerce-/Magento-clients op Pinterest te identificeren."
 "Base URL","Basis-URL"
-"Catalog Ingestion","Gegevensopname van catalogus"
+"Base URL path for Pinterest.","Basis-URL-pad voor Pinterest."
+"Catalog Ingestion","Gegevensopname uit de catalogus"
+"Turn on or off catalog ingestion to Pinterest","Gegevensopname uit de catalogus in- of uitschakelen op Pinterest"
 "Tag and API for Conversions","Tag en API voor conversies"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","De Pinterest-tag en de Pinterest-API voor conversies in- of uitschakelen"
+"Catalog Sync","Catalogus synchroniseren"
+"Manually run catalog creation and feed registration","Handmatig catalogus maken en feedregistratie uitvoeren"
+"General Data Protection Regulation (GDPR)","Algemene verordening gegevensbescherming (AVG)"
+"Enable GDPR","AVG inschakelen"
+Options,Opties
+"Cookie Name","Cookienaam"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Tracking wordt beheerd via Winkel > Configuratie > Algemeen > Web > Standaard cookie-instellingen > Cookiebeperkingen"

@@ -47,7 +47,14 @@ class Checkout extends Setup
         Session $session,
         PricingHelper $pricingHelper
     ) {
-        parent::__construct($context, $pluginErrorHelper, $pinterestHelper, $eventManager, $registry, $customerDataHelper);
+        parent::__construct(
+            $context,
+            $pluginErrorHelper,
+            $pinterestHelper,
+            $eventManager,
+            $registry,
+            $customerDataHelper
+        );
         $this->_session = $session;
         $this->_pricingHelper = $pricingHelper;
     }
@@ -95,7 +102,7 @@ class Checkout extends Setup
             $orderId = $order->getId();
             foreach ($items as $item) {
                 $product = $item->getProduct();
-                $productIds[] = $product->getId();
+                $productIds[] = $this->_pinterestHelper->getContentId($product);
                 $price = $this->_pricingHelper->currency($product->getPrice(), false, false);
                 $contents[] = [
                     "quantity" => (int) $item->getQtyOrdered(),
@@ -103,7 +110,7 @@ class Checkout extends Setup
                 ];
                 $lineItems[] = [
                     "product_category" => $this->_pinterestHelper->getCategoryNamesFromIds($product->getCategoryIds()),
-                    "product_id" => $product->getId(),
+                    "product_id" => $this->_pinterestHelper->getContentId($product),
                     "product_quantity" => (int) $item->getQtyOrdered(),
                     "product_price" => (string) $price,
                     "product_name" => $product->getName(),

@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Das Katalog-Einpflegen aktivieren"
-"Turn off catalog ingestion","Das Katalog-Einpflegen deaktivieren"
+"Regenerate Catalog","Katalog neu erstellen"
+"Turn on catalog ingestion","Einpflege in den Katalog aktivieren"
+"Turn off catalog ingestion","Einpflege in den Katalog deaktivieren"
 "Turn on Pinterest tag and Pinterest API for Conversions","Pinterest-Tag und Pinterest-API für Conversions aktivieren"
 "Turn off Pinterest tag and Pinterest API for Conversions","Pinterest-Tag und Pinterest-API für Conversions deaktivieren"
+"Use Magento Cookie Restriction Mode","Cookie-Einschränkungsmodus für Magento verwenden"
+"Enable Tracking if Cookie Exists","Tracking aktivieren, falls ein Cookie vorhanden ist"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Bei der Neuerstellung deines Katalogs ist ein Problem aufgetreten. Aktualisiere die Seite oder versuche es zu einem späteren Zeitpunkt erneut."
+Success,Fertig!
+"You must be logged into Pinterest to access this setting","Du musst bei Pinterest angemeldet sein, um auf diese Einstellung zugreifen zu können."
 Pinterest,Pinterest
-Setup,Setup
+Setup,Einrichten
 Configurations,Konfigurationen
 General,Allgemein
-"Client ID","Client-ID"
+"Client ID","Kunden-ID"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Kunden-ID für Pinterest. Diese wird verwendet, um Adobe Commerce-/Magento-Kunden auf Pinterest zu identifizieren."
 "Base URL","Basis-URL"
-"Catalog Ingestion","Katalog-Einpflegen"
+"Base URL path for Pinterest.","Basis-URL-Pfad für Pinterest."
+"Catalog Ingestion","Einpflege in den Katalog"
+"Turn on or off catalog ingestion to Pinterest","Das Einpflege in den Katalog auf Pinterest aktivieren oder deaktivieren"
 "Tag and API for Conversions","Tag und API für Conversions"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Pinterest-Tag und Pinterest-API für Conversions aktivieren oder deaktivieren"
+"Catalog Sync","Katalogsynchronisation"
+"Manually run catalog creation and feed registration","Katalogerstellung und Feed-Registrierung manuell ausführen"
+"General Data Protection Regulation (GDPR)","Datenschutz-Grundverordnung (DSGVO)"
+"Enable GDPR","DSGVO aktivieren"
+Options,Optionen
+"Cookie Name","Name des Cookies"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Das Tracking wird über „Stores > Konfiguration > Allgemein > Web > Standard-Cookie-Einstellungen > Cookie-Einschränkungsmodus“ gesteuert."

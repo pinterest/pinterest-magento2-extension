@@ -1,12 +1,29 @@
+"Regenerate Catalog","重新生成目录"
 "Turn on catalog ingestion","开启目录接入"
 "Turn off catalog ingestion","关闭目录接入"
 "Turn on Pinterest tag and Pinterest API for Conversions","开启 Pinterest 标签和 Pinterest 转化 API"
 "Turn off Pinterest tag and Pinterest API for Conversions","关闭 Pinterest 标签和 Pinterest 转化 API"
+"Use Magento Cookie Restriction Mode","使用 Magento Cookie 限制模式"
+"Enable Tracking if Cookie Exists","如果存在 Cookie，则启用跟踪"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","重新生成目录时出现问题。请刷新页面或稍后重试。"
+Success,成功
+"You must be logged into Pinterest to access this setting","你必须登录 Pinterest 才能访问此设置"
 Pinterest,Pinterest
 Setup,设置
 Configurations,配置
 General,一般
 "Client ID","客户 ID"
-"Base URL","基准网址"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest 的客户 ID。此 ID 用于识别 Pinterest 上的 Adobe Commerce/Magento 客户。"
+"Base URL","基本网址"
+"Base URL path for Pinterest.","Pinterest 的基本网址路径。"
 "Catalog Ingestion","目录接入"
+"Turn on or off catalog ingestion to Pinterest","开启或关闭 Pinterest 的目录接入"
 "Tag and API for Conversions","标签和转化 API"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","开启或关闭 Pinterest 标签和 Pinterest 转化 API"
+"Catalog Sync","目录同步"
+"Manually run catalog creation and feed registration","手动运行目录创建和页面注册"
+"General Data Protection Regulation (GDPR)","通用数据保护条例 (GDPR)"
+"Enable GDPR","启用 GDPR"
+Options,选择
+"Cookie Name","Cookie 名称"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","可通过转至以下位置控制跟踪：商店 > 配置 > 通用 > 网页 > 默认 Cookie 设置 > Cookie 限制模式"

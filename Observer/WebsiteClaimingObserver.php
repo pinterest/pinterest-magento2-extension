@@ -153,7 +153,12 @@ class WebsiteClaimingObserver implements ObserverInterface
                  */
                 $this->_pinterestHelper->logError("Website claiming failed for URL ($website)");
                 $errorData = ['website' => $website, 'errorCode' => $response->code];
-                $this->_pluginErrorHelper->logAndSaveError("errors/website_claiming/{$website}", $errorData, $response->message, IntegrationErrorId::ERROR_DOMAIN_CLAIMING);
+                $this->_pluginErrorHelper->logAndSaveError(
+                    "errors/website_claiming/{$website}",
+                    $errorData,
+                    $response->message,
+                    IntegrationErrorId::ERROR_DOMAIN_CLAIMING
+                );
             }
         } catch (\Exception $e) {
             $this->_pinterestHelper->logException($e);

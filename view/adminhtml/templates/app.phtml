@@ -7,5 +7,5 @@ $config = $block->scriptConfigAfterConnect()
             initScript(<?php print(json_encode($config, JSON_UNESCAPED_SLASHES)) ?>);
         });
     </script>
-    <iframe id="pinterest-iframe" src="<?= $config['pinterestBaseUrl'] ?>/business/commerce-integrations/apps/v1/settings/<?= $config['locale'] ? "?locale=".$config['locale'] : "" ?>" width="700px" height="1200px" frameBorder="0"></iframe>
+    <iframe id="pinterest-iframe" src="<?= $config['pinterestBaseUrl'] ?>/business/commerce-integrations/apps/<?= $config['iframeVersion'] ?>/settings/<?= $config['locale'] ? "?locale=".$config['locale'] : "" ?>" width="700px" height="1200px" frameBorder="0"></iframe>
 </div>

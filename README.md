@@ -18,9 +18,9 @@ The extension is available in Adobe marketplace at https://marketplace.magento.c
 To install this extension, manually run the following command from the top level magento folder
 
 - `cd app/code`
-- `mkdir pinterest/pinterestmagento2extension`
+- `mkdir Pinterest/PinterestMagento2Extension`
 - clone this repo
-- `cd pinterest/pinterestmagento2extension`
+- `cd Pinterest/PinterestMagento2Extension`
 - `sh install-pinterest-magento-extension.sh`
 
 ## Unit tests

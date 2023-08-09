@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Katalógus-feldolgozás bekapcsolása"
-"Turn off catalog ingestion","Katalógus-feldolgozás kikapcsolása"
-"Turn on Pinterest tag and Pinterest API for Conversions","Kapcsold be a Pinterest-címkét és a konverziós Pinterest API-t"
+"Regenerate Catalog","Katalógus újragenerálása"
+"Turn on catalog ingestion","Katalógusfeldolgozás bekapcsolása"
+"Turn off catalog ingestion","Katalógusfeldolgozás kikapcsolása"
+"Turn on Pinterest tag and Pinterest API for Conversions","A Pinterest-címke és a konverziós Pinterest API bekapcsolása"
 "Turn off Pinterest tag and Pinterest API for Conversions","A Pinterest-címke és a konverziós Pinterest API kikapcsolása"
+"Use Magento Cookie Restriction Mode","A Magento cookie‑korlátozási módjának használata"
+"Enable Tracking if Cookie Exists","A nyomon követés engedélyezése meglévő cookie esetén"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Hiba történt a katalógusod újragenerálása során. Frissítsd az oldalt, vagy próbáld újra később."
+Success,Sikerült
+"You must be logged into Pinterest to access this setting","Ehhez a beállításhoz be kell jelentkezned a Pinterestbe"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Beállítás
 Configurations,Konfigurációk
 General,Általános
 "Client ID","Ügyfél azonosítója"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","A Pinterest ügyfélazonosítója. Az Adobe Commerce/Magento-ügyfeleket ezzel lehet azonosítani a Pinteresten."
 "Base URL","Alap URL"
+"Base URL path for Pinterest.","A Pinterest alap URL‑jéhez tartozó elérési útvonal."
 "Catalog Ingestion","Katalógus feldolgozása"
-"Tag and API for Conversions","Konverziós címke és API"
+"Turn on or off catalog ingestion to Pinterest","A katalógusfeldolgozás be- vagy kikapcsolása a Pinteresten"
+"Tag and API for Conversions","Címke és konverziós API"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","A Pinterest‑címke és a konverziós Pinterest API be- vagy kikapcsolása"
+"Catalog Sync","Katalógus szinkronizálása"
+"Manually run catalog creation and feed registration","Katalóguslétrehozás és képfolyam-regisztráció manuális futtatása"
+"General Data Protection Regulation (GDPR)","Általános adatvédelmi rendelet (GDPR)"
+"Enable GDPR","GDPR engedélyezése"
+Options,Beállítások
+"Cookie Name","Cookie neve"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","A nyomon követés beállításai a következő szakaszban találhatók: Áruházak > Konfigurálás > Általános > Web > Alapértelmezett cookie-beállítások > Cookie‑korlátozási mód"

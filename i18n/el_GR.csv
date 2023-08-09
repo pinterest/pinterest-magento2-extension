@@ -1,12 +1,29 @@
+"Regenerate Catalog","Εκ νέου δημιουργία καταλόγου"
 "Turn on catalog ingestion","Ενεργοποίηση πρόσληψης καταλόγου"
 "Turn off catalog ingestion","Απενεργοποίηση πρόσληψης καταλόγου"
 "Turn on Pinterest tag and Pinterest API for Conversions","Ενεργοποιήστε την ετικέτα Pinterest και το API του Pinterest για μετατροπές"
 "Turn off Pinterest tag and Pinterest API for Conversions","Απενεργοποίηση της ετικέτας Pinterest και του API του Pinterest για μετατροπές"
+"Use Magento Cookie Restriction Mode","Χρήση λειτουργίας περιορισμού cookie Magento"
+"Enable Tracking if Cookie Exists","Ενεργοποίηση παρακολούθησης εάν υπάρχει cookie"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Παρουσιάστηκε πρόβλημα με την εκ νέου δημιουργία του καταλόγου σας. Ανανεώστε τη σελίδα ή δοκιμάστε ξανά αργότερα."
+Success,Επιτυχία
+"You must be logged into Pinterest to access this setting","Για να αποκτήσετε πρόσβαση σε αυτή τη ρύθμιση, πρέπει να είστε συνδεδεμένοι στο Pinterest."
 Pinterest,Pinterest
-Setup,Setup
-Configurations,Ρυθμίσεις παραμέτρων
+Setup,Ρύθμιση
+Configurations,Διαμορφώσεις
 General,Γενικά
 "Client ID","Αναγνωριστικό πελάτη"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Αναγνωριστικό πελάτη για το Pinterest. Χρησιμοποιείται για την αναγνώριση πελατών του Adobe Commerce/Magento στο Pinterest."
 "Base URL","Βασική διεύθυνση URL"
+"Base URL path for Pinterest.","Διαδρομή βασικής διεύθυνσης URL για το Pinterest."
 "Catalog Ingestion","Πρόσληψη καταλόγου"
-"Tag and API for Conversions","Προσθήκη ετικέτας και API για μετατροπές"
+"Turn on or off catalog ingestion to Pinterest","Ενεργοποίηση ή απενεργοποίηση πρόσληψης καταλόγου στο Pinterest"
+"Tag and API for Conversions","Ετικέτες και API για μετατροπές"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Ενεργοποίηση ή απενεργοποίηση της ετικέτας Pinterest και του API του Pinterest για μετατροπές"
+"Catalog Sync","Συγχρονισμός καταλόγου"
+"Manually run catalog creation and feed registration","Μη αυτόματη εκτέλεση δημιουργίας καταλόγου και εγγραφής τροφοδοσίας"
+"General Data Protection Regulation (GDPR)","Γενικός Κανονισμός Προστασίας Δεδομένων (ΓΚΠΔ)"
+"Enable GDPR","Ενεργοποίηση του ΓΚΠΔ"
+Options,Επιλογές
+"Cookie Name","Όνομα cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Η παρακολούθηση ελέγχεται ως εξής: Καταστήματα > Διαμόρφωση > Γενικά > Web > Προεπιλεγμένες ρυθμίσεις cookie > Λειτουργία περιορισμού cookie."

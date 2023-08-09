@@ -1,12 +1,29 @@
+"Regenerate Catalog","Regenerasi Katalog"
 "Turn on catalog ingestion","Aktifkan penyerapan katalog"
 "Turn off catalog ingestion","Nonaktifkan penyerapan katalog"
 "Turn on Pinterest tag and Pinterest API for Conversions","Aktifkan tag Pinterest dan API Pinterest untuk Konversi"
 "Turn off Pinterest tag and Pinterest API for Conversions","Nonaktifkan tag Pinterest dan API Pinterest untuk Konversi"
+"Use Magento Cookie Restriction Mode","Gunakan Mode Pembatasan Cookie Magento"
+"Enable Tracking if Cookie Exists","Aktifkan Pelacakan jika Cookie Ada"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Terjadi masalah saat meregenerasi katalog Anda. Segarkan halaman lalu coba lagi nanti."
+Success,Berhasil
+"You must be logged into Pinterest to access this setting","Anda harus masuk ke Pinterest untuk mengakses pengaturan ini"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Siapkan
 Configurations,Konfigurasi
 General,Umum
 "Client ID","ID Klien"
-"Base URL","URL Dasar"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID Klien untuk Pinterest. ID ini digunakan untuk mengidentifikasi klien Adobe Commerce/Magento di Pinterest."
+"Base URL","URL Utama"
+"Base URL path for Pinterest.","Jalur URL utama untuk Pinterest."
 "Catalog Ingestion","Penyerapan Katalog"
+"Turn on or off catalog ingestion to Pinterest","Aktifkan atau nonaktifkan penyerapan katalog ke Pinterest"
 "Tag and API for Conversions","Tag dan API untuk Konversi"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Aktifkan atau nonaktifkan tag Pinterest dan API Pinterest untuk Konversi"
+"Catalog Sync","Sinkronisasi Katalog"
+"Manually run catalog creation and feed registration","Jalankan pendaftaran pembuatan katalog dan sajian secara manual"
+"General Data Protection Regulation (GDPR)","Peraturan Perlindungan Data Umum (GDPR)"
+"Enable GDPR","Aktifkan GDPR"
+Options,Opsi
+"Cookie Name","Nama Cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Pelacakan dikontrol di Toko > Konfigurasi > Umum > > Web > Pengaturan Cookie Default > Mode Pembatasan Cookie"

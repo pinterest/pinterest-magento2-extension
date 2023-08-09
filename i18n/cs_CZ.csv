@@ -1,12 +1,29 @@
+"Regenerate Catalog","Znovu vygenerovat katalog"
 "Turn on catalog ingestion","Zapnout přijetí katalogu"
 "Turn off catalog ingestion","Vypnout přijetí katalogu"
-"Turn on Pinterest tag and Pinterest API for Conversions","Zapnutí tagu Pinterestu a rozhraní API Pinterestu pro konverze"
-"Turn off Pinterest tag and Pinterest API for Conversions","Vypnutí tagu Pinterestu a rozhraní API Pinterestu pro konverze"
+"Turn on Pinterest tag and Pinterest API for Conversions","Zapnutí tagu Pinterestu a rozhraní Pinterest API pro konverze"
+"Turn off Pinterest tag and Pinterest API for Conversions","Vypnutí tagu Pinterestu a rozhraní Pinterest API pro konverze"
+"Use Magento Cookie Restriction Mode","Použít režim omezení souborů cookie Magento"
+"Enable Tracking if Cookie Exists","Povolit sledování, pokud soubor cookie existuje"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Při opětovném generování katalogu došlo k chybě. Obnovte stránku nebo to zkuste znovu později."
+Success,Úspěch
+"You must be logged into Pinterest to access this setting","Abyste získali přístup k tomuto nastavení, musíte být přihlášeni k Pinterestu."
 Pinterest,Pinterest
-Setup,Setup
+Setup,Nastavit
 Configurations,Konfigurace
 General,Obecné
 "Client ID","ID klienta"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID klienta pro Pinterest. Používá se k identifikaci klientů Adobe Commerce/Magento na Pinterestu."
 "Base URL","Základní adresa URL"
+"Base URL path for Pinterest.","Cesta základní adresy URL pro Pinterest."
 "Catalog Ingestion","Přijetí katalogu"
-"Tag and API for Conversions","Tag a rozhraní API pro konverze"
+"Turn on or off catalog ingestion to Pinterest","Zapnout nebo vypnout přijetí katalogu na Pinterestu"
+"Tag and API for Conversions","Tag a rozhraní API pro konverze"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Zapnout nebo vypnout tag Pinterestu a rozhraní Pinterest API pro konverze"
+"Catalog Sync","Synchronizace katalogu"
+"Manually run catalog creation and feed registration","Ručně spustit tvoření katalogu a registraci domovské stránky"
+"General Data Protection Regulation (GDPR)","Obecné nařízení o ochraně osobních údajů (GDPR)"
+"Enable GDPR","Povolit GDPR"
+Options,Možnosti
+"Cookie Name","Název souboru cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Sledování se řídí v nabídce Obchody > Konfigurace > Obecné > Web > Výchozí nastavení souborů cookie > Režim omezení souborů cookie."

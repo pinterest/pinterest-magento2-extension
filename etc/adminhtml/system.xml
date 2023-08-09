@@ -28,12 +28,14 @@
                     <comment>Turn on or off catalog ingestion to Pinterest</comment>
                     <validate>required-entry no-whitespace</validate>
                     <source_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestCatalogConfigList</source_model>
+                    <backend_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestCatalogConfigBackend</backend_model>
                 </field>
                 <field id="pinterest_conversion_enabled" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Tag and API for Conversions</label>
-                    <comment>Turn on or off Pinterest tag and Pinterest API for Conversions</comment>
+                    <comment>Turn on or off Pinterest tag and Pinterest API for Conversions. This setting can only be set during onboarding. Disconnect and reconnect to change the value.</comment>
                     <validate>required-entry no-whitespace</validate>
                     <source_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestConversionConfigList</source_model>
+                    <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
                 </field>
                 <field id="pinterest_regenerate_feeds" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Catalog Sync</label>

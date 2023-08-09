@@ -94,7 +94,7 @@ class CatalogProductSaveObserver implements ObserverInterface
     /**
      * Reserved for batch update
      *
-     * if count(cache) >= CACHE_MAX_ITEMS: emit all
+     * If count(cache) >= CACHE_MAX_ITEMS: emit all
      * if time_diff(now, earliest) >= MAX_HOLD_SECONDS: emit all
      * if count(cache) < CACHE_MAX_ITEMS and time_diff(now, earliest) < MAX_HOLD_SECONDS, append and exit
      *
@@ -109,7 +109,7 @@ class CatalogProductSaveObserver implements ObserverInterface
             $data = json_encode(["start_time" => time(), "ids" => []]);
         }
         $meta = json_decode($data, true);
-        if (!is_null($new_id)) {
+        if ($new_id !== null) {
             if (! in_array($new_id, $meta["ids"]??[])) {
                 $meta["ids"] []= $new_id;
                 $this->cache->save(json_encode($meta), self::RECENT_SAVE, self::CACHE_TAGS);
@@ -125,8 +125,8 @@ class CatalogProductSaveObserver implements ObserverInterface
     /**
      * Hold or send product updates, see emitIds() for rules
      *
-     * @param $locale
-     * @param $new_id
+     * @param string $locale
+     * @param mixed $new_id
      */
     protected function checkQueue($locale, $new_id)
     {
@@ -147,7 +147,6 @@ class CatalogProductSaveObserver implements ObserverInterface
     }
 
     /**
-     *
      * Use Magento's CacheInterface to store product alteration data
      *
      * Another way is to use product's extension attributes
@@ -161,8 +160,8 @@ class CatalogProductSaveObserver implements ObserverInterface
      *
      * CacheInterface is preferred over EA as it is much faster and more flexible.
      *
-     * @param $product_id
-     * @param $json_data
+     * @param string $product_id
+     * @param array $json_data
      *
      * @return bool
      */
@@ -245,6 +244,8 @@ class CatalogProductSaveObserver implements ObserverInterface
 
      /**
       * Show message in admin UI
+      *
+      * @param array $items
       *
       * @return void
       */

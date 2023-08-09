@@ -46,6 +46,7 @@ class Setup extends Template
      * @param EventManager $eventManager
      * @param Registry $registry
      * @param CustomerDataHelper $customerDataHelper
+     * @param array $data
      */
     public function __construct(
         Context $context,
@@ -76,50 +77,92 @@ class Setup extends Template
             $this->_customerDataHelper->hash($emailId) :
             null;
     }
-    
+
+    /**
+     * Get current store currency code
+     *
+     * @return string
+     */
     public function getCurrency()
     {
         return $this->_pinterestHelper->getCurrency();
     }
 
+    /**
+     * Get redirect URL based
+     *
+     * @return mixed
+     */
     public function getRedirectUrl()
     {
         return $this->_pinterestHelper->getUrl(PinterestHelper::REDIRECT_URI);
     }
 
+    /**
+     * Checks if the user has valid connection to pinterest
+     *
+     * @return bool
+     */
     public function isUserConnected()
     {
         return $this->_pinterestHelper->isUserConnected();
     }
 
+    /**
+     * Returns true if the tag is enabled
+     *
+     * @return bool
+     */
     public function isTagEnabled()
     {
         return $this->isUserConnected() &&
             $this->_pinterestHelper->isConversionConfigEnabled();
     }
 
+    /**
+     * Gets metadata for meta_tag value
+     *
+     * @param string
+     */
     public function getMetaTag()
     {
         return $this->_pinterestHelper->getMetadataValue("pinterest/website_claiming/meta_tag");
     }
 
+    /**
+     * Gets metadata for tag_id value
+     *
+     * @param string
+     */
     public function getTagId()
     {
         return $this->_pinterestHelper->getMetadataValue("pinterest/info/tag_id");
     }
 
+    /**
+     * Checks if user has consented to tracking via cookies.
+     *
+     * @return bool
+     */
     public function isCookieRestrictionModeEnabled()
     {
         return $this->_pinterestHelper->isCookieRestrictionModeEnabled();
     }
 
+    /**
+     * Returns current website id.
+     *
+     * @return int
+     */
     public function getCurrentWebsiteId()
     {
         return $this->_pinterestHelper->getCurrentWebsiteId();
     }
 
     /**
-     * @param null $store_id
+     * Gets GDPR option for a store id
+     *
+     * @param int $store_id
      * @return int
      */
     public function getGdprOption($store_id = null)
@@ -128,7 +171,9 @@ class Setup extends Template
     }
 
     /**
-     * @param null $store_id
+     * Gets GDPR cookie name for a store id.
+     *
+     * @param int $store_id
      * @return string
      */
     public function getGDPRCookieName($store_id = null)
@@ -142,7 +187,9 @@ class Setup extends Template
     }
 
     /**
-     * @param null $store_id
+     * Returns true if GDPR is enabled in config for this extension
+     *
+     * @param int $store_id
      * @return int
      */
     public function isGdprEnabled($store_id = null)
@@ -150,11 +197,17 @@ class Setup extends Template
         return (int) $this->_pinterestHelper->isGdprEnabled($store_id);
     }
 
+    /**
+     * Returns configuration before connecting.
+     *
+     * @return array
+     */
     public function scriptConfigBeforeConnect()
     {
         return [
             "baseUrl" => $this->_pinterestHelper->getBaseUrl(),
             "pinterestBaseUrl" => $this->_pinterestHelper->getPinterestBaseUrl(),
+            "iframeVersion" => (PinterestHelper::IFRAME_VERSION),
             "redirectUri" => $this->_pinterestHelper->getUrl(PinterestHelper::REDIRECT_URI),
             "clientId" => $this->_pinterestHelper->getClientId(),
             "state" => $this->_pinterestHelper->getRandomState(),
@@ -163,14 +216,21 @@ class Setup extends Template
             "locale" => $this->_pinterestHelper->getUserLocale()
         ];
     }
+
+    /**
+     * Returns configuration after connecting.
+     *
+     * @return array
+     */
     public function scriptConfigAfterConnect()
     {
         return [
             "pinterestBaseUrl" => $this->_pinterestHelper->getPinterestBaseUrl(),
+            "iframeVersion" =>  (PinterestHelper::IFRAME_VERSION),
             "accessToken" => $this->_pinterestHelper->getAccessToken(),
             "advertiserId" => $this->_pinterestHelper->getAdvertiserId(),
             "merchantId" => $this->_pinterestHelper->getMerchantId(),
-            "tagId" => $this ->_pinterestHelper->getTagId(),
+            "tagId" => ($this ->_pinterestHelper->getTagId()? $this ->_pinterestHelper->getTagId(): ""),
             "disconnectURL" => $this->_pinterestHelper->getUrl("pinterestadmin/Setup/Disconnect"),
             "errors" => $this->_pluginErrorHelper->getAllStoredErrors(),
             "partnerMetadata" => $this->_pinterestHelper->getPartnerMetadata(),

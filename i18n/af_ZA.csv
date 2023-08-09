@@ -1,12 +1,29 @@
+"Regenerate Catalog","Hergenereer katalogus"
 "Turn on catalog ingestion","Skakel katalogusinname aan"
 "Turn off catalog ingestion","Skakel katalogusinname af"
-"Turn on Pinterest tag and Pinterest API for Conversions","Skakel Pinterest-merking en Pinterest-API vir omskakelings aan"
-"Turn off Pinterest tag and Pinterest API for Conversions","Skakel Pinterest-merking en Pinterest-API vir omskakelings af"
+"Turn on Pinterest tag and Pinterest API for Conversions","Skakel Pinterest-merker en Pinterest-API vir omskakelings aan"
+"Turn off Pinterest tag and Pinterest API for Conversions","Skakel Pinterest-merker en Pinterest-API vir omskakelings af"
+"Use Magento Cookie Restriction Mode","Gebruik Magento-koekiebeperkingsmodus"
+"Enable Tracking if Cookie Exists","Aktiveer nasporing as koekie bestaan"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Daar was 'n probleem met die hergenerering van jou katalogus. Herlaai asseblief die bladsy of probeer later weer."
+Success,Sukses
+"You must be logged into Pinterest to access this setting","Jy moet by Pinterest aangemeld wees vir toegang tot hierdie instelling"
 Pinterest,Pinterest
-Setup,Setup
-Configurations,Opstelling
+Setup,Opstelling
+Configurations,Opstellings
 General,Algemeen
 "Client ID","Kliënt-ID"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Kliënt-ID vir Pinterest. Dit word gebruik om Adobe Commerce-/Magento-kliënte op Pinterest te identifiseer."
 "Base URL","Basis-URL"
+"Base URL path for Pinterest.","Basis-URL-pad vir Pinterest."
 "Catalog Ingestion","Katalogusinname"
-"Tag and API for Conversions","Merk en API vir omskakelings"
+"Turn on or off catalog ingestion to Pinterest","Skakel katalogusinname na Pinterest aan of af"
+"Tag and API for Conversions","Merker en API vir omskakelings"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Skakel Pinterest-merker en Pinterest-API vir omskakelings aan of af"
+"Catalog Sync","Katalogussinchronisasie"
+"Manually run catalog creation and feed registration","Laat katalogusskepping en voerregistrasie handmatig loop"
+"General Data Protection Regulation (GDPR)","Algemene regulasie vir databeskerming (GDPR)"
+"Enable GDPR","Aktiveer GDPR"
+Options,Opsies
+"Cookie Name","Koekienaam"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Nasporing word beheer by winkels > konfigurasie > Algemeen > Web > Verstekkoekieinstellings > koekiebeperkingsmodus"

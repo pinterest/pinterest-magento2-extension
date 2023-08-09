@@ -1,12 +1,29 @@
+"Regenerate Catalog","Jana semula Katalog"
 "Turn on catalog ingestion","Hidupkan pengingesan katalog"
 "Turn off catalog ingestion","Matikan pengingesan katalog"
 "Turn on Pinterest tag and Pinterest API for Conversions","Hidupkan tag Pinterest dan API Pinterest untuk Penukaran"
 "Turn off Pinterest tag and Pinterest API for Conversions","Matikan tag Pinterest dan API Pinterest untuk Penukaran"
+"Use Magento Cookie Restriction Mode","Gunakan Mod Sekatan Kuki Magento"
+"Enable Tracking if Cookie Exists","Dayakan Penjejakan jika Kuki Wujud"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Terdapat masalah semasa menjana semula katalog anda. Sila segarkan semula halaman dan cuba lagi kemudian."
+Success,Berjaya
+"You must be logged into Pinterest to access this setting","Anda mesti log masuk ke Pinterest untuk mengakses tetapan ini"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Sediakan
 Configurations,Konfigurasi
 General,Umum
 "Client ID","ID Pelanggan"
-"Base URL","URL Pangkalan"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID klien untuk Pinterest. Ini digunakan untuk mengenal pasti klien Adobe Commerce/Magento di Pinterest."
+"Base URL","URL Induk"
+"Base URL path for Pinterest.","Laluan URL induk untuk Pinterest."
 "Catalog Ingestion","Pengingesan Katalog"
+"Turn on or off catalog ingestion to Pinterest","Hidupkan atau matikan pengingesan katalog ke Pinterest"
 "Tag and API for Conversions","Tag dan API untuk Penukaran"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Hidupkan atau matikan tag Pinterest dan API Pinterest untuk Penukaran"
+"Catalog Sync","Penyegerakan Katalog"
+"Manually run catalog creation and feed registration","Jalankan penciptaan katalog dan pendaftaran suapan secara manual"
+"General Data Protection Regulation (GDPR)","Peraturan Perlindungan Data Am (GDPR)"
+"Enable GDPR","Dayakan GDPR"
+Options,Pilihan
+"Cookie Name","Nama Kuki"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Penjejakan dikawal di Gedung > Konfigurasi > Umum > Web > Tetapan Kuki Lalai > Mod Sekatan Kuki"

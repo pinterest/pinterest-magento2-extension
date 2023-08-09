@@ -1,12 +1,29 @@
+"Regenerate Catalog","Återskapa katalog"
 "Turn on catalog ingestion","Aktivera kataloginmatning"
 "Turn off catalog ingestion","Stäng av kataloginmatning"
-"Turn on Pinterest tag and Pinterest API for Conversions","Aktivera Pinterest-taggen och Pinterest API för konversioner"
-"Turn off Pinterest tag and Pinterest API for Conversions","Stäng av Pinterest-taggen och Pinterest API för konversioner"
+"Turn on Pinterest tag and Pinterest API for Conversions","Aktivera Pinterest-taggen och Pinterests API för konversioner"
+"Turn off Pinterest tag and Pinterest API for Conversions","Stäng av Pinterest-taggen och Pinterests API för konversioner"
+"Use Magento Cookie Restriction Mode","Använd Magento cookiebegränsningsläge"
+"Enable Tracking if Cookie Exists","Aktivera spårning om det finns en cookie"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Det gick inte att återskapa din katalog. Uppdatera sidan eller försök igen senare."
+Success,Klart
+"You must be logged into Pinterest to access this setting","Du måste vara inloggad på Pinterest för att komma åt den här inställningen"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Konfigurera
 Configurations,Konfigurationer
 General,Allmän
-"Client ID","Klient-ID"
+"Client ID","Klient-id"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Klient-id för Pinterest. Detta används för att identifiera Adobe Commerce/Magento-klienter i Pinterest."
 "Base URL","Basadress"
-"Catalog Ingestion","Inmatning av katalog"
-"Tag and API for Conversions","Tagg och API för konversioner"
+"Base URL path for Pinterest.","Basadressens sökväg för Pinterest."
+"Catalog Ingestion","Kataloginmatning"
+"Turn on or off catalog ingestion to Pinterest","Aktivera eller inaktivera kataloginmatning till Pinterest"
+"Tag and API for Conversions","Taggen och API:et för konversioner"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Aktivera eller inaktivera Pinterest-taggen och Pinterests API för konversioner"
+"Catalog Sync","Synkronisering av katalog"
+"Manually run catalog creation and feed registration","Använd manuell metod för att skapa katalog och registrera flöde"
+"General Data Protection Regulation (GDPR)","Allmänna dataskyddsförordningen (GDPR)"
+"Enable GDPR","Aktivera GDPR"
+Options,Alternativ
+"Cookie Name","Cookienamn"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Spårningen kontrolleras i Butiker > Konfigurering > Allmänt > Webb > Standardinställningar för cookies > Cookiebegränsningsläge"

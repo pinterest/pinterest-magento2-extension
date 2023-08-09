@@ -50,12 +50,12 @@ class ProductInfoForAddToCart extends Action
 
         // These are sent through the Pinterest Tag
         $response_data["line_items"] = [[
-            "product_id" => $product->getId(),
+            "product_id" => $this->_pinterestHelper->getContentId($product),
             "product_price" => $this->_pinterestHelper->getProductPrice($product),
             "product_name" => $product->getName(),
             "product_category" => $this->_pinterestHelper->getCategoryNamesFromIds($product->getCategoryIds())
         ]];
-        $response_data["content_ids"] = [$product->getId()];
+        $response_data["content_ids"] = [$this->_pinterestHelper->getContentId($product)];
         $response_data["num_items"] = $this->_pinterestHelper->getCartNumItems();
         $response_data["value"] = $this->_pinterestHelper->getCartSubtotal();
         $response_data["currency"] = $this->_pinterestHelper->getCurrency();

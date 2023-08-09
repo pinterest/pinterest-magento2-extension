@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","Zapnutie nahrávania katalógu"
-"Turn off catalog ingestion","Vypnutie nahrávania katalógu"
-"Turn on Pinterest tag and Pinterest API for Conversions","Zapnutie značky Pinterestu a rozhrania API Pinterestu pre konverzie"
-"Turn off Pinterest tag and Pinterest API for Conversions","Vypnutie značky Pinterestu a rozhrania API Pinterestu pre konverzie"
+"Regenerate Catalog","Vygenerovať katalóg znova"
+"Turn on catalog ingestion","Zapnúť nahrávanie katalógu"
+"Turn off catalog ingestion","Vypnúť nahrávanie katalógu"
+"Turn on Pinterest tag and Pinterest API for Conversions","Zapnúť značku Pinterestu a rozhranie API Pinterestu pre konverzie"
+"Turn off Pinterest tag and Pinterest API for Conversions","Vypnúť značku Pinterestu a rozhranie API Pinterestu pre konverzie"
+"Use Magento Cookie Restriction Mode","Použiť režim obmedzenia súborov cookie pre Magento"
+"Enable Tracking if Cookie Exists","Povoliť sledovanie, ak existuje súbor cookie"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Pri opätovnej generácii katalógu sa vyskytol problém. Obnovte stránku alebo to skúste znova."
+Success,Podarilo sa
+"You must be logged into Pinterest to access this setting","Ak chcete získať prístup k tomuto nastaveniu, musíte sa prihlásiť na Pinterest"
 Pinterest,Pinterest
-Setup,Setup
+Setup,Nastaviť
 Configurations,Konfigurácie
 General,Všeobecné
 "Client ID","ID klienta"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID klienta pre Pinterest. Používa sa na identifikáciu klientov služby Adobe Commerce/Magento na Pintereste."
 "Base URL","Základná adresa URL"
+"Base URL path for Pinterest.","Základná adresa URL pre Pinterest."
 "Catalog Ingestion","Nahrávanie katalógu"
+"Turn on or off catalog ingestion to Pinterest","Zapnúť alebo vypnúť nahrávania katalógu na Pinterest"
 "Tag and API for Conversions","Značka a rozhranie API pre konverzie"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Zapnúť alebo vypnúť značku Pinterestu a rozhranie API Pinterestu pre konverzie"
+"Catalog Sync","Synchronizácia katalógu"
+"Manually run catalog creation and feed registration","Manuálne spustiť vytvorenie katalógu a registráciu noviniek"
+"General Data Protection Regulation (GDPR)","Všeobecné nariadenie o ochrane údajov (GDPR)"
+"Enable GDPR","Zapnúť GDPR"
+Options,Možnosti
+"Cookie Name","Názov súboru cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Sledovanie sa ovláda v sekcii Obchody > Konfigurácia > Všeobecné > Web > Predvolené nastavenia súborov cookie > Režim obmedzenia súborov cookie"

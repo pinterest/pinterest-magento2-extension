@@ -41,6 +41,11 @@ class CatalogFeedClient
     protected $feedIds;
 
     /**
+     * @var array
+     */
+    protected $feedsRegisteredOnPinterest;
+
+    /**
      * Default constructor
      *
      * @param PinterestHttpClient $pinterestHttpClient
@@ -106,6 +111,10 @@ class CatalogFeedClient
             $this->_pinterestHelper->logInfo("Creating catalog feed for {$country}/{$locale} with {$url}");
             $country = substr(strtoupper($country), 0, 2);
             $feedName = $this->getFeedName($locale, $url);
+            $adAccountId = $this->_pinterestHelper->getAdvertiserId();
+            $queryParams = [
+                "ad_account_id" => $adAccountId
+            ];
             $data = [
                 "default_country" => $country,
                 "default_locale" => $locale,
@@ -118,13 +127,15 @@ class CatalogFeedClient
             if ($newInstall) {
                 $success = $this->createFeedsForNewInstall(
                     $data,
-                    $existingPinterestFeeds
+                    $existingPinterestFeeds,
+                    $queryParams
                 );
             } else {
                 $success = $this->createMissingFeedsOnPinterest(
                     $data,
                     $existingPinterestFeeds,
-                    $existingFeedsSavedToMetadata
+                    $existingFeedsSavedToMetadata,
+                    $queryParams
                 );
             }
             $success_count += $success ? 1 : 0;
@@ -209,8 +220,9 @@ class CatalogFeedClient
      *
      * @param string $data
      * @param string $existingPinterestFeeds
+     * @param array $queryParams
      */
-    public function createFeedsForNewInstall($data, $existingPinterestFeeds)
+    public function createFeedsForNewInstall($data, $existingPinterestFeeds, $queryParams = [])
     {
         try {
             $existingFeedId = $this->getFeedIdWithSameFeedName($data["name"], $existingPinterestFeeds);
@@ -222,7 +234,7 @@ class CatalogFeedClient
                 );
                 $this->deleteFeed($existingFeedId);
             }
-            return $this->createFeed($data["location"], $data);
+            return $this->createFeed($data["location"], $data, $queryParams);
         } catch (Exception $e) {
             $this->_pinterestHelper->logException($e);
         }
@@ -235,8 +247,9 @@ class CatalogFeedClient
      * @param array $data
      * @param array $existingPinterestFeeds
      * @param array $existingFeedsSavedToMetadata
+     * @param array $queryParams
      */
-    public function createMissingFeedsOnPinterest($data, $existingPinterestFeeds, $existingFeedsSavedToMetadata)
+    public function createMissingFeedsOnPinterest($data, $existingPinterestFeeds, $existingFeedsSavedToMetadata, $queryParams = [])
     {
         try {
             $existingFeedId = $this->getFeedIdWithSameFeedName($data["name"], $existingPinterestFeeds);
@@ -256,7 +269,7 @@ class CatalogFeedClient
                     $this->deleteFeed($existingFeedId);
                 }
             }
-            return $this->createFeed($data["location"], $data);
+            return $this->createFeed($data["location"], $data, $queryParams);
         } catch (Exception $e) {
             $this->_pinterestHelper->logException($e);
         }
@@ -268,16 +281,17 @@ class CatalogFeedClient
      *
      * @param string $url
      * @param string $data
+     * @param array $queryParams
      * @return bool
      */
-    public function createFeed($url, $data)
+    public function createFeed($url, $data, $queryParams = [])
     {
         // return $data;
         try {
             $feedname = $data['name'];
             $this->_pinterestHelper->logInfo("Creating catalog feed on Pinterest");
             $this->_pinterestHelper->resetApiErrorState("errors/catalog/create/{$feedname}");
-            $response = $this->_pinterestHttpClient->post($this->getFeedAPI(), $data, $this->getAccessToken());
+            $response = $this->_pinterestHttpClient->post($this->getFeedAPI(), $data, $this->getAccessToken(), null, "application/json", null, $queryParams);
             if (isset($response->code)) {
                 $message = isset($response->message)? $response->message : "n/a";
                 $status = $this->_pinterestHttpClient->getStatus();

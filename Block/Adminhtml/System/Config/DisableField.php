@@ -8,6 +8,10 @@ class DisableField extends Field
 {
     /**
      * Return Element Html
+     *
+     * @param AbstractElement $element
+     *
+     * @return string
      */
     protected function _getElementHtml(AbstractElement $element)
     {

@@ -275,7 +275,7 @@ class ProductExporter
         $this->appLogger->info("Store{$storeId} prepareSimpleProductData ".count($products));
         foreach ($products as $product) {
             $productValues = [
-                "xmlns:g:id" => "v_".$this->getUniqueId($product),
+                "xmlns:g:id" => PinterestHelper::getContentId($product),
                 "item_group_id" => $this->getUniqueId($product),
                 "title" => $this->getProductName($product),
                 "description" => $this->getProductDescription($product),
@@ -357,7 +357,7 @@ class ProductExporter
                     }
     
                     $productValues = [
-                        "xmlns:g:id" => $this->getUniqueId($product),
+                        "xmlns:g:id" => PinterestHelper::getContentId($product),
                         "item_group_id" => $itemGroupId,
                         "title" => $this->getProductName($product),
                         "description" => $this->getProductDescription($product),
@@ -495,7 +495,7 @@ class ProductExporter
      *
      * @return string
      */
-    private function getUniqueId($product)
+    public static function getUniqueId($product)
     {
         $productId = $product->getId();
         return $productId."_".$product->getSku();

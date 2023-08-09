@@ -1,12 +1,29 @@
+"Regenerate Catalog","カタログを再生成する"
 "Turn on catalog ingestion","カタログの取得をオンにする"
 "Turn off catalog ingestion","カタログの取得をオフにする"
 "Turn on Pinterest tag and Pinterest API for Conversions","Pinterest タグと Pinterest コンバージョン API をオンにする"
 "Turn off Pinterest tag and Pinterest API for Conversions","Pinterest タグと Pinterest コンバージョン API をオフにする"
+"Use Magento Cookie Restriction Mode","Magento クッキー制限モードを使用する"
+"Enable Tracking if Cookie Exists","クッキーが存在する場合はトラッキングを有効にする"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","カタログを再生成できませんでした。ページの表示を更新してもう一度お試しください。"
+Success,サクセス
+"You must be logged into Pinterest to access this setting","この設定にアクセスするには、Pinterest にログインしている必要があります"
 Pinterest,Pinterest
-Setup,Setup
-Configurations,構成
+Setup,セットアップ
+Configurations,設定
 General,一般
 "Client ID","クライアント ID"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest のクライアント ID。Pinterest の Adobe Commerce/Magento クライアントを特定するために使用されます。"
 "Base URL","ベース URL"
+"Base URL path for Pinterest.","Pinterest のベース URL パス。"
 "Catalog Ingestion","カタログの取得"
+"Turn on or off catalog ingestion to Pinterest","Pinterest へのカタログ取得のオン / オフを切り替える"
 "Tag and API for Conversions","コンバージョンのタグと API"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Pinterest タグと Pinterest コンバージョン API のオン / オフを切り替える"
+"Catalog Sync","カタログ同期"
+"Manually run catalog creation and feed registration","カタログの作成とフィードの登録を手動で実行する"
+"General Data Protection Regulation (GDPR)","一般データ保護規則（GDPR）"
+"Enable GDPR","GDPR を有効にする"
+Options,オプション
+"Cookie Name","クッキー名"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","トラッキングは、「ストア」>「設定」>「全般」>「ウェブ」>「クッキーのデフォルト設定」>「クッキー制限モード」で管理されます"

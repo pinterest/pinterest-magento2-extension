@@ -1,12 +1,29 @@
-"Turn on catalog ingestion","הפעילו עיבוד קטלוג"
+"Regenerate Catalog","יצירה מחדש של קטלוג"
+"Turn on catalog ingestion","הפעילו את עיבוד הקטלוג"
 "Turn off catalog ingestion","כבו את עיבוד הקטלוג"
-"Turn on Pinterest tag and Pinterest API for Conversions","הפעילו תג Pinterest ו-API של Pinterest להמרות"
-"Turn off Pinterest tag and Pinterest API for Conversions","כבו את תג Pinterest ואת Pinterest API להמרות"
+"Turn on Pinterest tag and Pinterest API for Conversions","הפעילו תג Pinterest ואת ה-API של Pinterest להמרות"
+"Turn off Pinterest tag and Pinterest API for Conversions","כבו תג Pinterest ואת ה-Pinterest API להמרות"
+"Use Magento Cookie Restriction Mode","שימוש במצב הגבלת קובצי Cookie של Magento"
+"Enable Tracking if Cookie Exists","אפשרו מעקב אם קיים קובץ Cookie"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","אירעה בעיה בעת יצירה מחדש של הקטלוג שלכם. רעננו את הדף או נסו שוב מאוחר יותר."
+Success,הצלחה
+"You must be logged into Pinterest to access this setting","יש להיכנס ל-Pinterest כדי לגשת להגדרה זו"
 Pinterest,Pinterest
-Setup,Setup
+Setup,הגדרה
 Configurations,תצורות
 General,כללי
 "Client ID","מזהה לקוח"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","מזהה לקוח עבור Pinterest. אפשרות זו משמשת לזיהוי לקוחות Adobe Commerce/Magento ב-Pinterest."
 "Base URL","כתובת URL בסיס"
+"Base URL path for Pinterest.","נתיב כתובת URL בסיס עבור Pinterest."
 "Catalog Ingestion","עיבוד קטלוג"
+"Turn on or off catalog ingestion to Pinterest","הפעילו או כבו עיבוד קטלוג ל-Pinterest"
 "Tag and API for Conversions","תג ו-API להמרות"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","הפעילו או בטלו תג Pinterest ואת ה-API של Pinterest להמרות"
+"Catalog Sync","סנכרון קטלוג"
+"Manually run catalog creation and feed registration","הפעלה ידנית של יצירת קטלוג ורישום פיד"
+"General Data Protection Regulation (GDPR)","הרגולציה הכללית להגנת מידע (GDPR)"
+"Enable GDPR","הפעלת GDPR"
+Options,אפשרויות
+"Cookie Name","שם קובץ Cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","השליטה במעקב נמצאת ב'חנויות' > הגדרות > כללי > אינטרנט > הגדרות ברירת מחדל לקובצי Cookie > מצב הגבלת קובצי Cookie"

@@ -1,12 +1,29 @@
+"Regenerate Catalog","Luettelon uudelleenluonti"
 "Turn on catalog ingestion","Ota luettelon käsittely käyttöön"
 "Turn off catalog ingestion","Poista luettelon käsittely käytöstä"
-"Turn on Pinterest tag and Pinterest API for Conversions","Pinterest-tunnisteen ja Pinterest-tulos-API:n ottaminen käyttöön"
-"Turn off Pinterest tag and Pinterest API for Conversions","Pinterest-tunnisteen ja Pinterest-tulos-API:n poistaminen käytöstä"
+"Turn on Pinterest tag and Pinterest API for Conversions","Ota Pinterest-tunniste ja Pinterestin tulos-API käyttöön"
+"Turn off Pinterest tag and Pinterest API for Conversions","Poista Pinterest-tunniste ja Pinterestin tulos-API käytöstä"
+"Use Magento Cookie Restriction Mode","Käytä Magenton evästeiden rajoitustilaa"
+"Enable Tracking if Cookie Exists","Ota seuranta käyttöön, jos eväste on olemassa"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Luettelon uudelleenluonti epäonnistui. Päivitä sivu tai yritä uudelleen myöhemmin."
+Success,Onnistui
+"You must be logged into Pinterest to access this setting","Kirjaudu Pinterestiin, jotta voit käyttää tätä asetusta."
 Pinterest,Pinterest
-Setup,Setup
-Configurations,Kokoonpanoissa
+Setup,Määritä
+Configurations,Määritykset
 General,Yleiset
 "Client ID","Asiakkaan tunnus"
-"Base URL","Perus-URL"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterestin asiakastunnus. Tätä käytetään Adobe Commerce/Magento -asiakkaiden tunnistamiseen Pinterestissä."
+"Base URL","Perus-URL-osoite"
+"Base URL path for Pinterest.","Pinterestin perus-URL-polku."
 "Catalog Ingestion","Luettelon käsittely"
-"Tag and API for Conversions","Tulosten tunniste ja API"
+"Turn on or off catalog ingestion to Pinterest","Luettelon Pinterest-käsittelyn käyttöön otto ja käytöstä poisto"
+"Tag and API for Conversions","Tunniste ja tulos-API"
+"Turn on or off Pinterest tag and Pinterest API for Conversions","Pinterest-tunnisteen ja Pinterestin tulos-API:n käyttöön otto ja käytöstä poisto"
+"Catalog Sync","Luettelon synkronointi"
+"Manually run catalog creation and feed registration","Luo luettelo ja rekisteröi syöte manuaalisesti"
+"General Data Protection Regulation (GDPR)","Yleinen tietosuoja-asetus (GDPR)"
+"Enable GDPR","Ota GDPR käyttöön"
+Options,Asetukset
+"Cookie Name","Evästeen nimi"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Hallitse seurantaa: Stores (kaupat) > Configuration (määritys) > General (yleinen) > Web (verkko) > Default Cookie Settings (eväisten oletusasetukset) > Cookie Restriction Mode (evästeiden rajoitustila)."

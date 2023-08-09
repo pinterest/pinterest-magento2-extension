@@ -118,8 +118,22 @@ class ConversionEventHelperTest extends TestCase
         $this->assertEquals("0.0.0.0", $userIpAddress);
     }
 
+    public function testUserEpikIdInEventPayload()
+    {
+        $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", [
+            "search_term" => "Pants"
+        ]);
+        $userExternalId = $payload["user_data"]["click_id"];
+        $this->assertEquals("randomCookieValue", $userExternalId);
+    }
+    
     public function testUserExternalIdInEventPayload()
     {
+        $this->_customerDataHelper
+            ->method("hash")
+            ->will($this->returnValueMap([
+                ["randomCookieValue", "randomCookieValue"]
+            ]));
         $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", [
             "search_term" => "Pants"
         ]);
@@ -156,6 +170,31 @@ class ConversionEventHelperTest extends TestCase
         $this->assertEquals("m", $user_data["ge"][0]);
     }
 
+    public function testBillingAddressPayload()
+    {
+        $this->_customerDataHelper->method("getCity")->willReturn("sanfrancisco");
+        $this->_customerDataHelper->method("getState")->willReturn("ca");
+        $this->_customerDataHelper->method("getCountry")->willReturn("US");
+        $this->_customerDataHelper->method("getZipCode")->willReturn("94107");
+        $this->_customerDataHelper
+            ->method("hash")
+            ->will($this->returnValueMap([
+                ["sanfrancisco", "sanfrancisco"],
+                ["ca", "ca"],
+                ["US", "US"],
+                ["94107", "94107"]
+            ]));
+
+        $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", [
+            "search_term" => "Pants"
+        ]);
+        $user_data = $payload["user_data"];
+        $this->assertEquals("sanfrancisco", $user_data["ct"][0]);
+        $this->assertEquals("ca", $user_data["st"][0]);
+        $this->assertEquals("US", $user_data["country"][0]);
+        $this->assertEquals("94107", $user_data["zp"][0]);
+    }
+
     public function testLoggedOutUserEventPayload()
     {
         $this->_customerDataHelper->method("isUserLoggedIn")->willReturn(0);
@@ -163,8 +202,8 @@ class ConversionEventHelperTest extends TestCase
             "search_term" => "Pants"
         ]);
         $user_data = $payload["user_data"];
-        // User Agent, Ip Address and Cookie Value
-        $this->assertEquals(3, count($user_data));
+        // User Agent, Ip Address, External Id and Epik Id
+        $this->assertEquals(4, count($user_data));
     }
 
     public function testEventDataisQueuedIfConditionsAreNotMet()

@@ -106,6 +106,34 @@ class CatalogFeedClientTest extends TestCase
         $this->assertEquals(2, $ret);
     }
 
+    public function testCreateAllFeedsSuccessWithAdsAccount()
+    {
+        $url = "www.pinterest.com/media/Pinterest/catalogs";
+        $adAccountId = "549766267106";
+        $locale = "en_US";
+        $data = [
+            "default_country" => "US",
+            "default_locale" => $locale,
+            "default_currency" => "USD",
+            "format" => "XML",
+            "location" => $url,
+            "name" => $this->_catalogFeedClient->getFeedName($locale, $url)
+        ];
+        $queryParams = [
+            "ad_account_id" => $adAccountId
+        ];
+        $this->_localeList->method('getListLocaleForAllStores')->willReturn([1=>"US\nen_US"]);
+        $this->_localeList->method('getCurrency')->willReturn("USD");
+        $this->_pinterestHelper->method('getMediaBaseUrlByStoreId')->willReturn("https://abc.com/");
+        $this->_pinterestHelper->method('getAdvertiserId')->willReturn($adAccountId);
+        $this->_savedFile->method('getFileSystemPath')->willReturn("/dev/null");
+        $this->_savedFile->method('getExportUrl')->willReturn($url);
+        $this->_pinterestHttpClient->method("post")->willReturn(json_decode(CatalogFeedClientTest::POST_RESPONSE_200));
+        $this->_pinterestHttpClient->expects($this->once())->method("post")->with(null, $data, '', null, 'application/json', null, $queryParams);
+        $ret = $this->_catalogFeedClient->createAllFeeds(true);
+        $this->assertEquals(1, $ret);
+    }
+
     public function testCreateAllFeedsFailure()
     {
         $this->_localeList->method('getListLocaleForAllStores')->willReturn([1=>"US\nen_US", 2=>"GB\nen_GB"]);
