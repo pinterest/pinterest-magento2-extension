@@ -12,9 +12,9 @@
             var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
             $(document).ready(function () {
                 const productData = {
-                    product_id: "<?= $block->escapeJs($productDetails["product_id"])  ?>",
+                    product_id: "<?= $productDetails["product_id"]  ?>",
                     product_price: <?= $productDetails["product_price"] ?>,
-                    product_name: "<?= $block->escapeJs($productDetails["product_name"]) ?>",
+                    product_name: "<?= $productDetails["product_name"] ?>",
                     product_quantity: 1,
                     product_category: <?= json_encode($productDetails["product_category"]) ?>
                 }
