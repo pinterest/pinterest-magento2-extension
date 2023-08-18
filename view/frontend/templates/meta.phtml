@@ -1,53 +1,64 @@
 <?php /** @var Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup $block */ ?>
-<?php if ($block->isTagEnabled()) { ?>
+<?php if ($block->isUserConnected()) { ?>
     <!-- Pinterest HTML Tag -->
     <?= $block->getMetaTag() ?>
     <!-- End of Pinterest HTML Tag -->
-    <!-- Pinterest Pixel Base Code -->
-    <script type="text/javascript">
-        !function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(
-            Array.prototype.slice.call(arguments))};var
-            n=window.pintrk;n.queue=[],n.version="3.0";var
-            t=document.createElement("script");t.async=!0,t.src=e;var
-            r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
-        window.pintrk.partnerData={"np":"adobe"};
-        pintrk('setconsent', function() {
-                // Keep in sync with PinterestHelper::isUserOptedOutOfTracking
-                const config = {
-                    "isCookieRestrictionModeEnabled": <?= /* @noEscape */ $block->isCookieRestrictionModeEnabled() ?>,
-                    "currentWebsite": <?= /* @noEscape */ $block->getCurrentWebsiteId() ?>,
-                    "cookieName": "<?= /* @noEscape */ $block->getGDPRCookieName() ?>",
-                    "isGdprEnabled": <?= /* @noEscape */ $block->isGdprEnabled() ?>,
-                    "gdprOption": <?= /* @noEscape */ $block->getGdprOption() ?>
-                }
-                const getCookie = function(name) {
-                    const value = `; ${document.cookie}`;
-                    const parts = value.split(`; ${name}=`);
-                    if (parts.length === 2) return parts.pop().split(';').shift();
-                }
-                if (!config.isGdprEnabled) {
-                    return true;
-                } else if (config.isCookieRestrictionModeEnabled && config.gdprOption === 1) {
-                    const cookieValue = getCookie(config.cookieName);
-                    if (cookieValue) {
-                        gdprCookie = unescape(cookieValue);
-                        if (gdprCookie) {
-                            gdprCookieObj = JSON.parse(gdprCookie);
-                            return gdprCookieObj[config.currentWebsite] === 1;
-                        }
+    <?php if ($block->isTagEnabled()) { ?>
+        <!-- Pinterest Pixel Base Code -->
+        <script type="text/javascript">
+            !function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(
+                Array.prototype.slice.call(arguments))};var
+                n=window.pintrk;n.queue=[],n.version="3.0";var
+                t=document.createElement("script");t.async=!0,t.src=e;var
+                r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+            window.pintrk.partnerData={"np":"adobe"};
+            if (<?= $block->isLdpEnabled() ?>) {
+                const state = "<?= $block->escapeJs($block->getHashedState())?>";
+                const country = "<?= $block->escapeJs($block->getHashedCountry())?>";
+                pintrk('set', {
+                    opt_out_type: 'LDP',
+                    st: state,
+                    country: country,
+                });
+            }
+            pintrk('setconsent', function() {
+                    // Keep in sync with PinterestHelper::isUserOptedOutOfTracking
+                    const config = {
+                        "isCookieRestrictionModeEnabled": <?= /* @noEscape */ $block->isCookieRestrictionModeEnabled() ?>,
+                        "currentWebsite": <?= /* @noEscape */ $block->getCurrentWebsiteId() ?>,
+                        "cookieName": "<?= /* @noEscape */ $block->getGDPRCookieName() ?>",
+                        "isGdprEnabled": <?= /* @noEscape */ $block->isGdprEnabled() ?>,
+                        "gdprOption": <?= /* @noEscape */ $block->getGdprOption() ?>
                     }
-                    return false;
-                } else if (config.gdprOption === 2) {
-                    return getCookie(config.cookieName) === undefined || getCookie(config.cookieName) === null;
-                }
-                return true;
-            }());
-        pintrk("load", "<?= $block->getTagId() ?>", {
-                <?php if ($block->getHashedEmailId()) { ?>
-                    "em": "<?= $block->getHashedEmailId() ?>"
-                <?php } ?>
-        });
-        pintrk("page");
+                    const getCookie = function(name) {
+                        const value = `; ${document.cookie}`;
+                        const parts = value.split(`; ${name}=`);
+                        if (parts.length === 2) return parts.pop().split(';').shift();
+                    }
+                    if (!config.isGdprEnabled) {
+                        return true;
+                    } else if (config.isCookieRestrictionModeEnabled && config.gdprOption === 1) {
+                        const cookieValue = getCookie(config.cookieName);
+                        if (cookieValue) {
+                            gdprCookie = unescape(cookieValue);
+                            if (gdprCookie) {
+                                gdprCookieObj = JSON.parse(gdprCookie);
+                                return gdprCookieObj[config.currentWebsite] === 1;
+                            }
+                        }
+                        return false;
+                    } else if (config.gdprOption === 2) {
+                        return getCookie(config.cookieName) === undefined || getCookie(config.cookieName) === null;
+                    }
+                    return true;
+                }());
+            pintrk("load", "<?= $block->getTagId() ?>", {
+                    <?php if ($block->getHashedEmailId()) { ?>
+                        "em": "<?= $block->getHashedEmailId() ?>"
+                    <?php } ?>
+            });
+            pintrk("page");
+        <?php } ?>
     </script>
     <!-- End Pinterest Pixel Base Code -->
 <?php } ?>

@@ -198,6 +198,42 @@ class Setup extends Template
     }
 
     /**
+     * Returns true if LDP is enabled in config for this extension
+     *
+     * @return int
+     */
+    public function isLdpEnabled()
+    {
+        return (int) $this->_pinterestHelper->isLdpEnabled();
+    }
+
+    /**
+     * Returns the customer's hashed state for tag events
+     *
+     * @return string|null
+     */
+    public function getHashedState()
+    {
+        $state = $this->_customerDataHelper->getState();
+        return $state ?
+            $this->_customerDataHelper->hash($state) :
+            null;
+    }
+
+    /**
+     * Returns the customer's hashed country for tag events
+     *
+     * @return string|null
+     */
+    public function getHashedCountry()
+    {
+        $country = $this->_customerDataHelper->getCountry();
+        return $country ?
+            $this->_customerDataHelper->hash($country) :
+            null;
+    }
+
+    /**
      * Returns configuration before connecting.
      *
      * @return array

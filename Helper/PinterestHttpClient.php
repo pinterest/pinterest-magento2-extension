@@ -29,8 +29,8 @@ class PinterestHttpClient
     protected $_logger;
 
     /**
-     * @param Curl
-     * @param Logger
+     * @param Curl $curl
+     * @param Logger $logger
      */
     public function __construct(
         Curl $curl,
@@ -161,6 +161,13 @@ class PinterestHttpClient
         return $response;
     }
 
+    /**
+     * Gets bearer auth access token.
+     *
+     * @param string $accessToken
+     *
+     * @return string
+     */
     private function getBearerAuthString($accessToken)
     {
         return 'Bearer ' . $accessToken;

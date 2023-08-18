@@ -3,6 +3,7 @@
 namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\ObjectManagerInterface;
@@ -38,6 +39,7 @@ class PinterestHelper extends AbstractHelper
     public const PINTEREST_GDPR_COOKIE_NAME='PinterestConfig/gdpr/gdpr_cookie_name';
     public const PINTEREST_GDPR_OPTION='PinterestConfig/gdpr/option';
     public const PINTEREST_GDPR_ENABLED='PinterestConfig/gdpr/enabled';
+    public const PINTEREST_LDP_ENABLED='PinterestConfig/ldp/enabled';
     public const REDIRECT_URI='pinterestadmin/Setup/PinterestToken';
     public const ADMINHTML_SETUP_URI='pinterestadmin/Setup/Index';
     public const MODULE_NAME='Pinterest_PinterestMagento2Extension';
@@ -203,10 +205,24 @@ class PinterestHelper extends AbstractHelper
      */
     public function isConversionConfigEnabled()
     {
-        return strcmp($this->scopeConfig->getValue(self::PINTEREST_CONVERSION_ENABLED_PATH), ConfigSetting::ENABLED) == 0;
+        return strcmp(
+            $this->scopeConfig->getValue(self::PINTEREST_CONVERSION_ENABLED_PATH),
+            ConfigSetting::ENABLED
+        ) == 0;
     }
 
     /**
+     * Returns true if LDP is enabled in config for this extension
+     *
+     * @return bool
+     */
+    public function isLdpEnabled()
+    {
+        return $this->scopeConfig->getValue(self::PINTEREST_LDP_ENABLED) == 1;
+    }
+
+    /**
+     * Gets GDPR option
      *
      * @param string $store_id
      * @return int
@@ -313,6 +329,39 @@ class PinterestHelper extends AbstractHelper
     public function getCartNumItems()
     {
         return count($this->_cart->getQuote()->getAllVisibleItems());
+    }
+
+    /**
+     * Get all the lastest Items added in cart
+     *
+     * @return Array[Item]|null
+     */
+    public function getLastAddedItemsToCart()
+    {
+        $quote = $this->_cart->getQuote();
+        if ($quote) {
+            $items = $quote->getAllVisibleItems();
+            $lastModifiedItems = [];
+            $lastModifiedAt = null;
+            
+            foreach ($items as $item) {
+                // check if item is simple or configurable. Otherwise skip it
+                if ($item->getProductType() == Type::TYPE_SIMPLE
+                    || $item->getProductType() == Configurable::TYPE_CODE
+                    || $item->getProductType() == "grouped") {
+                    $modifiedAt = $item->getUpdatedAt();
+
+                    if ($lastModifiedAt === null || $lastModifiedAt < $modifiedAt) {
+                        $lastModifiedItems = [$item];
+                        $lastModifiedAt = $modifiedAt;
+                    } elseif ($lastModifiedAt == $modifiedAt) {
+                        $lastModifiedItems[] = $item;
+                    }
+                }
+            }
+            return $lastModifiedItems;
+        }
+        return null;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Pinterest\PinterestMagento2Extension\Model\Metadata;
 use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
@@ -18,6 +19,7 @@ use Magento\Framework\Model\AbstractModel;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Cache\Manager;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Cookie\Helper\Cookie;
 use Magento\Framework\Stdlib\CookieManagerInterface;
@@ -234,5 +236,95 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_storeManagerInterface->method("getStores")->willReturn([$storeMock]);
         $baseUrls = $this->_pinterestHelper->getBaseUrls();
         $this->assertEquals(["www.pinterest.com"], $baseUrls);
+    }
+
+    public function testGetLastAddedItemsToCart()
+    {
+        $this->_cart->method('getQuote')->willReturnCallback(function () {
+            $quoteMock = $this->getMockBuilder(AbstractModel::class)
+                ->disableOriginalConstructor()
+                ->setMethods(['getAllVisibleItems'])
+                ->getMock();
+            $quoteMock->method('getAllVisibleItems')->willReturnCallback(function () {
+                $itemMock01 = $this->getMockBuilder(AbstractModel::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->getMock();
+                $itemMock01->method('getProductType')->willReturn(Type::TYPE_SIMPLE);
+                $itemMock01->method('getUpdatedAt')->willReturn("001");
+
+                $itemMock02 = $this->getMockBuilder(AbstractModel::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->getMock();
+                $itemMock02->method('getProductType')->willReturn(Type::TYPE_SIMPLE);
+                $itemMock02->method('getUpdatedAt')->willReturn("002");
+                return [$itemMock01, $itemMock02];
+            });
+            return $quoteMock;
+        });
+        
+        $lastModifiedItems = $this->_pinterestHelper->getLastAddedItemsToCart();
+        $this->assertEquals(1, count($lastModifiedItems));
+    }
+
+    public function testGetLastAddedItemsToCartReturnMultiple()
+    {
+        $this->_cart->method('getQuote')->willReturnCallback(function () {
+            $quoteMock = $this->getMockBuilder(AbstractModel::class)
+                ->disableOriginalConstructor()
+                ->setMethods(['getAllVisibleItems'])
+                ->getMock();
+            $quoteMock->method('getAllVisibleItems')->willReturnCallback(function () {
+                $itemMock01 = $this->getMockBuilder(AbstractModel::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->getMock();
+                $itemMock01->method('getProductType')->willReturn(Type::TYPE_SIMPLE);
+                $itemMock01->method('getUpdatedAt')->willReturn("002");
+
+                $itemMock02 = $this->getMockBuilder(AbstractModel::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->getMock();
+                $itemMock02->method('getProductType')->willReturn(Type::TYPE_SIMPLE);
+                $itemMock02->method('getUpdatedAt')->willReturn("002");
+                return [$itemMock01, $itemMock02];
+            });
+            return $quoteMock;
+        });
+        
+        $lastModifiedItems = $this->_pinterestHelper->getLastAddedItemsToCart();
+        $this->assertEquals(2, count($lastModifiedItems));
+    }
+
+    public function testGetLastAddedItemsToCartFilterVirtualItemsInConfigurableProducts()
+    {
+        $this->_cart->method('getQuote')->willReturnCallback(function () {
+            $quoteMock = $this->getMockBuilder(AbstractModel::class)
+                ->disableOriginalConstructor()
+                ->setMethods(['getAllVisibleItems'])
+                ->getMock();
+            $quoteMock->method('getAllVisibleItems')->willReturnCallback(function () {
+                $itemMock01 = $this->getMockBuilder(AbstractModel::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->getMock();
+                $itemMock01->method('getProductType')->willReturn(Configurable::TYPE_CODE);
+                $itemMock01->method('getUpdatedAt')->willReturn("002");
+
+                $itemMock02 = $this->getMockBuilder(AbstractModel::class)
+                    ->disableOriginalConstructor()
+                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->getMock();
+                $itemMock02->method('getProductType')->willReturn("virtual");
+                $itemMock02->method('getUpdatedAt')->willReturn("002");
+                return [$itemMock01, $itemMock02];
+            });
+            return $quoteMock;
+        });
+        
+        $lastModifiedItems = $this->_pinterestHelper->getLastAddedItemsToCart();
+        $this->assertEquals(1, count($lastModifiedItems));
     }
 }
