@@ -40,22 +40,27 @@ class ProductInfoForAddToCart extends Action
     /**
      * Get info for add to cart event
      *
-     * @param string $product_sku
+     * @param Array[Item] $last_product_items
      * @return array
      */
-    private function getProductInfo($product_sku)
+    private function getProductInfo($last_product_items)
     {
         $response_data = [];
-        $product = $this->_pinterestHelper->getProductWithSku($product_sku);
+        $response_data["line_items"] = [];
+        $response_data["content_ids"] = [];
 
-        // These are sent through the Pinterest Tag
-        $response_data["line_items"] = [[
-            "product_id" => $this->_pinterestHelper->getContentId($product),
-            "product_price" => $this->_pinterestHelper->getProductPrice($product),
-            "product_name" => $product->getName(),
-            "product_category" => $this->_pinterestHelper->getCategoryNamesFromIds($product->getCategoryIds())
-        ]];
-        $response_data["content_ids"] = [$this->_pinterestHelper->getContentId($product)];
+        for ($i = 0; $i < count($last_product_items); $i++) {
+            $item = $last_product_items[$i];
+            $product = $item->getProduct();
+
+            $response_data["content_ids"][] = $this->_pinterestHelper->getContentId($product);
+            $response_data["line_items"][] = [
+                "product_id" => $this->_pinterestHelper->getContentId($product),
+                "product_price" => $item->getPrice(),
+                "product_name" => $product->getName(),
+                "product_category" => $this->_pinterestHelper->getCategoryNamesFromIds($product->getCategoryIds())
+            ];
+        }
         $response_data["num_items"] = $this->_pinterestHelper->getCartNumItems();
         $response_data["value"] = $this->_pinterestHelper->getCartSubtotal();
         $response_data["currency"] = $this->_pinterestHelper->getCurrency();
@@ -73,13 +78,13 @@ class ProductInfoForAddToCart extends Action
     {
         try {
             if (!$this->_pinterestHelper->isUserOptedOutOfTracking()) {
-                $product_sku = $this->getRequest()->getParam("product_sku", null);
-                if ($product_sku) {
-                    $response_data = $this->getProductInfo($product_sku);
+                $last_product_items = $this->_pinterestHelper->getLastAddedItemsToCart();
+                if ($last_product_items) {
+                    $response_data = $this->getProductInfo($last_product_items);
                     if (count($response_data) > 0) {
                         $event_id = EventIdGenerator::guidv4();
                         $response_data["event_id"] = $event_id;
-                        $this->trackAddToCartEvent($event_id, $response_data, $product_sku);
+                        $this->trackAddToCartEvent($event_id, $response_data);
                         // Send data back to Tag event sender
                         $result = $this->_resultJsonFactory->create();
                         $result->setData(array_filter($response_data));

@@ -11,6 +11,7 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type as ProductType;
 use Magento\Catalog\Model\Product\Visibility;
+use \Magento\Framework\Escaper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -171,7 +172,9 @@ class ProductExporter
         });
 
         $this->pinterestHelper->logInfo("Sorted data. Advanced = ".(microtime(true) - $time_start));
-        $this->pinterestHelper->logInfo("Deleting all catalogs before creating XML from: ".SavedFile::DIRECTORY_NAME_PATH);
+        $this->pinterestHelper->logInfo(
+            "Deleting all catalogs before creating XML from: ".SavedFile::DIRECTORY_NAME_PATH
+        );
         $this->savedFile->deleteCatalogs();
         $this->pinterestHelper->logInfo("Deleted data. Advanced = ".(microtime(true) - $time_start));
 
@@ -224,8 +227,8 @@ class ProductExporter
     /**
      * Get attribute=value hash to be appended in the product URL
      *
-     * @param $simpleProduct
-     * @param $configurableProduct
+     * @param \Magento\Catalog\Api\Data\ProductInterface $simpleProduct
+     * @param \Magento\Catalog\Model\Product $configurableProduct
      * @return string
      */
     private function getAttributeHash($simpleProduct, $configurableProduct)
@@ -244,7 +247,9 @@ class ProductExporter
             $options = http_build_query($options);
             return $options ? '#' . $options : '';
         } catch (\Exception $e) {
-            $this->appLogger->error("Error generating attribute hash for product ID = " . $simpleProduct->getId() . $e->getMessage());
+            $this->appLogger->error(
+                "Error generating attribute hash for product ID = " . $simpleProduct->getId() . $e->getMessage()
+            );
         }
     }
 
@@ -392,7 +397,9 @@ class ProductExporter
                         $this->appLogger->info("Store{$storeId} prepareConfigurableProductData processed ".$counter);
                     }
                 } catch (\Exception $e) {
-                    $this->appLogger->error("Error parsing variable product ID = " . $product->getId() . $e->getMessage());
+                    $this->appLogger->error(
+                        "Error parsing variable product ID = " . $product->getId() . $e->getMessage()
+                    );
                 }
             }
         }
@@ -431,12 +438,16 @@ class ProductExporter
     }
 
     /**
+     * Saves a XML file given a key.
+     *
+     * @param string $key
+     * @param array $content
      *
      * @return void
      */
     private function saveXml($key, $content)
     {
-        if (is_null($key)) {
+        if ($key === null) {
             return false;
         }
         $pair = explode("\n", $key);
@@ -470,9 +481,10 @@ class ProductExporter
     }
 
     /**
+     * Adds data to xml.
      *
-     * @param $data
-     * @param $xml
+     * @param array $data
+     * @param SimpleXMLElement $xml
      *
      * @return void
      */
@@ -483,7 +495,8 @@ class ProductExporter
                 $subnode = $xml->channel->addChild("item");
                 $this->arrayToXml($value, $subnode);
             } else {
-                $xml->addChild("$key", htmlspecialchars("$value"));
+                $escaper = new \Magento\Framework\Escaper;
+                $xml->addChild("$key", $escaper -> escapeHtml("$value"));
             }
         }
     }

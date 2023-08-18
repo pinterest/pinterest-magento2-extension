@@ -33,7 +33,6 @@ class PinterestLaminasClient extends Client
         $this->authorizationValue = $authorizationValue;
     }
 
-
     /**
      * Prepare the request headers
      *

@@ -77,6 +77,14 @@
                     </depends>
                 </field>
             </group>
+            <group id="ldp" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Limited Data Processing (LDP)</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable LDP</label>
+                    <comment model="Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\LDPComment" />
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>

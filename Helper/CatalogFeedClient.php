@@ -83,7 +83,9 @@ class CatalogFeedClient
         $existingPinterestFeeds = $this->getAllFeeds();
 
         $this->_pinterestHelper->logInfo("Country locales to register feeds for: ".json_encode($country_locales));
-        $this->_pinterestHelper->logInfo("Existing feeds saved to magento metadata: ".json_encode($existingFeedsSavedToMetadata));
+        $this->_pinterestHelper->logInfo(
+            "Existing feeds saved to magento metadata: " . json_encode($existingFeedsSavedToMetadata)
+        );
         
         foreach ($country_locales as $storeId => $country_locale) {
             $baseUrl = $this->_pinterestHelper->getMediaBaseUrlByStoreId($storeId);
@@ -249,8 +251,12 @@ class CatalogFeedClient
      * @param array $existingFeedsSavedToMetadata
      * @param array $queryParams
      */
-    public function createMissingFeedsOnPinterest($data, $existingPinterestFeeds, $existingFeedsSavedToMetadata, $queryParams = [])
-    {
+    public function createMissingFeedsOnPinterest(
+        $data,
+        $existingPinterestFeeds,
+        $existingFeedsSavedToMetadata,
+        $queryParams = []
+    ) {
         try {
             $existingFeedId = $this->getFeedIdWithSameFeedName($data["name"], $existingPinterestFeeds);
             if ($existingFeedId) {
@@ -291,7 +297,15 @@ class CatalogFeedClient
             $feedname = $data['name'];
             $this->_pinterestHelper->logInfo("Creating catalog feed on Pinterest");
             $this->_pinterestHelper->resetApiErrorState("errors/catalog/create/{$feedname}");
-            $response = $this->_pinterestHttpClient->post($this->getFeedAPI(), $data, $this->getAccessToken(), null, "application/json", null, $queryParams);
+            $response = $this->_pinterestHttpClient->post(
+                $this->getFeedAPI(),
+                $data,
+                $this->getAccessToken(),
+                null,
+                "application/json",
+                null,
+                $queryParams
+            );
             if (isset($response->code)) {
                 $message = isset($response->message)? $response->message : "n/a";
                 $status = $this->_pinterestHttpClient->getStatus();

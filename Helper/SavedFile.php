@@ -48,6 +48,7 @@ class SavedFile extends AbstractHelper
     }
 
     /**
+     * Returns if is enabled.
      *
      * @return bool
      */
@@ -58,6 +59,7 @@ class SavedFile extends AbstractHelper
 
     /**
      * Get the export URL
+     *
      * @param string $baseUrl
      * @param string $locale
      * @return string
@@ -70,6 +72,8 @@ class SavedFile extends AbstractHelper
     }
 
     /**
+     * Gets absolute file system path.
+     *
      * @param string $baseUrl
      * @param string $locale
      * @param bool $checkAndCreateFolder
@@ -88,6 +92,8 @@ class SavedFile extends AbstractHelper
     }
 
     /**
+     * Gets directory path.
+     *
      * @param string $baseUrl
      * @param string $locale
      * @return string
@@ -103,6 +109,8 @@ class SavedFile extends AbstractHelper
     }
 
     /**
+     * Gets file system prefix.
+     *
      * @param string $loc
      * @return string
      */
@@ -117,6 +125,7 @@ class SavedFile extends AbstractHelper
 
     /**
      * Get the xml file name
+     *
      * @return string
      */
     public function getXmlFileName()
@@ -126,7 +135,6 @@ class SavedFile extends AbstractHelper
 
     /**
      * Delete all catalog files and subfolders
-     *
      */
     public function deleteCatalogs()
     {

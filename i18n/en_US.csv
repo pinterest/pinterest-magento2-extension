@@ -1,4 +1,5 @@
 "Regenerate Catalog","Regenerate Catalog"
+"To help comply with the California Privacy Rights Act, Pinterest can act as a service provider to limit how we use certain data to help you comply with user privacy settings. <a href='%1'>Learn more</a>","To help comply with the California Privacy Rights Act, Pinterest can act as a service provider to limit how we use certain data to help you comply with user privacy settings. <a href='%1'>Learn more</a>"
 "Turn on catalog ingestion","Turn on catalog ingestion"
 "Turn off catalog ingestion","Turn off catalog ingestion"
 "Turn on Pinterest tag and Pinterest API for Conversions","Turn on Pinterest tag and Pinterest API for Conversions"
@@ -19,7 +20,7 @@ General,General
 "Catalog Ingestion","Catalog Ingestion"
 "Turn on or off catalog ingestion to Pinterest","Turn on or off catalog ingestion to Pinterest"
 "Tag and API for Conversions","Tag and API for Conversions"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Turn on or off Pinterest tag and Pinterest API for Conversions"
+"Turn on or off Pinterest tag and Pinterest API for Conversions. This setting can only be set during onboarding. Disconnect and reconnect to change the value.","Turn on or off Pinterest tag and Pinterest API for Conversions. This setting can only be set during onboarding. Disconnect and reconnect to change the value."
 "Catalog Sync","Catalog Sync"
 "Manually run catalog creation and feed registration","Manually run catalog creation and feed registration"
 "General Data Protection Regulation (GDPR)","General Data Protection Regulation (GDPR)"
@@ -27,3 +28,5 @@ General,General
 Options,Options
 "Cookie Name","Cookie Name"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode"
+"Limited Data Processing (LDP)","Limited Data Processing (LDP)"
+"Enable LDP","Enable LDP"

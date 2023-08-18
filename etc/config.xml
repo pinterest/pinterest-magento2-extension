@@ -11,6 +11,9 @@
                 <enabled>0</enabled>
                 <gdpr_cookie_name>user_allowed_save_cookie</gdpr_cookie_name>
             </gdpr>
+            <ldp>
+                <enabled>0</enabled>
+            </ldp>
         </PinterestConfig>
     </default>
 </config>

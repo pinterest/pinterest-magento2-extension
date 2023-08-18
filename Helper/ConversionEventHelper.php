@@ -158,6 +158,9 @@ class ConversionEventHelper
         if ($this->_customerDataHelper->getZipCode()) {
             $user_data["zp"] = [$this->_customerDataHelper->hash($this->_customerDataHelper->getZipCode())];
         }
+        if ($this->_pinterestHelper->isLdpEnabled()) {
+            $user_data["opt_out_type"] = "LDP";
+        }
 
         return $user_data;
     }
@@ -300,7 +303,9 @@ class ConversionEventHelper
             $response = $this->_pinterestHttpClient->post($this->getAPIEndPoint(), $params, $this->getAccessToken());
             if (isset($response->code)) {
                 $message = isset($response->message) ? $response->message : "n/a";
-                $this->_pinterestHelper->logError("Failed to send events via conversion API with {$response->code}:{$message}");
+                $this->_pinterestHelper->logError(
+                    "Failed to send events via conversion API with {$response->code}:{$message}"
+                );
             }
         } catch (\Exception $e) {
             $this->_pinterestHelper->logException($e);

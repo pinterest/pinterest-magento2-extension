@@ -64,8 +64,14 @@ class TokensHelper
                 $this->_pinterestHelper->saveMetadata('pinterest/token/scope', $response->scope);
                 if (isset($response->refresh_token) && isset($response->refresh_token_expires_in)
                     && strlen($response->refresh_token) > 0 && strlen($response->refresh_token_expires_in) > 0) {
-                    $this->_pinterestHelper->saveEncryptedMetadata('pinterest/token/refresh_token', $response->refresh_token);
-                    $this->_pinterestHelper->saveMetadata('pinterest/token/refresh_token_expires_in', $response->refresh_token_expires_in);
+                    $this->_pinterestHelper->saveEncryptedMetadata(
+                        'pinterest/token/refresh_token',
+                        $response->refresh_token
+                    );
+                    $this->_pinterestHelper->saveMetadata(
+                        'pinterest/token/refresh_token_expires_in',
+                        $response->refresh_token_expires_in
+                    );
                 };
                 $this->_pinterestHelper->logInfo("Success refreshing tokens");
                 return true;
