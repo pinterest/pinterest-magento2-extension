@@ -12,7 +12,7 @@
                 t=document.createElement("script");t.async=!0,t.src=e;var
                 r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
             window.pintrk.partnerData={"np":"adobe"};
-            if (<?= $block->isLdpEnabled() ?>) {
+            <?php if ($block->isLdpEnabled()) { ?>
                 const state = "<?= $block->escapeJs($block->getHashedState())?>";
                 const country = "<?= $block->escapeJs($block->getHashedCountry())?>";
                 pintrk('set', {
@@ -20,7 +20,7 @@
                     st: state,
                     country: country,
                 });
-            }
+            <?php } ?>
             pintrk('setconsent', function() {
                     // Keep in sync with PinterestHelper::isUserOptedOutOfTracking
                     const config = {
