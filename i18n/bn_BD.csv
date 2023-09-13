@@ -1,4 +1,5 @@
 "Regenerate Catalog","পুনরায় ক্যাটালগ তৈরি করুন"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Pinterest-এর বিজ্ঞাপন পরিষেবা ব্যবহার করার সময় CCPA এবং CPRA-এর অধীনে বাধ্যবাধকতা মেনে চলতে LDP ফ্ল্যাগ সক্রিয় করুন। <a href='%1' target='_blank'>আরও জানুন</a>"
 "Turn on catalog ingestion","ক্যাটালগ ইনজেশন চালু করুন"
 "Turn off catalog ingestion","ক্যাটালগ ইনজেশন বন্ধ করুন"
 "Turn on Pinterest tag and Pinterest API for Conversions","রূপান্তরের জন্য Pinterest ট্যাগ এবং Pinterest API চালু করুন"
@@ -12,14 +13,14 @@ Pinterest,Pinterest
 Setup,সেট আপ করুন
 Configurations,কনফিগারেশনগুলি
 General,সাধারণ
-"Client ID","ক্লায়েন্টের আইডি"
+"Client ID","ক্লায়েন্ট ID"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest-এর জন্য ক্লায়েন্টের আইডি। এটি Pinterest-এ Adobe Commerce/Magento ক্লায়েন্ট শনাক্ত করতে ব্যবহৃত হয়।"
-"Base URL","বেস URL"
+"Integration Base URL","ইন্টিগ্রেশন বেস URL"
 "Base URL path for Pinterest.","Pinterest-এর জন্য বেস URL পাথ।"
 "Catalog Ingestion","ক্যাটালগ ইনজেশন"
-"Turn on or off catalog ingestion to Pinterest","Pinterest-এ ক্যাটালগ ইনজেশন চালু বা বন্ধ করুন"
-"Tag and API for Conversions","রূপান্তরের জন্য ট্যাগ এবং API"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","রূপান্তরের জন্য Pinterest ট্যাগ এবং Pinterest API চালু বা বন্ধ করুন"
+"Allow catalog ingestion to Pinterest","Pinterest-এ ক্যাটালগ প্রবেশ করানোর অনুমতি দিন"
+"Conversion tracking","রূপান্তর ট্র্যাকিং"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","ক্লায়েন্টসাইড এবং সার্ভারসাইডের রূপান্তরের ইভেন্টগুলি পাঠান। এই সেটিংটি আপডেট করতে, আপনার Pinterest ব্যবসার অ্যাকাউন্টটিকে Adobe Commerce-এ সংযোগ বিচ্ছিন্ন করে আবার সংযুক্ত করুন।"
 "Catalog Sync","ক্যাটালগ সিঙ্ক"
 "Manually run catalog creation and feed registration","ক্যাটালগ তৈরি এবং ফিড নিবন্ধন নিজের হাতে করে চালান"
 "General Data Protection Regulation (GDPR)","সাধারণ ডেটা সংরক্ষণ প্রবিধান (GDPR)"
@@ -27,3 +28,5 @@ General,সাধারণ
 Options,বিকল্পগুলি
 "Cookie Name","কুকির নাম"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","ট্র্যাকিং-এর নিয়ন্ত্রণ - স্টোর > কনফিগারেশন > সাধারণ > ওয়েব > ডিফল্ট কুকি সেটিংস > কুকি সীমাবদ্ধতা মোড থেকে করা হয়"
+"Limited Data Processing (LDP)","সীমিত ডেটা প্রসেসিং (LDP)"
+"Enable Limited Data Processing flag","সীমিবদ্ধ ডেটা প্রসেসিং ফ্ল্যাগ সক্রিয় করুন"

@@ -348,7 +348,8 @@ class PinterestHelper extends AbstractHelper
                 // check if item is simple or configurable. Otherwise skip it
                 if ($item->getProductType() == Type::TYPE_SIMPLE
                     || $item->getProductType() == Configurable::TYPE_CODE
-                    || $item->getProductType() == "grouped") {
+                    || $item->getProductType() == "grouped"
+                    || $item->getProductType() == "bundle") {
                     $modifiedAt = $item->getUpdatedAt();
 
                     if ($lastModifiedAt === null || $lastModifiedAt < $modifiedAt) {
@@ -761,6 +762,16 @@ class PinterestHelper extends AbstractHelper
     }
 
     /**
+     * Log warning
+     *
+     * @param string $message
+     */
+    public function logWarning($message)
+    {
+        $this->_logger->warning($message);
+    }
+
+    /**
      * Log the response code and save the code and message to the database
      *
      * TO BE DELETED
@@ -914,6 +925,6 @@ class PinterestHelper extends AbstractHelper
     public static function getContentId($product)
     {
         $unique_id = ProductExporter::getUniqueId($product);
-        return ($product->getTypeId() == Type::TYPE_SIMPLE) ?  "v_".$unique_id : $unique_id;
+        return $unique_id;
     }
 }

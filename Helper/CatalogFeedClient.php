@@ -83,9 +83,7 @@ class CatalogFeedClient
         $existingPinterestFeeds = $this->getAllFeeds();
 
         $this->_pinterestHelper->logInfo("Country locales to register feeds for: ".json_encode($country_locales));
-        $this->_pinterestHelper->logInfo(
-            "Existing feeds saved to magento metadata: " . json_encode($existingFeedsSavedToMetadata)
-        );
+        $this->_pinterestHelper->logInfo("Existing feeds saved to magento metadata: ".json_encode($existingFeedsSavedToMetadata));
         
         foreach ($country_locales as $storeId => $country_locale) {
             $baseUrl = $this->_pinterestHelper->getMediaBaseUrlByStoreId($storeId);
@@ -180,19 +178,26 @@ class CatalogFeedClient
     }
 
     /**
-     * Return feed ids of the any existing Pinterest feed that has the same name as $feedName
-     *
-     * @param string $feedName
-     * @param array $existingPinterestFeed
+     * Patch call to update feed info
+     * @param string $feedId
+     * @param array $newDataUpdate
+     * @return boolean true if call was successful
      */
-    private function getFeedIdWithSameFeedName($feedName, $existingPinterestFeed)
+    private function updateFeedInfo($feedId, $dataToUpdate)
     {
-        foreach ($existingPinterestFeed as $feed) {
-            if ($feed->name === $feedName) {
-                return $feed->id;
+        try {
+            $response = $this->_pinterestHttpClient->patch($this->getFeedAPI($feedId), $dataToUpdate, $this->getAccessToken());
+            if (isset($response->code)) {
+                $this->_pinterestHelper->logAndSaveAPIErrors($response, "catalogs/feeds/patch/{$feedId}");
+            } else {
+                $updatesLogs = json_encode($dataToUpdate);
+                $this->_pinterestHelper->logInfo("FeedId: {$response->id} Updated successful {$updatesLogs}");
+                return true;
             }
+        } catch (Exception $e) {
+            $this->_pinterestHelper->logException($e);
         }
-        return null;
+        return false;
     }
 
     /**
@@ -227,8 +232,11 @@ class CatalogFeedClient
     public function createFeedsForNewInstall($data, $existingPinterestFeeds, $queryParams = [])
     {
         try {
-            $existingFeedId = $this->getFeedIdWithSameFeedName($data["name"], $existingPinterestFeeds);
-            if ($existingFeedId) {
+            if (isset($existingPinterestFeeds[$data["name"]])) {
+                if (!isset($existingPinterestFeeds[$data["name"]]->id)) {
+                    throw new \Exception("Missing id in Feed: {$data["name"]}");
+                }
+                $existingFeedId = $existingPinterestFeeds[$data["name"]]->id;
                 // If it is the first time we are installing Magento then we have some feeds that were
                 // not cleaned up properly from last install thereby cleaning them up
                 $this->_pinterestHelper->logInfo(
@@ -251,24 +259,32 @@ class CatalogFeedClient
      * @param array $existingFeedsSavedToMetadata
      * @param array $queryParams
      */
-    public function createMissingFeedsOnPinterest(
-        $data,
-        $existingPinterestFeeds,
-        $existingFeedsSavedToMetadata,
-        $queryParams = []
-    ) {
+    public function createMissingFeedsOnPinterest($data, $existingPinterestFeeds, $existingFeedsSavedToMetadata, $queryParams = [])
+    {
         try {
-            $existingFeedId = $this->getFeedIdWithSameFeedName($data["name"], $existingPinterestFeeds);
-            if ($existingFeedId) {
+            if (isset($existingPinterestFeeds[$data["name"]])) {
+                if (!isset($existingPinterestFeeds[$data["name"]]->id)) {
+                    throw new \Exception("Missing id in Feed: {$data["name"]}");
+                }
+                $existingFeedId = $existingPinterestFeeds[$data["name"]]->id;
                 if (in_array($existingFeedId, $existingFeedsSavedToMetadata)) {
+                    $existingFeedData = $existingPinterestFeeds[$existingFeedId];
                     // Feed is already registerd
+                    $dataToUpdate = [];
+                    if ($existingFeedData->default_currency != $data["default_currency"]) {
+                        $dataToUpdate["default_currency"] = $data["default_currency"];
+                        $updateResponse = $this->updateFeedInfo($existingFeedId, $dataToUpdate);
+                        if (!$updateResponse) {
+                            return false;
+                        }
+                    }
                     $this->_pinterestHelper->logInfo(
                         "FeedId: {$existingFeedId} already exists on Pinterest. Skipping"
                     );
                     $this->feedsRegisteredOnPinterest[] = $existingFeedId;
                     return true;
                 } else {
-                     // Deleting the conflicting feed name. The occurance of this should be really low
+                    // Deleting the conflicting feed name. The occurance of this should be really low
                     $this->_pinterestHelper->logInfo(
                         "Existing FeedId: {$existingFeedId} has the same name. Deleting the existing entry from Pinterest"
                     );
@@ -297,15 +313,7 @@ class CatalogFeedClient
             $feedname = $data['name'];
             $this->_pinterestHelper->logInfo("Creating catalog feed on Pinterest");
             $this->_pinterestHelper->resetApiErrorState("errors/catalog/create/{$feedname}");
-            $response = $this->_pinterestHttpClient->post(
-                $this->getFeedAPI(),
-                $data,
-                $this->getAccessToken(),
-                null,
-                "application/json",
-                null,
-                $queryParams
-            );
+            $response = $this->_pinterestHttpClient->post($this->getFeedAPI(), $data, $this->getAccessToken(), null, "application/json", null, $queryParams);
             if (isset($response->code)) {
                 $message = isset($response->message)? $response->message : "n/a";
                 $status = $this->_pinterestHttpClient->getStatus();
@@ -399,6 +407,7 @@ class CatalogFeedClient
 
     /**
      * Helper method to get all the feeds from Pinterest
+     * @return array contain the feed informations with id and name as array keys
      */
     public function getAllFeeds()
     {
@@ -413,8 +422,13 @@ class CatalogFeedClient
             } else {
                 if (isset($response->items)) {
                     $count = count($response->items);
+                    $result = [];
+                    foreach ($response->items as $item) {
+                        $result[$item->id]= $item;
+                        $result[$item->name]= $item;
+                    }
                     $this->_pinterestHelper->logInfo("Got all the feeds (count: {$count}) successfully");
-                    return $response->items;
+                    return $result;
                 }
             }
         } catch (\Exception $e) {

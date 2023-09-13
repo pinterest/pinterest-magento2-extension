@@ -1,4 +1,5 @@
 "Regenerate Catalog","Відновлення каталогу"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Увімкніть прапорець обмеженої обробки даних (LDP), щоб дотримуватися зобов’язань відповідно до законів із захисту прав щодо персональних даних CCPA та CPRA при використанні рекламних послуг Pinterest. <a href='%1' target='_blank'>Докладніше</a>"
 "Turn on catalog ingestion","Увімкнути завантаження даних каталогу"
 "Turn off catalog ingestion","Вимкнути завантаження даних каталогу"
 "Turn on Pinterest tag and Pinterest API for Conversions","Увімкнути тег Pinterest і API Pinterest для конверсій"
@@ -14,12 +15,12 @@ Configurations,Конфігурації
 General,Загальне
 "Client ID","Ідентифікатор клієнта"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Ідентифікатор клієнта для Pinterest. Використовується для ідентифікації клієнтів Adobe Commerce і Magento на Pinterest."
-"Base URL","Базова URL-адреса"
+"Integration Base URL","Базова URL-адреса інтеграції"
 "Base URL path for Pinterest.","Шлях до базової URL-адреси для Pinterest."
 "Catalog Ingestion","Завантаження даних каталогу"
-"Turn on or off catalog ingestion to Pinterest","Увімкнення або вимкнення завантаження даних каталогу на Pinterest"
-"Tag and API for Conversions","Тег і API для конверсій"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Увімкнення або вимкнення тегу й API Pinterest для конверсій"
+"Allow catalog ingestion to Pinterest","Дозволити завантаження даних каталогу на Pinterest"
+"Conversion tracking","Відстеження конверсії"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Надсилайте події конверсії на стороні клієнта та сервера. Щоб змінити цей параметр, відключіть і повторно підключіть корпоративний обліковий запис Pinterest до Adobe Commerce."
 "Catalog Sync","Синхронізація каталогу"
 "Manually run catalog creation and feed registration","Створення каталогу й реєстрація стрічки вручну"
 "General Data Protection Regulation (GDPR)","Загальний регламент захисту даних (GDPR)"
@@ -27,3 +28,5 @@ General,Загальне
 Options,Опції
 "Cookie Name","Назва файлу cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Відстеженням можна керувати в розділі Магазини > Конфігурація > Загальне > Сайт > Стандартні настройки файлів cookie > Режим обмеження файлів cookie"
+"Limited Data Processing (LDP)","Обмежена обробка даних (LDP)"
+"Enable Limited Data Processing flag","Увімкнути прапорець обмеженої обробки даних"

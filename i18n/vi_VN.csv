@@ -1,4 +1,5 @@
 "Regenerate Catalog","Tái tạo Danh mục sản phẩm"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Bật cờ LDP để tuân thủ các nghĩa vụ theo CCPA và CPRA khi sử dụng dịch vụ quảng cáo của Pinterest. <a href='%1' target='_blank'>Tìm hiểu thêm</a>"
 "Turn on catalog ingestion","Bật chức năng nhập danh mục sản phẩm"
 "Turn off catalog ingestion","Tắt chức năng nhập danh mục sản phẩm"
 "Turn on Pinterest tag and Pinterest API for Conversions","Bật Thẻ Pinterest và API Chuyển đổi của Pinterest"
@@ -14,12 +15,12 @@ Configurations,Cấu hình
 General,Tổng quan
 "Client ID","ID khách hàng"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID ứng dụng cho Pinterest. Thông tin này được sử dụng để xác định các ứng dụng của Adobe Commerce/Magento trên Pinterest."
-"Base URL","URL gốc"
+"Integration Base URL","URL cơ sở tích hợp"
 "Base URL path for Pinterest.","Đường dẫn URL cơ sở cho Pinterest."
 "Catalog Ingestion","Nhập danh mục sản phẩm"
-"Turn on or off catalog ingestion to Pinterest","Bật hoặc tắt nhập danh mục sản phẩm vào Pinterest"
-"Tag and API for Conversions","Thẻ và API Chuyển đổi"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Tắt Thẻ Pinterest và API Chuyển đổi của Pinterest"
+"Allow catalog ingestion to Pinterest","Cho phép nhập danh mục sản phẩm vào Pinterest"
+"Conversion tracking","Theo dõi chuyển đổi"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Gửi các sự kiện chuyển đổi clientside và serverside. Để cập nhật cài đặt này, hãy ngắt kết nối và kết nối lại tài khoản doanh nghiệp trên Pinterest của bạn với Adobe Commerce."
 "Catalog Sync","Đồng bộ hóa danh mục sản phẩm"
 "Manually run catalog creation and feed registration","Chạy thủ công việc tạo danh mục sản phẩm và đăng ký nguồn cấp dữ liệu"
 "General Data Protection Regulation (GDPR)","Quy định chung về bảo vệ dữ liệu (GDPR)"
@@ -27,3 +28,5 @@ General,Tổng quan
 Options,Tùy chọn
 "Cookie Name","Tên cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Bạn có thể kiểm soát việc theo dõi tại Cửa hàng > Cấu hình > Chung > Web > Cài đặt cookie mặc định > Chế độ hạn chế Cookie"
+"Limited Data Processing (LDP)","Xử lý dữ liệu giới hạn (LDP)"
+"Enable Limited Data Processing flag","Bật cờ xử lý dữ liệu giới hạn"

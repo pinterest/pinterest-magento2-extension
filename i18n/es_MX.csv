@@ -1,4 +1,5 @@
 "Regenerate Catalog","Regenerar catálogo"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Permite que el indicador de procesamiento de datos limitado se ajuste a las obligaciones en virtud de la CCPA y la CPRA cuando uses el servicio publicitario de Pinterest. <a href='%1' target='_blank'>Obtén más información</a>"
 "Turn on catalog ingestion","Activar el procesamiento de catálogos"
 "Turn off catalog ingestion","Desactivar el procesamiento de catálogos"
 "Turn on Pinterest tag and Pinterest API for Conversions","Activar la etiqueta de Pinterest y la API de Pinterest para conversiones"
@@ -14,12 +15,12 @@ Configurations,Configuraciones
 General,General
 "Client ID","ID de cliente"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID de cliente para Pinterest. Esto se usa para identificar a los clientes de Adobe Commerce/Magento en Pinterest."
-"Base URL","URL base"
+"Integration Base URL","URL base de integración"
 "Base URL path for Pinterest.","Ruta de la URL base para Pinterest."
 "Catalog Ingestion","Procesamiento de catálogos"
-"Turn on or off catalog ingestion to Pinterest","Activar o desactivar el procesamiento de catálogos en Pinterest"
-"Tag and API for Conversions","Etiqueta y API para conversiones"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Activar o desactivar la etiqueta de Pinterest y la API de Pinterest para conversiones"
+"Allow catalog ingestion to Pinterest","Permitir el procesamiento de catálogos en Pinterest"
+"Conversion tracking","Seguimiento de conversiones"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Envía eventos de conversión del lado del cliente y del servidor. Para actualizar esta configuración, desvincula y vuelve a vincular tu cuenta para empresa de Pinterest con Adobe Commerce."
 "Catalog Sync","Sincronización del catálogo"
 "Manually run catalog creation and feed registration","Ejecutar manualmente la creación de catálogos y el registro de feeds"
 "General Data Protection Regulation (GDPR)","Reglamento General de Protección de Datos (RGPD)"
@@ -27,3 +28,5 @@ General,General
 Options,Opciones
 "Cookie Name","Nombre de la cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","El seguimiento se controla en Tiendas > Configuración > General > Web > Configuración de cookies predeterminada > Modo de restricción de cookies"
+"Limited Data Processing (LDP)","Procesamiento de datos limitado (LDP, por sus siglas en inglés)"
+"Enable Limited Data Processing flag","Indicador para activar el procesamiento de datos limitado"

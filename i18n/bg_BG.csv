@@ -1,4 +1,5 @@
 "Regenerate Catalog","Повторно генериране на каталог"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Активирайте отбелязване на LDP, за да спазите задълженията по CCPA и CPRA, когато използвате рекламната услуга на Pinterest. <a href='%1' target='_blank'>Научете повече</a>"
 "Turn on catalog ingestion","Включване на приемане на каталог"
 "Turn off catalog ingestion","Изключване на приемане на каталог"
 "Turn on Pinterest tag and Pinterest API for Conversions","Включете таг в Pinterest и API на Pinterest за конверсии"
@@ -14,12 +15,12 @@ Configurations,Конфигурации
 General,Общи
 "Client ID","ИД на клиент"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ИД на клиент за Pinterest. Това се използва за идентифициране на клиенти на Adobe Commerce/Magento в Pinterest."
-"Base URL","Основен URL адрес"
+"Integration Base URL","Основен URL адрес за интеграция"
 "Base URL path for Pinterest.","Път до основен URL адрес за Pinterest."
 "Catalog Ingestion","Приемане на каталог"
-"Turn on or off catalog ingestion to Pinterest","Включване или изключване на приемане на каталог в Pinterest"
-"Tag and API for Conversions","Таг и API за конверсии"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Включване или изключване на таг в Pinterest и API на Pinterest за конверсии"
+"Allow catalog ingestion to Pinterest","Разрешаване на приемане на каталог в Pinterest"
+"Conversion tracking","Проследяване на конверсии"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Изпращане на събития от конверсия до клиента и сървъра. За да актуализирате тази настройка, прекъснете връзката и свържете отново своя бизнес акаунт в Pinterest с Adobe Commerce."
 "Catalog Sync","Синхронизиране на каталог"
 "Manually run catalog creation and feed registration","Ръчно изпълняване на създаване на каталог и регистрация на информационен канал"
 "General Data Protection Regulation (GDPR)","Общ регламент относно защитата на данните (GDPR)"
@@ -27,3 +28,5 @@ General,Общи
 Options,Опции
 "Cookie Name","Име на бисквитка"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Проследяването се контролира в „Магазини“ > „Конфигурация“ > „Общи“ > „Уеб“ > „Настройки за бисквитки по подразбиране“ > „Режим за ограничаване на бисквитки“"
+"Limited Data Processing (LDP)","Ограничена обработка на данни (LDP)"
+"Enable Limited Data Processing flag","Разрешаване на отбелязване на ограничена обработка на данни"

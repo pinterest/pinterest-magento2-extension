@@ -255,4 +255,117 @@ class ConversionEventHelperTest extends TestCase
         $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", []);
         $this->_conversionEventHelper->enqueueEvent($payload);
     }
+
+    public function testPostEventWarningMessage()
+    {
+        $responseData = [
+            "num_events_processed" => 1,
+            "num_events_received" => 1,
+            "events" => [
+                [
+                    "status" => "processed",
+                    "error_message" => "",
+                    "warning_message" => "'external_id' is not in sha256 hashed format"
+                ]
+            ]
+        ];
+        $responseData = json_decode(json_encode($responseData), false);
+        $this->_pinterestHttpClient->method("post")->willReturn($responseData);
+        $this->_pinterestHttpClient->expects($this->once())->method("post");
+        $this->_pinterestHelper->expects($this->once())->method("logWarning");
+        $this->_pinterestHelper->expects($this->never())->method("logError");
+        $data = [];
+        for ($i = 0; $i <= 500; $i++) {
+            $data[] = ["event_id" => "sampleEvent"];
+        }
+        $this->_cache->method("load")->willReturn(json_encode(["start_time" => time() - 1, "data" => $data]));
+        $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", []);
+        $this->_conversionEventHelper->enqueueEvent($payload);
+    }
+
+    public function testPostEventNoMessage()
+    {
+        $responseData = [
+            "num_events_processed" => 1,
+            "num_events_received" => 1,
+            "events" => [
+                [
+                    "status" => "processed",
+                    "error_message" => "",
+                    "warning_message" => ""
+                ]
+            ]
+        ];
+        $responseData = json_decode(json_encode($responseData), false);
+        $this->_pinterestHttpClient->method("post")->willReturn($responseData);
+        $this->_pinterestHttpClient->expects($this->once())->method("post");
+        $this->_pinterestHelper->expects($this->never())->method("logWarning");
+        $this->_pinterestHelper->expects($this->never())->method("logError");
+        $data = [];
+        for ($i = 0; $i <= 500; $i++) {
+            $data[] = ["event_id" => "sampleEvent"];
+        }
+        $this->_cache->method("load")->willReturn(json_encode(["start_time" => time() - 1, "data" => $data]));
+        $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", []);
+        $this->_conversionEventHelper->enqueueEvent($payload);
+    }
+
+    public function testPostEventErrorMessage()
+    {
+        $responseData = [
+            "num_events_processed" => 1,
+            "num_events_received" => 1,
+            "events" => [
+                [
+                    "status" => "processed",
+                    "error_message" => "ERROR MESSAGE TEST",
+                    "warning_message" => ""
+                ]
+            ]
+        ];
+        $responseData = json_decode(json_encode($responseData), false);
+        $this->_pinterestHttpClient->method("post")->willReturn($responseData);
+        $this->_pinterestHttpClient->expects($this->once())->method("post");
+        $this->_pinterestHelper->expects($this->never())->method("logWarning");
+        $this->_pinterestHelper->expects($this->once())->method("logError");
+        $data = [];
+        for ($i = 0; $i <= 500; $i++) {
+            $data[] = ["event_id" => "sampleEvent"];
+        }
+        $this->_cache->method("load")->willReturn(json_encode(["start_time" => time() - 1, "data" => $data]));
+        $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", []);
+        $this->_conversionEventHelper->enqueueEvent($payload);
+    }
+
+    public function testPostEventMultipleMessages()
+    {
+        $responseData = [
+            "num_events_processed" => 1,
+            "num_events_received" => 1,
+            "events" => [
+                [
+                    "status" => "processed",
+                    "error_message" => "ERROR MESSAGE TEST",
+                    "warning_message" => ""
+                ],
+                [
+                    "status" => "processed",
+                    "error_message" => "",
+                    "warning_message" => "'external_id' is not in sha256 hashed format"
+                ]
+            ]
+        ];
+        $responseData = json_decode(json_encode($responseData), false);
+        $this->_pinterestHttpClient->method("post")->willReturn($responseData);
+        $this->_pinterestHttpClient->expects($this->once())->method("post");
+        $this->_pinterestHelper->expects($this->once())->method("logWarning");
+        $this->_pinterestHelper->expects($this->once())->method("logError");
+        $data = [];
+        for ($i = 0; $i <= 500; $i++) {
+            $data[] = ["event_id" => "sampleEvent"];
+        }
+        $this->_cache->method("load")->willReturn(json_encode(["start_time" => time() - 1, "data" => $data]));
+        $payload = $this->_conversionEventHelper->createEventPayload("sample_event_id", "sample_event_name", []);
+        $this->_conversionEventHelper->enqueueEvent($payload);
+    }
 }

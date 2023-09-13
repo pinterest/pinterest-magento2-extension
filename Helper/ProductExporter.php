@@ -281,7 +281,6 @@ class ProductExporter
         foreach ($products as $product) {
             $productValues = [
                 "xmlns:g:id" => PinterestHelper::getContentId($product),
-                "item_group_id" => $this->getUniqueId($product),
                 "title" => $this->getProductName($product),
                 "description" => $this->getProductDescription($product),
                 "link" => $this->getProductUrl($product),

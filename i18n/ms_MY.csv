@@ -1,4 +1,5 @@
 "Regenerate Catalog","Jana semula Katalog"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Dayakan bendera LDP untuk mematuhi kewajipan di bawah CCPA dan CPRA semasa menggunakan perkhidmatan iklan Pinterest. <a href='%1' target='_blank'>Ketahui lebih lanjut</a>"
 "Turn on catalog ingestion","Hidupkan pengingesan katalog"
 "Turn off catalog ingestion","Matikan pengingesan katalog"
 "Turn on Pinterest tag and Pinterest API for Conversions","Hidupkan tag Pinterest dan API Pinterest untuk Penukaran"
@@ -14,12 +15,12 @@ Configurations,Konfigurasi
 General,Umum
 "Client ID","ID Pelanggan"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID klien untuk Pinterest. Ini digunakan untuk mengenal pasti klien Adobe Commerce/Magento di Pinterest."
-"Base URL","URL Induk"
+"Integration Base URL","URL Induk Integrasi"
 "Base URL path for Pinterest.","Laluan URL induk untuk Pinterest."
 "Catalog Ingestion","Pengingesan Katalog"
-"Turn on or off catalog ingestion to Pinterest","Hidupkan atau matikan pengingesan katalog ke Pinterest"
-"Tag and API for Conversions","Tag dan API untuk Penukaran"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Hidupkan atau matikan tag Pinterest dan API Pinterest untuk Penukaran"
+"Allow catalog ingestion to Pinterest","Benarkan pengingesan katalog ke Pinterest"
+"Conversion tracking","Penjejakan penukaran"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Hantar peristiwa penukaran kepada pelanggan dan pelayan. Untuk mengemas kini tetapan ini, putuskan sambungan dan sambungkan semula akaun perniagaan Pinterest anda kepada Adobe Commerce."
 "Catalog Sync","Penyegerakan Katalog"
 "Manually run catalog creation and feed registration","Jalankan penciptaan katalog dan pendaftaran suapan secara manual"
 "General Data Protection Regulation (GDPR)","Peraturan Perlindungan Data Am (GDPR)"
@@ -27,3 +28,5 @@ General,Umum
 Options,Pilihan
 "Cookie Name","Nama Kuki"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Penjejakan dikawal di Gedung > Konfigurasi > Umum > Web > Tetapan Kuki Lalai > Mod Sekatan Kuki"
+"Limited Data Processing (LDP)","Pemprosesan Data Terhad (LDP)"
+"Enable Limited Data Processing flag","Dayakan bendera Pemprosesan Data Terhad"

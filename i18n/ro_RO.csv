@@ -1,4 +1,5 @@
 "Regenerate Catalog","Regenerează catalogul"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Permite semnalizarea LDP pentru a respecta obligațiile din CCPA și CPRA atunci când folosești serviciul de reclame Pinterest. <a href='%1' target='_blank'>Află detalii</a>"
 "Turn on catalog ingestion","Activează ingestia din catalog"
 "Turn off catalog ingestion","Dezactivează ingestia din catalog"
 "Turn on Pinterest tag and Pinterest API for Conversions","Activează marcajul Pinterest și API-ul Pinterest pentru conversii"
@@ -14,12 +15,12 @@ Configurations,Configurații
 General,General
 "Client ID","ID client"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID-ul clientului pentru Pinterest. Acesta este utilizat pentru identificarea clienților Adobe Commerce/Magento pe Pinterest."
-"Base URL","Adresă URL de bază"
+"Integration Base URL","URL de bază de integrare"
 "Base URL path for Pinterest.","Calea URL-ului de bază pentru Pinterest."
 "Catalog Ingestion","Ingestie din catalog"
-"Turn on or off catalog ingestion to Pinterest","Activează sau dezactivează ingestia din catalog pe Pinterest"
-"Tag and API for Conversions","Marcaj și API pentru conversii"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Activează sau dezactivează marcajul Pinterest și API-ul Pinterest pentru conversii"
+"Allow catalog ingestion to Pinterest","Permite ingestia din catalog pe Pinterest"
+"Conversion tracking","Urmărirea conversiilor"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Trimite evenimente de conversie pe partea de clienți și pe partea de server. Pentru a actualiza această setare, deconectează-ți și reconectează contul business Pinterest la Adobe Commerce."
 "Catalog Sync","Sincronizează catalogul"
 "Manually run catalog creation and feed registration","Rulează manual crearea catalogului și înregistrarea fluxului"
 "General Data Protection Regulation (GDPR)","Regulamentul general privind protecția datelor (RGPD)"
@@ -27,3 +28,5 @@ General,General
 Options,Opțiuni
 "Cookie Name","Nume cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Urmărirea este controlată în Magazine > Configurație > General > Web > Setări implicite cookie > Mod restricție cookie"
+"Limited Data Processing (LDP)","Prelucrare limitată a datelor (LDP)"
+"Enable Limited Data Processing flag","Activează semnalizarea de procesare limitată a datelor"

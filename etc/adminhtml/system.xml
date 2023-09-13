@@ -18,21 +18,21 @@
                     <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
                 </field>
                 <field id="pinterest_base_url" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Base URL</label>
+                    <label>Integration Base URL</label>
                     <comment>Base URL path for Pinterest.</comment>
                     <validate>required-entry no-whitespace</validate>
                     <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
                 </field>
                 <field id="pinterest_catalog_enabled" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Catalog Ingestion</label>
-                    <comment>Turn on or off catalog ingestion to Pinterest</comment>
+                    <comment>Allow catalog ingestion to Pinterest</comment>
                     <validate>required-entry no-whitespace</validate>
                     <source_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestCatalogConfigList</source_model>
                     <backend_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestCatalogConfigBackend</backend_model>
                 </field>
                 <field id="pinterest_conversion_enabled" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Tag and API for Conversions</label>
-                    <comment>Turn on or off Pinterest tag and Pinterest API for Conversions. This setting can only be set during onboarding. Disconnect and reconnect to change the value.</comment>
+                    <label>Conversion tracking</label>
+                    <comment>Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.</comment>
                     <validate>required-entry no-whitespace</validate>
                     <source_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestConversionConfigList</source_model>
                     <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
@@ -80,9 +80,10 @@
             <group id="ldp" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Limited Data Processing (LDP)</label>
                 <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable LDP</label>
+                    <label>Enable Limited Data Processing flag</label>
                     <comment model="Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\LDPComment" />
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\LdpField</frontend_model>
                 </field>
             </group>
         </section>

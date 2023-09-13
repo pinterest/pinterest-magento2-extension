@@ -17,12 +17,9 @@
                 }                
                 var product_info_url = "<?= /* @noEscape */ $block->getProductInfoUrl() ?>";
                 $(document).on("ajax:addToCart", function (event, data) {
-                    if (data && data.sku && product_info_url) {
+                    if (product_info_url) {
                         $.ajax({
                             url: product_info_url,
-                            data: {
-                                product_sku: data.sku
-                            },
                             type: "post",
                             dataType: "json",
                             success: function (res) {

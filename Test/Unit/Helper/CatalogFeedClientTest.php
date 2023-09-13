@@ -11,6 +11,8 @@ use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
 use Magento\Framework\App\Request\Http;
 use PHPUnit\Framework\TestCase;
 
+use Magento\Framework\Webapi\Exception as HTTPExceptionCodes;
+
 class CatalogFeedClientTest extends TestCase
 {
     /**
@@ -161,9 +163,11 @@ class CatalogFeedClientTest extends TestCase
         ];
         $this->_pinterestHttpClient->method("get")->willReturn(json_decode(json_encode($response_200)));
         $ret = $this->_catalogFeedClient->getAllFeeds();
-        $this->assertEquals(count($ret), 1);
-        $this->assertEquals($ret[0]->id, "test");
-        $this->assertEquals($ret[0]->name, "sameCatalog");
+        $this->assertEquals(count($ret), 2);
+        $this->assertEquals($ret["test"]->id, "test");
+        $this->assertEquals($ret["test"]->name, "sameCatalog");
+        $this->assertEquals($ret["sameCatalog"]->id, "test");
+        $this->assertEquals($ret["sameCatalog"]->name, "sameCatalog");
     }
 
     private function apiResponseMock()
@@ -212,6 +216,81 @@ class CatalogFeedClientTest extends TestCase
         $this->assertFalse($ret);
     }
 
+    public function testCreateFeedHelperNewInstallWithNoFeedId()
+    {
+        $this->_pinterestHttpClient->expects($this->never())->method("delete");
+        $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode((CatalogFeedClientTest::POST_RESPONSE_200)));
+        $this->_pinterestHttpClient->expects($this->never())->method("patch");
+        $feedName = $this->_catalogFeedClient->getFeedName("en_US", "www.pinterest.com");
+        $response_200 =[
+            "items" => [
+              [
+                "name" => $feedName
+              ]
+            ]
+          ];
+        $this->_pinterestHttpClient->method("get")->willReturn(json_decode(json_encode($response_200)));
+        $existingPinterestFeeds = $this->_catalogFeedClient->getAllFeeds();
+        $data = [
+            "location" => "www.pinterest.com",
+            "name" => $feedName
+        ];
+        $ret = $this->_catalogFeedClient->createMissingFeedsOnPinterest($data, $existingPinterestFeeds, ["feed_US"]);
+        $this->assertTrue($ret);
+    }
+
+    public function testCreateFeedHelperNewInstallWithCurrencyChanged()
+    {
+        
+        $this->_pinterestHttpClient->expects($this->never())->method("delete");
+        $this->_pinterestHttpClient->expects($this->never())->method("post");
+        $this->_pinterestHttpClient->expects($this->once())->method("patch")->willReturn(json_decode((CatalogFeedClientTest::POST_RESPONSE_200)));
+        $feedName = $this->_catalogFeedClient->getFeedName("en_US", "www.pinterest.com");
+        $response_200 =[
+            "items" => [
+              [
+                "id" => "feed_US",
+                "name" => $feedName,
+                "default_currency" => "BRL"
+              ]
+            ]
+          ];
+        $this->_pinterestHttpClient->method("get")->willReturn(json_decode(json_encode($response_200)));
+        $existingPinterestFeeds = $this->_catalogFeedClient->getAllFeeds();
+        $data = [
+            "location" => "www.pinterest.com",
+            "name" => $feedName,
+            "default_currency" => "USD"
+        ];
+        $ret = $this->_catalogFeedClient->createMissingFeedsOnPinterest($data, $existingPinterestFeeds, ["feed_US"]);
+        $this->assertTrue($ret);
+    }
+
+    public function testCreateFeedHelperIdMissingInFeed()
+    {
+        
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Missing id in Feed: Test");
+        $this->_pinterestHttpClient->expects($this->never())->method("delete");
+        $this->_pinterestHttpClient->expects($this->never())->method("post");
+        $response = [
+            "items" => [
+              [
+                "name" => "Test",
+              ]
+            ]
+          ];
+          $existingPinterestFeeds = [];
+        foreach (json_decode(json_encode($response))->items as $item) {
+            $existingPinterestFeeds[$item->name]= $item;
+        }
+        $data = [
+            "location" => "www.pinterest.com",
+            "name" => "Test"
+        ];
+        $ret = $this->_catalogFeedClient->createMissingFeedsOnPinterest($data, $existingPinterestFeeds, ["Test"]);
+    }
+
     public function testCreateFeedHelperNewInstallWithSameExistingFeeds()
     {
         $responseMock = $this->apiResponseMock();
@@ -219,12 +298,16 @@ class CatalogFeedClientTest extends TestCase
         $this->_pinterestHttpClient->expects($this->once())->method("delete")->willReturn($responseMock);
         $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode(CatalogFeedClientTest::POST_RESPONSE_200));
         $feedName = $this->_catalogFeedClient->getFeedName("en_US", "www.pinterest.com");
-        $existingPinterestFeeds = json_decode(json_encode([
-            [
+        $response_200 =[
+            "items" => [
+              [
                 "id" => "1234",
                 "name" => $feedName
+              ]
             ]
-        ]));
+          ];
+        $this->_pinterestHttpClient->method("get")->willReturn(json_decode(json_encode($response_200)));
+        $existingPinterestFeeds = $this->_catalogFeedClient->getAllFeeds();
         $ret = $this->_catalogFeedClient->createFeedsForNewInstall([
             "location" => "www.pinterest.com",
             "name" => $feedName
@@ -254,15 +337,21 @@ class CatalogFeedClientTest extends TestCase
         $this->_pinterestHttpClient->expects($this->never())->method("delete");
         $this->_pinterestHttpClient->expects($this->never())->method("post");
         $feedName = $this->_catalogFeedClient->getFeedName("en_US", "www.pinterest.com");
-        $existingPinterestFeeds = json_decode(json_encode([
-            [
+        $response_200 =[
+            "items" => [
+              [
                 "id" => "1234",
-                "name" => $feedName
+                "name" => $feedName,
+                "default_currency" => "USD"
+              ]
             ]
-        ]));
+          ];
+        $this->_pinterestHttpClient->method("get")->willReturn(json_decode(json_encode($response_200)));
+        $existingPinterestFeeds = $this->_catalogFeedClient->getAllFeeds();
         $data = [
             "location" => "www.pinterest.com",
-            "name" => $feedName
+            "name" => $feedName,
+            "default_currency" => "USD"
         ];
         $ret = $this->_catalogFeedClient->createMissingFeedsOnPinterest($data, $existingPinterestFeeds, ["1234"]);
         $this->assertTrue($ret);
@@ -273,15 +362,21 @@ class CatalogFeedClientTest extends TestCase
         $this->_pinterestHttpClient->expects($this->never())->method("delete");
         $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode(CatalogFeedClientTest::POST_RESPONSE_200));
         $feedName = $this->_catalogFeedClient->getFeedName("en_US", "www.pinterest.com");
-        $existingPinterestFeeds = json_decode(json_encode([
-            [
+        $response_200 =[
+            "items" => [
+              [
                 "id" => "1234",
-                "name" => "random_name"
+                "name" => "random_name",
+                "default_currency" => "USD"
+              ]
             ]
-        ]));
+          ];
+        $this->_pinterestHttpClient->method("get")->willReturn(json_decode(json_encode($response_200)));
+        $existingPinterestFeeds = $this->_catalogFeedClient->getAllFeeds();
         $data = [
             "location" => "www.pinterest.com",
-            "name" => $feedName
+            "name" => $feedName,
+            "default_currency" => "USD"
         ];
         $ret = $this->_catalogFeedClient->createMissingFeedsOnPinterest($data, $existingPinterestFeeds, ["1234"]);
         $this->assertTrue($ret);
@@ -294,12 +389,16 @@ class CatalogFeedClientTest extends TestCase
         $this->_pinterestHttpClient->expects($this->once())->method("delete")->willReturn($responseMock);
         $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode(CatalogFeedClientTest::POST_RESPONSE_200));
         $feedName = $this->_catalogFeedClient->getFeedName("en_US", "www.pinterest.com");
-        $existingPinterestFeeds = json_decode(json_encode([
-            [
+        $response_200 =[
+            "items" => [
+              [
                 "id" => "1234",
                 "name" => $feedName
+              ]
             ]
-        ]));
+          ];
+        $this->_pinterestHttpClient->method("get")->willReturn(json_decode(json_encode($response_200)));
+        $existingPinterestFeeds = $this->_catalogFeedClient->getAllFeeds();
         $data = [
             "location" => "www.pinterest.com",
             "name" => $feedName

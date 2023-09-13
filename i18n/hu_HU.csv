@@ -1,4 +1,5 @@
 "Regenerate Catalog","Katalógus újragenerálása"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Engedélyezd az LDP-jelzőt, hogy megfelelj a CCPA és a CPRA szerinti kötelezettségeknek a Pinterest hirdetési szolgáltatásának használata során. <a href='%1' target='_blank'>További információ</a>"
 "Turn on catalog ingestion","Katalógusfeldolgozás bekapcsolása"
 "Turn off catalog ingestion","Katalógusfeldolgozás kikapcsolása"
 "Turn on Pinterest tag and Pinterest API for Conversions","A Pinterest-címke és a konverziós Pinterest API bekapcsolása"
@@ -14,12 +15,12 @@ Configurations,Konfigurációk
 General,Általános
 "Client ID","Ügyfél azonosítója"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","A Pinterest ügyfélazonosítója. Az Adobe Commerce/Magento-ügyfeleket ezzel lehet azonosítani a Pinteresten."
-"Base URL","Alap URL"
+"Integration Base URL","Integrációs alap URL"
 "Base URL path for Pinterest.","A Pinterest alap URL‑jéhez tartozó elérési útvonal."
 "Catalog Ingestion","Katalógus feldolgozása"
-"Turn on or off catalog ingestion to Pinterest","A katalógusfeldolgozás be- vagy kikapcsolása a Pinteresten"
-"Tag and API for Conversions","Címke és konverziós API"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","A Pinterest‑címke és a konverziós Pinterest API be- vagy kikapcsolása"
+"Allow catalog ingestion to Pinterest","Katalógusfeldolgozás engedélyezése a Pinteresten"
+"Conversion tracking","Konverziókövetés"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Ügyféloldali és szerveroldali konverziós eseményeket küldhetsz. A beállítás frissítéséhez válaszd le az Adobe Commerce‑hez kapcsolt üzleti Pinterest-fiókodat, majd csatlakoztasd hozzá újra."
 "Catalog Sync","Katalógus szinkronizálása"
 "Manually run catalog creation and feed registration","Katalóguslétrehozás és képfolyam-regisztráció manuális futtatása"
 "General Data Protection Regulation (GDPR)","Általános adatvédelmi rendelet (GDPR)"
@@ -27,3 +28,5 @@ General,Általános
 Options,Beállítások
 "Cookie Name","Cookie neve"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","A nyomon követés beállításai a következő szakaszban találhatók: Áruházak > Konfigurálás > Általános > Web > Alapértelmezett cookie-beállítások > Cookie‑korlátozási mód"
+"Limited Data Processing (LDP)","Korlátozott adatkezelés (LDP)"
+"Enable Limited Data Processing flag","Korlátozott adatkezelési jelölő engedélyezése"
