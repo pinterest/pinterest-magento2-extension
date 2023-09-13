@@ -1,4 +1,5 @@
 "Regenerate Catalog","Regenerer katalog"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Aktivér afmærkning af LDP for at overholde forpligtelserne i henhold til CCPA og CPRA, når du bruger Pinterests annoncetjeneste. <a href='%1' target='_blank'>Læs mere</a>"
 "Turn on catalog ingestion","Aktivér indtagelse af katalog"
 "Turn off catalog ingestion","Deaktiver indtagelse af katalog"
 "Turn on Pinterest tag and Pinterest API for Conversions","Aktivér Pinterest-tagget og Pinterest API til konverteringer"
@@ -14,12 +15,12 @@ Configurations,Konfigurationer
 General,Generelt
 "Client ID","Klient-id"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Klient-id til Pinterest. Bruges til at identificere Adobe Commerce/Magento-klienter på Pinterest."
-"Base URL","Basisadresse"
+"Integration Base URL","Basisadresse til integration"
 "Base URL path for Pinterest.","Basisadresse til Pinterest."
 "Catalog Ingestion","Indtagelse af katalog"
-"Turn on or off catalog ingestion to Pinterest","Aktivér/deaktiver indtagelse af kataloger på Pinterest"
-"Tag and API for Conversions","Tag og API til konverteringer"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Aktivér/deaktiver Pinterest-tagget og Pinterest API til konverteringer"
+"Allow catalog ingestion to Pinterest","Tillad katalogindtagelse på Pinterest"
+"Conversion tracking","Konverteringssporing"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Send konverteringshændelser på klientside og serverside. Hvis du vil opdatere denne indstilling, skal du afbryde og genoprette forbindelsen mellem din Pinterest-virksomhedskonto og Adobe Commerce."
 "Catalog Sync","Synkroniser katalog"
 "Manually run catalog creation and feed registration","Kør katalogoprettelse og feedregistrering manuelt"
 "General Data Protection Regulation (GDPR)","Databeskyttelsesforordningen (GDPR)"
@@ -27,3 +28,5 @@ General,Generelt
 Options,Valgmuligheder
 "Cookie Name","Navn på cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Sporing administreres under Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode"
+"Limited Data Processing (LDP)","Begrænset databehandling (LDP, Limited Data Processing)"
+"Enable Limited Data Processing flag","Aktivér afmærkning af begrænset databehandling"

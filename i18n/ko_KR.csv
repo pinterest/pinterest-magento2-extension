@@ -1,4 +1,5 @@
 "Regenerate Catalog","카탈로그 다시 만들기"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Pinterest 광고 서비스를 사용할 때 LDP 플래그가 CCPA 및 CPRA에 따른 의무를 준수하도록 설정하세요. <a href='%1' target='_blank'>자세히 알아보기</a>"
 "Turn on catalog ingestion","카탈로그 수집 켜기"
 "Turn off catalog ingestion","카탈로그 수집 끄기"
 "Turn on Pinterest tag and Pinterest API for Conversions","Pinterest 태그 및 전환수 Pinterest API 켜기"
@@ -14,12 +15,12 @@ Configurations,구성
 General,일반
 "Client ID","클라이언트 ID"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest 클라이언트 ID입니다. Pinterest에서 Adobe Commerce/Magento 클라이언트를 식별하는 데 사용됩니다."
-"Base URL","기본 URL"
+"Integration Base URL","통합 기본 URL"
 "Base URL path for Pinterest.","Pinterest의 기본 URL 경로입니다."
 "Catalog Ingestion","카탈로그 수집"
-"Turn on or off catalog ingestion to Pinterest","Pinterest 카탈로그 수집 켜기 또는 끄기"
-"Tag and API for Conversions","태그 및 전환수 API"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Pinterest 태그 및 전환수 Pinterest API 켜기 또는 끄기"
+"Allow catalog ingestion to Pinterest","Pinterest에 카탈로그 수집 허용"
+"Conversion tracking","전환 추적"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","클라이언트 측 및 서버 측 전환 이벤트를 보냅니다. 이 설정을 업데이트하려면 Pinterest Business 계정을 연결 해제하고 Adobe Commerce에 다시 연결하세요."
 "Catalog Sync","카탈로그 동기화"
 "Manually run catalog creation and feed registration","카탈로그 만들기 및 피드 등록을 수동으로 실행"
 "General Data Protection Regulation (GDPR)","일반 데이터 보호 규정(GDPR)"
@@ -27,3 +28,5 @@ General,일반
 Options,옵션
 "Cookie Name","쿠키 이름"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","추적은 스토어 > 구성 > 일반 > 웹 > 기본 쿠키 설정 > 쿠키 제한 모드에서 관리할 수 있습니다."
+"Limited Data Processing (LDP)","제한적 데이터 처리(LDP)"
+"Enable Limited Data Processing flag","제한적 데이터 처리 플래그 활성화"

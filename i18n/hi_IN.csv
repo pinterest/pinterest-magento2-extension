@@ -1,4 +1,5 @@
 "Regenerate Catalog","कैटलॉग फिर से जेनरेट करें"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Pinterest की विज्ञापन सेवा का उपयोग करते समय CCPA और CPRA में दिए गए दायित्वों का पालन करने के लिए LDP फ़्लैग सक्षम करें। <a href='%1' target='_blank'>और जानें</a>"
 "Turn on catalog ingestion","कैटलॉग इंजेशन चालू करें"
 "Turn off catalog ingestion","कैटलॉग इंजेशन बंद करें"
 "Turn on Pinterest tag and Pinterest API for Conversions","रूपांतरण के लिए Pinterest API और Pinterest टैग चालू करें"
@@ -14,12 +15,12 @@ Configurations,कॉन्फ़िगरेशन
 General,सामान्य
 "Client ID","क्लाइंट ID"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest के लिए क्लाइंट ID. इसका उपयोग Pinterest पर Adobe Commerce/Magento क्लाइंट की पहचान करने के लिए किया जाता है।"
-"Base URL","बेस URL"
+"Integration Base URL","एकीकरण बेस URL"
 "Base URL path for Pinterest.","Pinterest के लिए बेस URL पाथ।"
 "Catalog Ingestion","कैटलॉग इंजेशन"
-"Turn on or off catalog ingestion to Pinterest","Pinterest पर कैटलॉग इंजेशन चालू या बंद करें"
-"Tag and API for Conversions","रूपांतरण के लिए API और टैग"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","रूपांतरण के लिए Pinterest API और Pinterest टैग को बंद करें"
+"Allow catalog ingestion to Pinterest","Pinterest पर कैटलॉग इंजेशन की अनुमति दें"
+"Conversion tracking","रूपांतरण ट्रैकिंग"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","क्लाइंटसाइड और सर्वरसाइड रूपांतरण इवेंट भेजें। इस सेटिंग को अपडेट करने के लिए, अपने Pinterest व्यवसाय खाते को Adobe Commerce से डिस्कनेक्ट करें और इसे फिर से कनेक्ट करें।"
 "Catalog Sync","कैटलॉग सिंक"
 "Manually run catalog creation and feed registration","मैन्युअल रूप से कैटलॉग बनाएँ और फ़ीड पंजीकरण चलाएँ"
 "General Data Protection Regulation (GDPR)","सामान्य डेटा संरक्षण नियम (GDPR)"
@@ -27,3 +28,5 @@ General,सामान्य
 Options,विकल्प
 "Cookie Name","कुकी का नाम"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","ट्रैकिंग स्टोर > कॉन्फ़िगरेशन > सामान्य > वेब > डिफ़ॉल्ट कुकी सेटिंग > कुकी प्रतिबंध मोड पर नियंत्रित की जाती है"
+"Limited Data Processing (LDP)","सीमित डेटा संसाधन (LDP)"
+"Enable Limited Data Processing flag","सीमित डेटा संसाधन फ़्लैग सक्षम करें"

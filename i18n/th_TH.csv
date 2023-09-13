@@ -1,4 +1,5 @@
 "Regenerate Catalog","สร้างแคตตาล็อกใหม่"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","เปิดใช้เครื่องหมาย LDP เพื่อปฏิบัติตามภาระผูกพันภายใต้ CCPA และ CPRA เมื่อใช้บริการโฆษณาของ Pinterest <a href='%1' target='_blank'>เรียนรู้เพิ่มเติม</a>"
 "Turn on catalog ingestion","เปิดการนำเข้าแคตตาล็อก"
 "Turn off catalog ingestion","ปิดการนำเข้าแคตตาล็อก"
 "Turn on Pinterest tag and Pinterest API for Conversions","เปิดแท็ก Pinterest และ Pinterest API สําหรับคอนเวอร์ชัน"
@@ -14,12 +15,12 @@ Configurations,การกำหนดค่า
 General,ทั่วไป
 "Client ID","ID ไคลเอ็นต์"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID ไคลเอ็นต์สําหรับ Pinterest ใช้เพื่อระบุไคลเอ็นต์ Adobe Commerce/Magento บน Pinterest"
-"Base URL","URL ฐาน"
+"Integration Base URL","URL ฐานของการผสานรวม"
 "Base URL path for Pinterest.","เส้นทาง URL ฐานสําหรับ Pinterest"
 "Catalog Ingestion","การนําเข้าแคตตาล็อก"
-"Turn on or off catalog ingestion to Pinterest","เปิดหรือปิดการนําเข้าแคตตาล็อกไปที่ Pinterest"
-"Tag and API for Conversions","แท็กและ API สําหรับคอนเวอร์ชัน"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","เปิดหรือปิดแท็ก Pinterest และ Pinterest API สําหรับคอนเวอร์ชัน"
+"Allow catalog ingestion to Pinterest","อนุญาตให้นําเข้าแคตตาล็อกไปยัง Pinterest"
+"Conversion tracking","การติดตามคอนเวอร์ชัน"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","ส่งเหตุการณ์คอนเวอร์ชันในฝั่งไคลเอนต์และฝั่งเซิร์ฟเวอร์ หากต้องการอัปเดตการตั้งค่านี้ ให้ยกเลิกการเชื่อมต่อบัญชีธุรกิจ Pinterest ของคุณกับ Adobe Commerce แล้วเชื่อมต่อใหม่"
 "Catalog Sync","การซิงค์แคตตาล็อก"
 "Manually run catalog creation and feed registration","เรียกใช้การสร้างแคตตาล็อกและการลงทะเบียนฟีดด้วยตนเอง"
 "General Data Protection Regulation (GDPR)","กฎหมายคุ้มครองข้อมูลส่วนบุคคล (GDPR)"
@@ -27,3 +28,5 @@ General,ทั่วไป
 Options,ตัวเลือก
 "Cookie Name","ชื่อคุกกี้"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","การติดตามได้รับการควบคุมที่ร้านค้า > การกําหนดค่า > ทั่วไป > เว็บ > การตั้งค่าคุกกี้เริ่มต้น > โหมดจํากัดคุกกี้"
+"Limited Data Processing (LDP)","การประมวลผลข้อมูลแบบจํากัด (LDP)"
+"Enable Limited Data Processing flag","เปิดใช้เครื่องหมายการประมวลผลข้อมูลแบบจํากัด"

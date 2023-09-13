@@ -214,13 +214,9 @@ class ConversionEventHelper
      */
     public function processConversionEvent($eventId, $eventName, $customData = [])
     {
-        // Comment out info logs in prod. Only for debugging
-        // $this->_pinterestHelper->logInfo("processConversionEvent ".$eventName);
         if ($this->_disableTag || $this->_pinterestHelper->isUserOptedOutOfTracking()) {
-            // $this->_pinterestHelper->logInfo("skipped processConversionEvent");
             return;
         }
-        // $this->_pinterestHelper->logInfo("process processConversionEvent");
         try {
             $eventData = $this->createEventPayload($eventId, $eventName, $customData);
             $this->_lastEventEnqueued = $eventData;
@@ -301,6 +297,16 @@ class ConversionEventHelper
     {
         try {
             $response = $this->_pinterestHttpClient->post($this->getAPIEndPoint(), $params, $this->getAccessToken());
+            if (isset($response->events) && is_array($response->events)) {
+                foreach ($response->events as $event) {
+                    if ($event->error_message) {
+                        $this->_pinterestHelper->logError("postEvent response error: {$event->error_message}");
+                    }
+                    if ($event->warning_message) {
+                        $this->_pinterestHelper->logWarning("postEvent response warning: {$event->warning_message}");
+                    }
+                }
+            }
             if (isset($response->code)) {
                 $message = isset($response->message) ? $response->message : "n/a";
                 $this->_pinterestHelper->logError(

@@ -1,0 +1,32 @@
+"Regenerate Catalog","I-regenerate ang Catalog"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","I-enable ang LDP flag para sumunod sa mga obligasyon sa ilalim ng CCPA at CPRA kapag gumagamit ng serbisyo ng ad ng Pinterest.<a href='%1' target='_blank'>Alamin pa</a>"
+"Turn on catalog ingestion","I-on ang catalog ingestion"
+"Turn off catalog ingestion","I-off ang catalog ingestion"
+"Turn on Pinterest tag and Pinterest API for Conversions","I-on ang Pinterest tag at Pinterest API para sa mga Conversion"
+"Turn off Pinterest tag and Pinterest API for Conversions","I-off ang Pinterest tag at Pinterest API para sa mga Conversion"
+"Use Magento Cookie Restriction Mode","Gamitin ang Magento Cookie Restriction Mode"
+"Enable Tracking if Cookie Exists","I-enable ang Pag-track kung Mayroong Cookie"
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Nagkaroon ng isyu sa pag-regenerate ng iyong catalog. Paki-refresh ang page at subukan ulit sa ibang pagkakataon."
+Success,Tagumpay
+"You must be logged into Pinterest to access this setting","Dapat naka-log in ka sa Pinterest para ma-access ang setting na ito"
+Pinterest,Pinterest
+Setup,Setup
+Configurations,Mga Configuration
+General,Pangkalahatan
+"Client ID","Client ID"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Client ID para sa Pinterest. Ginagamit ito para matukoy ang mga Adobe Commerce/Magento client sa Pinterest."
+"Integration Base URL","Integration Base URL"
+"Base URL path for Pinterest.","Base URL path para sa Pinterest."
+"Catalog Ingestion","Catalog Ingestion"
+"Allow catalog ingestion to Pinterest","Payagan ang pag-ingest ng catalog sa Pinterest"
+"Conversion tracking","Pagsubaybay sa Conversion"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Magpadala ng mga clientside at serverside conversion event.Para i-update ang setting na ito, idiskonekta at ikonekta ulit ang iyong account ng negosyo sa Pinterest sa Adobe Commerce."
+"Catalog Sync","Pag-sync ng Catalog"
+"Manually run catalog creation and feed registration","Mano-manong i-run ang paggawa ng catalog at registration ng feed"
+"General Data Protection Regulation (GDPR)","General Data Protection Regulation (GDPR)"
+"Enable GDPR","I-enable ang GDPR"
+Options,Mga Opsyon
+"Cookie Name","Pangalan ng Cookie"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Kinokontrol ang pag-track sa Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode"
+"Limited Data Processing (LDP)","Limitadong Pagproseso ng Data (LDP)"
+"Enable Limited Data Processing flag","I-enable ang flag para sa Pagpoproseso ng Limitadong Data"

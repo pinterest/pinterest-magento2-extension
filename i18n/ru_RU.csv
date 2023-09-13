@@ -1,4 +1,5 @@
 "Regenerate Catalog","Восстановить каталог"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Поставьте метку ограниченной обработки данных (LDP), чтобы при использовании рекламной службы Pinterest соблюдались законы о защите прав потребителей CCPA и CPRA. <a href='%1' target='_blank'>Подробнее</a>"
 "Turn on catalog ingestion","Включить прием данных из каталога"
 "Turn off catalog ingestion","Отключить прием данных из каталога"
 "Turn on Pinterest tag and Pinterest API for Conversions","Включить тег Pinterest и API Pinterest для конверсий"
@@ -14,12 +15,12 @@ Configurations,Конфигурации
 General,Общие
 "Client ID","Идентификатор клиента"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Идентификатор клиента для Pinterest. Эта информация используется для идентификации клиентов Adobe Commerce и Magento в Pinterest."
-"Base URL","Базовый URL-адрес"
+"Integration Base URL","Базовый URL-адрес интеграции"
 "Base URL path for Pinterest.","Базовый URL-адрес для Pinterest."
 "Catalog Ingestion","Прием данных из каталога"
-"Turn on or off catalog ingestion to Pinterest","Включение и отключение приема данных из каталога в Pinterest"
-"Tag and API for Conversions","Тег и API для конверсий"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Включение и отключение тега Pinterest и API Pinterest для конверсий"
+"Allow catalog ingestion to Pinterest","Разрешить прием данных из каталога в Pinterest"
+"Conversion tracking","Отслеживание конверсий"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Отправляйте события конверсии на стороне клиента и на сервере. Чтобы изменить эту настройку, отключите и снова подключите свой бизнес-аккаунт Pinterest к Adobe Commerce."
 "Catalog Sync","Синхронизация каталога"
 "Manually run catalog creation and feed registration","Создание каталога и регистрация ленты вручную"
 "General Data Protection Regulation (GDPR)","Общий регламент по защите данных (GDPR)"
@@ -27,3 +28,5 @@ General,Общие
 Options,Настройки
 "Cookie Name","Название файлов cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Отслеживание можно настроить в следующем разделе: Магазины > Конфигурации > Общие > Сайт > Стандартные настройки файлов cookie > Режим ограничения файлов cookie"
+"Limited Data Processing (LDP)","Ограниченная обработка данных (LDP)"
+"Enable Limited Data Processing flag","Поставить метку ограниченной обработки данных"

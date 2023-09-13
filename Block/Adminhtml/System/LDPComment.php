@@ -10,6 +10,6 @@ class LDPComment extends AbstractBlock implements CommentInterface
     public function getCommentText($elementValue)
     {
         $url = "https://developers.pinterest.com/docs/conversions/limitedprocessing/";
-        return __("To help comply with the California Privacy Rights Act, Pinterest can act as a service provider to limit how we use certain data to help you comply with user privacy settings. <a href='%1'>Learn more</a>", $url);
+        return __("Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>", $url);
     }
 }

@@ -77,6 +77,7 @@ class Checkout extends Setup
                 "content_ids" => $productDetails["content_ids"],
                 "contents" => $productDetails["contents"],
                 "num_items" => $productDetails["num_items"],
+                "order_id" => $productDetails["order_id"]
             ],
         ]);
     }

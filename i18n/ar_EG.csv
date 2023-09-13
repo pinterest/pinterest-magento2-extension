@@ -1,4 +1,5 @@
 "Regenerate Catalog","إعادة إنشاء الكتالوج"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","قم بتمكين علامة المعالجة المحدودة للبيانات للامتثال للالتزامات المنصوص عليها في قانون خصوصية المستهلك في كاليفورنيا وقانون حقوق الخصوصية في كاليفورنيا عند استخدام خدمة إعلانات Pinterest. <a href='%1' target='_blank'>اعرف المزيد</a>"
 "Turn on catalog ingestion","تشغيل استيعاب الكتالوج"
 "Turn off catalog ingestion","إيقاف استيعاب الكتالوج"
 "Turn on Pinterest tag and Pinterest API for Conversions","تشغيل علامة Pinterest وواجهة برمجة تطبيقات Pinterest للتحويلات"
@@ -14,12 +15,12 @@ Configurations,التكوينات
 General,عام
 "Client ID","معرف العميل"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","معرّف العميل لـ Pinterest. يتم استخدام هذا لتحديد عملاء Adobe Commerce/Magento على Pinterest."
-"Base URL","عنوان URL الأساسي"
+"Integration Base URL","عنوان URL لقاعدة التكامل"
 "Base URL path for Pinterest.","مسار عنوان URL الأساسي لـ Pinterest."
 "Catalog Ingestion","استيعاب الكتالوج"
-"Turn on or off catalog ingestion to Pinterest","تشغيل استيعاب الكتالوج أو إيقاف تشغيله إلى Pinterest"
-"Tag and API for Conversions","العلامة وواجهة برمجة التطبيقات للتحويلات"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","تشغيل علامة Pinterest أو إيقاف تشغيلها وواجهة برمجة تطبيقات Pinterest للتحويلات"
+"Allow catalog ingestion to Pinterest","السماح باستيعاب الكتالوج إلى Pinterest"
+"Conversion tracking","تتبع التحويل"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","إرسال أحداث التحويل على جانب العميل والخادم. لتحديث هذا الإعداد، افصل حساب أعمال Pinterest الخاص بك وأعد الاتصال بحساب Adobe Commerce."
 "Catalog Sync","مزامنة الكتالوج"
 "Manually run catalog creation and feed registration","تشغيل إنشاء الكتالوج وتسجيل الخلاصة يدويًا"
 "General Data Protection Regulation (GDPR)","اللائحة العامة لحماية البيانات (GDPR)"
@@ -27,3 +28,5 @@ General,عام
 Options,الخيارات
 "Cookie Name","اسم ملف تعريف الارتباط"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","يتم التحكم في التتبع في المتاجر > تكوين > عام > الويب > إعدادات ملفات تعريف الارتباط الافتراضية > وضع تقييد ملفات تعريف الارتباط"
+"Limited Data Processing (LDP)","المعالجة المحدودة للبيانات (LDP)"
+"Enable Limited Data Processing flag","تمكين علامة المعالجة المحدودة للبيانات"

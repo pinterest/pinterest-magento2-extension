@@ -1,4 +1,5 @@
 "Regenerate Catalog","Znovu vygenerovat katalog"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Povolte označení LDP, aby byly při používání reklamních služeb Pinterestu splněny závazky vyplývající ze zákonů CCPA a CPRA. <a href='%1' target='_blank'>Další informace</a>"
 "Turn on catalog ingestion","Zapnout přijetí katalogu"
 "Turn off catalog ingestion","Vypnout přijetí katalogu"
 "Turn on Pinterest tag and Pinterest API for Conversions","Zapnutí tagu Pinterestu a rozhraní Pinterest API pro konverze"
@@ -14,12 +15,12 @@ Configurations,Konfigurace
 General,Obecné
 "Client ID","ID klienta"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID klienta pro Pinterest. Používá se k identifikaci klientů Adobe Commerce/Magento na Pinterestu."
-"Base URL","Základní adresa URL"
+"Integration Base URL","Základní adresa URL integrace"
 "Base URL path for Pinterest.","Cesta základní adresy URL pro Pinterest."
 "Catalog Ingestion","Přijetí katalogu"
-"Turn on or off catalog ingestion to Pinterest","Zapnout nebo vypnout přijetí katalogu na Pinterestu"
-"Tag and API for Conversions","Tag a rozhraní API pro konverze"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Zapnout nebo vypnout tag Pinterestu a rozhraní Pinterest API pro konverze"
+"Allow catalog ingestion to Pinterest","Povolit přijetí katalogu na Pinterestu"
+"Conversion tracking","Sledování konverzí"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Odešlete události konverze na straně klienta a serveru. Chcete-li toto nastavení aktualizovat, odpojte svůj firemní účet Pinterest a znovu ho připojte ke službě Adobe Commerce."
 "Catalog Sync","Synchronizace katalogu"
 "Manually run catalog creation and feed registration","Ručně spustit tvoření katalogu a registraci domovské stránky"
 "General Data Protection Regulation (GDPR)","Obecné nařízení o ochraně osobních údajů (GDPR)"
@@ -27,3 +28,5 @@ General,Obecné
 Options,Možnosti
 "Cookie Name","Název souboru cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Sledování se řídí v nabídce Obchody > Konfigurace > Obecné > Web > Výchozí nastavení souborů cookie > Režim omezení souborů cookie."
+"Limited Data Processing (LDP)","Omezené zpracování údajů (LDP)"
+"Enable Limited Data Processing flag","Povolit označení omezeného zpracování údajů"

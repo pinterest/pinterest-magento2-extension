@@ -1,4 +1,5 @@
 "Regenerate Catalog","Ponownie wygeneruj katalog"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Włącz flagę LDP, aby podczas korzystania z usługi reklamowej Pinteresta przestrzegać wymogów wynikających z ustaw CCPA i CPRA.<a href='%1' target='_blank'>Dowiedz się więcej</a>"
 "Turn on catalog ingestion","Włącz zestawianie katalogu"
 "Turn off catalog ingestion","Wyłącz zestawianie katalogu"
 "Turn on Pinterest tag and Pinterest API for Conversions","Włącz tag Pinteresta i interfejs API konwersji Pinteresta"
@@ -14,12 +15,12 @@ Configurations,Konfiguracje
 General,Ogólne
 "Client ID","Identyfikator klienta"
 "Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Identyfikator klienta dla Pinteresta. Służy do identyfikacji klientów Adobe Commerce/Magento na Pintereście."
-"Base URL","Podstawowy adres URL"
+"Integration Base URL","Podstawowy adres URL integracji"
 "Base URL path for Pinterest.","Ścieżka podstawowego adresu URL Pinteresta."
 "Catalog Ingestion","Zestawianie katalogu"
-"Turn on or off catalog ingestion to Pinterest","Włącz lub wyłącz zestawianie katalogu na Pintereście"
-"Tag and API for Conversions","Tag i interfejs API konwersji"
-"Turn on or off Pinterest tag and Pinterest API for Conversions","Wyłącz lub wyłącz tag Pinteresta i interfejs API konwersji Pinteresta"
+"Allow catalog ingestion to Pinterest","Zezwól na zestawianie katalogu na Pintereście"
+"Conversion tracking","Śledzenie konwersji"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Wysyłaj zdarzenia konwersji po stronie klienta i serwera.Aby zaktualizować to ustawienie, odłącz konto firmowe na Pintereście i ponownie połącz je z usługą Adobe Commerce."
 "Catalog Sync","Synchronizacja katalogu"
 "Manually run catalog creation and feed registration","Ręcznie uruchom tworzenie katalogu i rejestrację aktualności"
 "General Data Protection Regulation (GDPR)","Ogólne rozporządzenie o ochronie danych (RODO)"
@@ -27,3 +28,5 @@ General,Ogólne
 Options,Opcje
 "Cookie Name","Nazwa pliku cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Kontrola śledzenia: Stores (Sklepy) > Configuration (Konfiguracja) > General (Ogólne informacje)> Web (Sieć) > Default Cookie Settings (Domyślne ustawienia plików cookie) > Cookie Restriction Mode (Tryb ograniczenia plików cookie)"
+"Limited Data Processing (LDP)","Ograniczone przetwarzanie danych (LDP)"
+"Enable Limited Data Processing flag","Flaga włączenia ograniczonego przetwarzania danych"

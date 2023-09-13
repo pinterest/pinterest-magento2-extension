@@ -52,10 +52,14 @@ class ExchangeMetadata
     {
         $conversionsEnabled = $this->_pinterestHelper->isConversionConfigEnabled();
         $catalogEnabled = $this->_pinterestHelper->isCatalogConfigEnabled();
+        $gdprEnabled = $this->_pinterestHelper->isGdprEnabled();
+        $ldpEnabled = $this->_pinterestHelper->isLdpEnabled();
         $featureFlags = [
             FeatureFlag::CATALOG => $catalogEnabled,
             FeatureFlag::TAG => $conversionsEnabled,
-            FeatureFlag::CAPI => $conversionsEnabled
+            FeatureFlag::CAPI => $conversionsEnabled,
+            FeatureFlag::GDPR => $gdprEnabled,
+            FeatureFlag::LDP => $ldpEnabled
         ];
         $partner_metadata_param = [
             "feature_flags" => $featureFlags,
