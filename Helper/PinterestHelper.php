@@ -29,6 +29,8 @@ use Magento\Store\Model\ScopeInterface;
 use Pinterest\PinterestMagento2Extension\Model\Config\PinterestGDPROptions;
 use Magento\Framework\Stdlib\CookieManagerInterface;
 use Pinterest\PinterestMagento2Extension\Helper\ProductExporter;
+use Pinterest\PinterestMagento2Extension\Helper\LoggingHelper;
+use Pinterest\PinterestMagento2Extension\Helper\DbHelper;
 
 class PinterestHelper extends AbstractHelper
 {
@@ -114,6 +116,17 @@ class PinterestHelper extends AbstractHelper
      * @var CookieManagerInterface
      */
     protected $_cookieManager;
+
+    /**
+     * @var LoggingHelper
+     */
+    protected $_loggingHelper;
+
+    /**
+     * @var DbHelper
+     */
+    protected $_dbHelper;
+
     /**
      *
      * @param Context $context
@@ -131,6 +144,8 @@ class PinterestHelper extends AbstractHelper
      * @param ProductFactory $productFactory
      * @param Cookie $cookie
      * @param CookieManagerInterface $cookieManager
+     * @param LoggingHelper $loggingHelper
+     * @param DbHelper $DbHelper
      */
     public function __construct(
         Context $context,
@@ -147,7 +162,9 @@ class PinterestHelper extends AbstractHelper
         Manager $cacheManager,
         ProductFactory $productFactory,
         Cookie $cookie,
-        CookieManagerInterface $cookieManager
+        CookieManagerInterface $cookieManager,
+        LoggingHelper $loggingHelper,
+        DbHelper $dbHelper
     ) {
         parent::__construct($context);
         $this->_objectManager = $objectManager;
@@ -164,6 +181,8 @@ class PinterestHelper extends AbstractHelper
         $this->_productFactory = $productFactory;
         $this->_cookie = $cookie;
         $this->_cookieManager = $cookieManager;
+        $this->_loggingHelper = $loggingHelper;
+        $this->_dbHelper = $dbHelper;
     }
 
     /**
@@ -496,17 +515,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function saveMetadata($metadataKey, $metadataValue)
     {
-        try {
-            $metadataRow = $this->_metadataFactory->create();
-            $metadataRow->setData([
-                'metadata_key' => $metadataKey,
-                'metadata_value' => $metadataValue
-            ]);
-            $metadataRow->save();
-        } catch (\Exception $e) {
-            $this->_logger->info("In exception of saveMetadata ". $e->getMessage());
-            $this->logException($e);
-        }
+        $this->_dbHelper->saveMetadata($metadataKey, $metadataValue);
     }
 
     /**
@@ -517,7 +526,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function saveEncryptedMetadata($metadataKey, $metadataValue)
     {
-        $this->saveMetadata($metadataKey, $this->_encryptor->encrypt($metadataValue));
+        $this->_dbHelper->saveMetadata($metadataKey, $this->_encryptor->encrypt($metadataValue));
     }
 
     /**
@@ -527,13 +536,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function getMetadataValue($metadataKey)
     {
-        try {
-            $metadataRow = $this->_metadataFactory->create()->load($metadataKey);
-        } catch (\Exception $e) {
-            $this->logException($e);
-            return null;
-        }
-        return $metadataRow ? $metadataRow->getData('metadata_value') : null;
+        return $this->_dbHelper->getMetadataValue($metadataKey);
     }
 
     /**
@@ -543,13 +546,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function getUpdatedAt($metadataKey)
     {
-        try {
-            $metadataRow = $this->_metadataFactory->create()->load($metadataKey);
-        } catch (\Exception $e) {
-            $this->logException($e);
-            return null;
-        }
-        return $metadataRow ? $metadataRow->getData('updated_at') : null;
+        return $this->_dbHelper->getUpdatedAt($metadataKey);
     }
 
     /**
@@ -559,12 +556,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function deleteMetadata($metadataKey)
     {
-        try {
-            $metadataRow = $this->_metadataFactory->create()->load($metadataKey);
-            $metadataRow->delete();
-        } catch (\Exception $e) {
-            $this->logException($e);
-        }
+        return $this->_dbHelper->deleteMetadata($metadataKey);
     }
 
     /**
@@ -572,17 +564,14 @@ class PinterestHelper extends AbstractHelper
      */
     public function deleteAllMetadata()
     {
-        try {
-            $collection = $this->_metadataFactory->create()->getCollection();
-            foreach ($collection as $item) {
-                $item->delete();
-            }
-            $this->logInfo("Successfully deleted connection details from database");
-            return true;
-        } catch (\Exception $e) {
-            $this->logException($e);
-            return false;
+        $success = $this->_dbHelper->deleteAllMetadata();
+        if ($success) {
+            $this->logInfo("Successfully deleted all metadata from database.");
+        } else {
+            // do not cache the exception message, as it may contain sensitive data
+            $this->logError("Failed to delete all metadata from database.");
         }
+        return $this->_dbHelper->deleteAllMetadata();
     }
 
     /**
@@ -592,7 +581,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function getEncryptedMetadata($metadataKey)
     {
-        return $this->_encryptor->decrypt($this->getMetadataValue($metadataKey));
+        return $this->_dbHelper->getEncryptedMetadata($metadataKey);
     }
 
     /**
@@ -653,7 +642,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function getAccessToken()
     {
-        return $this->getEncryptedMetadata("pinterest/token/access_token");
+        return $this->_dbHelper->getAccessToken();
     }
 
     /**
@@ -736,9 +725,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function logException(\Exception $e)
     {
-        $this->logError($e->getMessage());
-        $this->logError($e->getTraceAsString());
-        $this->logError($e);
+        $this->_loggingHelper->logException($e);
     }
 
     /**
@@ -748,7 +735,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function logInfo($message)
     {
-        $this->_logger->info($message);
+        $this->_loggingHelper->logInfo($message, $this->getAccessToken());
     }
 
     /**
@@ -758,7 +745,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function logError($message)
     {
-        $this->_logger->error($message);
+        $this->_loggingHelper->logError($message, $this->getAccessToken());
     }
 
     /**
@@ -768,7 +755,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function logWarning($message)
     {
-        $this->_logger->warning($message);
+        $this->_loggingHelper->logWarning($message, $this->getAccessToken());
     }
 
     /**

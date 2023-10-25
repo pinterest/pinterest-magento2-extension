@@ -82,8 +82,8 @@ class CatalogFeedClient
 
         $existingPinterestFeeds = $this->getAllFeeds();
 
-        $this->_pinterestHelper->logInfo("Country locales to register feeds for: ".json_encode($country_locales));
-        $this->_pinterestHelper->logInfo("Existing feeds saved to magento metadata: ".json_encode($existingFeedsSavedToMetadata));
+        $this->_pinterestHelper->logInfo("Country locales to register feeds for: ".implode(" ", $country_locales));
+        $this->_pinterestHelper->logInfo("Existing feeds saved to magento metadata: ".implode(" ", $existingFeedsSavedToMetadata));
         
         foreach ($country_locales as $storeId => $country_locale) {
             $baseUrl = $this->_pinterestHelper->getMediaBaseUrlByStoreId($storeId);
@@ -324,7 +324,7 @@ class CatalogFeedClient
             } else {
                 // Expect id to always be present in the response payload but adding as a defensive check
                 if (!isset($response->id)) {
-                    $this->_pinterestHelper->logError("Catalog feed API did not return an Id for feed: {$feed_id}");
+                    $this->_pinterestHelper->logError("Catalog feed API did not return an Id for feed: {$feedname}");
                     return false;
                 }
                 $this->feedsRegisteredOnPinterest[] = $response->id;

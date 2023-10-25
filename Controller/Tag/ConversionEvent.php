@@ -54,10 +54,18 @@ class ConversionEvent extends Action
                 if ($event_name) {
                     switch ($event_name) {
                         case 'page_visit':
-                            $this->trackPageVisitEvent($event_id, $data["productData"], $data["currency"]);
+                            if ($data && array_key_exists("productData", $data)
+                                      && array_key_exists("currency", $data)) {
+                                $this->trackPageVisitEvent($event_id, $data["productData"], $data["currency"]);
+                            } else {
+                                $this->trackPageVisitEvent($event_id);
+                            }
                             break;
                         case 'search':
                             $this->trackSearchEvent($event_id, $data["search_query"]);
+                            break;
+                        case 'view_category':
+                            $this->trackViewCategoryEvent($event_id, $data["productDetails"], $data["currency"]);
                             break;
                         default:
                     }
@@ -79,18 +87,24 @@ class ConversionEvent extends Action
      * @param array $productDetails
      * @param string $currency
      */
-    public function trackPageVisitEvent($eventId, $productDetails, $currency)
+    public function trackPageVisitEvent($eventId, $productDetails = null, $currency = null)
     {
-        $this->_eventManager->dispatch("pinterest_commereceintegrationextension_page_visit_after", [
-            "event_id" => $eventId,
-            "event_name" => "page_visit",
-            "custom_data" => [
+        if ($productDetails && $currency) {
+            $custom_data = [
                 "content_ids" => [$productDetails["product_id"]],
                 "contents" => [[
                     "item_price" => (string) ($productDetails["product_price"])
                 ]],
                 "currency" => $currency,
-            ],
+            ];
+        } else {
+            $custom_data = [];
+        }
+
+        $this->_eventManager->dispatch("pinterest_commereceintegrationextension_page_visit_after", [
+            "event_id" => $eventId,
+            "event_name" => "page_visit",
+            "custom_data" => $custom_data,
         ]);
     }
     
@@ -112,5 +126,26 @@ class ConversionEvent extends Action
                 ],
             ]
         );
+    }
+
+    /**
+     * Dispatch the view category event with the required data
+     *
+     * @param string $eventId
+     * @param array $productDetails
+     * @param string $currency
+     */
+    public function trackViewCategoryEvent($eventId, $productDetails, $currency)
+    {
+        $this->_eventManager->dispatch("pinterest_commereceintegrationextension_view_category_after", [
+            "event_id" => $eventId,
+            "event_name" => "view_category",
+            "custom_data" => [
+                "currency" => $currency,
+                "content_ids" => $productDetails["content_ids"],
+                "contents" => $productDetails["contents"],
+                "content_category" => $productDetails["category"]
+            ],
+        ]);
     }
 }

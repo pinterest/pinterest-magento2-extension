@@ -86,6 +86,7 @@ class PinterestHttpClient
      * @param string $body
      * @return mixed response object
      * @param array $queryParams
+     * @param bool $returnResponseStatusCode
      */
     public function post(
         $url,
@@ -94,7 +95,8 @@ class PinterestHttpClient
         $authorization = null,
         $contentType = "application/json",
         $body = null,
-        $queryParams = []
+        $queryParams = [],
+        $returnResponseStatusCode = false // hack to get status code before we migrate to Laminas client
     ) {
         if ($authorization) {
             $this->_curl->addHeader("Authorization", $authorization);
@@ -110,9 +112,12 @@ class PinterestHttpClient
             $url = $url . "?" . http_build_query($queryParams);
         }
         $this->_curl->post($url, json_encode($params));
+        if ($returnResponseStatusCode) {
+            return ["statusCode" => $this->_curl->getStatus() , "body" => $this->_curl->getBody()];
+        }
         return json_decode($this->_curl->getBody());
     }
-
+    
     /**
      * Send a PATCH request (modify as necessary)
      *

@@ -12,4 +12,7 @@
     <event name="pinterest_commereceintegrationextension_add_to_cart_after">
         <observer name="pinterest_commereceintegrationextension_add_to_cart_after_observer" instance="Pinterest\PinterestMagento2Extension\Observer\ConversionsApiObserver"/>
     </event>
+    <event name="pinterest_commereceintegrationextension_view_category_after">
+        <observer name="pinterest_commereceintegrationextension_view_category_observer" instance="Pinterest\PinterestMagento2Extension\Observer\ConversionsApiObserver"/>
+    </event>
 </config>

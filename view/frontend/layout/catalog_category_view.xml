@@ -7,5 +7,10 @@
                    name="pinterest.extension.add_to_cart"
                    template="Pinterest_PinterestMagento2Extension::add_to_cart.phtml" />
         </referenceBlock>
+        <referenceContainer name="before.body.end">
+            <block class="Pinterest\PinterestMagento2Extension\Block\Tag\ViewCategory"
+                   name="pinterest.extension.view_category"
+                   template="Pinterest_PinterestMagento2Extension::view_category.phtml" />
+        </referenceContainer>
     </body>
 </page>

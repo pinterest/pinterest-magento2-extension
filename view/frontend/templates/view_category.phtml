@@ -1,34 +1,24 @@
-<?php /* @var Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup $block */ ?>
 <?php if ($block->isTagEnabled()) {
-    $productDetails = $block->getProductDetails();
+    $eventId = Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator::guidv4();
+    $productDetails = $block->getAllProductDetails();
     $currency = $block->getCurrency();
     ?>
-    <!-- Pinterest Page Visit Tag Code -->
+    <!-- Pinterest Pinterest View Category Tag Code -->
     <script>
         require([
-            "jquery",
-            "jquery/jquery.cookie"
+            "jquery"
         ], function ($) {
             var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
             $(document).ready(function () {
                 let ajaxData = {};
                 let pintrkData = {};
                 <?php if (!empty($productDetails)) { ?>
-                    const productData = {
-                        product_id: "<?= $block->escapeJs($productDetails["product_id"])  ?>",
-                        product_price: <?= $productDetails["product_price"] ?>,
-                        product_name: "<?= $block->escapeJs($productDetails["product_name"]) ?>",
-                        product_quantity: 1,
-                        product_category: <?= json_encode($productDetails["product_category"]) ?>
-                    }
                     ajaxData = {
-                            productData,
-                            order_quantity: 0,
-                            currency: "<?= $currency ?>"
-                        }
+                        productDetails: <?= json_encode($productDetails) ?>,
+                        currency: "<?= $currency ?>"
+                    }
                     pintrkData = {
-                        line_items: [productData],
-                        order_quantity: 0,
+                        line_items: <?= json_encode($productDetails["line_tems"]) ?>,
                         currency: "<?= $currency ?>"
                     }
                 <?php } ?>
@@ -36,14 +26,14 @@
                 $.ajax({
                     url: conversionEventUrl,
                     data: {
-                        event_name: 'page_visit',
+                        event_name: 'view_category',
                         data: ajaxData
                     },
                     type: "post",
                     dataType: "json",
                     success: function (res) {
                         if (res.event_id) {
-                            pintrk('track', 'pagevisit', {
+                            pintrk('track', 'viewcategory', {
                                 event_id: res.event_id,
                                 ...pintrkData
                             });
@@ -53,5 +43,5 @@
             });
         });
     </script>
-    <!-- End of Pinterest Page Visit Tag Code -->
+    <!-- End of Pinterest View Category Tag Code -->
 <?php } ?>

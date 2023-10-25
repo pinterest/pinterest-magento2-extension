@@ -9,6 +9,7 @@ use Magento\Framework\App\RequestInterface;
 use Pinterest\PinterestMagento2Extension\Helper\ConfigHelper;
 use Pinterest\PinterestMagento2Extension\Helper\ExchangeMetadata;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\LoggingHelper;
 use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Backend\App\Action;
 
@@ -45,6 +46,11 @@ class PinterestToken extends Action
     protected $_configHelper;
 
     /**
+     * @var LoggingHelper
+     */
+    protected $_loggingHelper;
+
+    /**
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
@@ -53,6 +59,7 @@ class PinterestToken extends Action
      * @param PinterestHelper $pinterestHelper
      * @param EventManager $eventManager
      * @param ConfigHelper $configHelper
+     * @param LoggingHelper $loggingHelper
      */
     public function __construct(
         Context $context,
@@ -61,7 +68,8 @@ class PinterestToken extends Action
         ExchangeMetadata $exchangeMetadata,
         PinterestHelper $pinterestHelper,
         EventManager $eventManager,
-        ConfigHelper $configHelper
+        ConfigHelper $configHelper,
+        LoggingHelper $loggingHelper
     ) {
         parent::__construct($context);
         $this->_resultJsonFactory = $resultJsonFactory;
@@ -70,6 +78,7 @@ class PinterestToken extends Action
         $this->_pinterestHelper = $pinterestHelper;
         $this->_eventManager = $eventManager;
         $this->_configHelper = $configHelper;
+        $this->_loggingHelper = $loggingHelper;
     }
 
     /**
@@ -184,6 +193,8 @@ class PinterestToken extends Action
                     $this->_eventManager->dispatch("pinterest_commereceintegrationextension_create_catalog_feeds");
                 }
             }
+
+            $this->_loggingHelper->flushCache();
 
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('pinterestadmin/setup/index');
