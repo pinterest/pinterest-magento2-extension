@@ -9,7 +9,7 @@
       "business connect"
     ],
     "type": "magento2-module",
-    "version": "0.1.13",
+    "version": "1.0.0",
     "license": "Apache-2.0",
     "minimum-stability": "dev",
     "prefer-stable": true,

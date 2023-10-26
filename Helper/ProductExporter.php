@@ -289,6 +289,9 @@ class ProductExporter
                 "xmlns:g:product_type" => $this->getProductCategories($product),
                 "xmlns:g:availability" => $this->getProductAvailability($product),
             ];
+            if ($this->isHTML($this->getProductDescription($product))) {
+                $productValues["description_html"] = $this->getProductDescription($product);
+            }
             if ($productValues["link"] == null) {
                 continue;
             }
@@ -373,6 +376,9 @@ class ProductExporter
                         "variant_names" => implode(",", $variantNames),
                         "variant_values" => implode(",", $variantValues),
                     ];
+                    if ($this->isHTML($this->getProductDescription($product))) {
+                        $productValues["description_html"] = $this->getProductDescription($product);
+                    }
                     if ($this->getConfigurableProductValue($product, "color")) {
                         $productValues["color"] = $this->getConfigurableProductValue($product, "color");
                     }
@@ -403,6 +409,18 @@ class ProductExporter
             }
         }
         return $content;
+    }
+
+    /**
+     * Returns if the given string is HTML or not
+     *
+     * @param String $string
+     *
+     * @return boolean
+     */
+    private function isHTML($string)
+    {
+        return ("$string" != strip_tags("$string"));
     }
 
     /**
@@ -495,7 +513,17 @@ class ProductExporter
                 $this->arrayToXml($value, $subnode);
             } else {
                 $escaper = new \Magento\Framework\Escaper;
-                $xml->addChild("$key", $escaper -> escapeHtml("$value"));
+                $escapedValue = $escaper->escapeHtml("$value");
+                // add CDATA to prevent XML parsing error if its title or description
+                if ($key == "title" || $key == "description" || $key == "description_html") {
+                    $child = $xml->addChild($key);
+                    // Set the string value as a CDATA section
+                    $dom = dom_import_simplexml($child);
+                    $cdata = $dom->ownerDocument->createCDATASection("$value");
+                    $dom->appendChild($cdata);
+                } else {
+                    $xml->addChild("$key", "$escapedValue");
+                }
             }
         }
     }

@@ -7,10 +7,6 @@
             <block class="Pinterest\PinterestMagento2Extension\Block\Tag\AddToCart"
                    name="pinterest.add_to_cart"
                    template="Pinterest_PinterestMagento2Extension::add_to_cart.phtml" />
-            <block 
-                class="Pinterest\PinterestMagento2Extension\Block\Tag\PageVisit"
-                name="pinterest.page_visit"
-                template="Pinterest_PinterestMagento2Extension::page_visit.phtml" />
         </referenceBlock>
     </body>
 </page>

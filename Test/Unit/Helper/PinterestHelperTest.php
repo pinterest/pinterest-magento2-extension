@@ -3,6 +3,8 @@
 namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\DbHelper;
+use Pinterest\PinterestMagento2Extension\Helper\LoggingHelper;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Pinterest\PinterestMagento2Extension\Model\Metadata;
@@ -101,6 +103,16 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
      */
     protected $_cookieManager;
 
+    /**
+     * @var LoggingHelper
+     */
+    protected $_loggingHelper;
+
+    /**
+     * @var DbHelper
+     */
+    protected $_dbHelper;
+
     public function setUp() : void
     {
         $this->_context = $this->createMock(Context::class);
@@ -118,6 +130,8 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_productFactory = $this->createMock(ProductFactory::class);
         $this->_cookie = $this->createMock(Cookie::class);
         $this->_cookieManager = $this->createMock(CookieManagerInterface::class);
+        $this->_loggingHelper = $this->createMock(LoggingHelper::class);
+        $this->_dbHelper = $this->createMock(DbHelper::class);
         
         $this->_pinterestHelper = new PinterestHelper(
             $this->_context,
@@ -134,38 +148,10 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
             $this->_cacheManager,
             $this->_productFactory,
             $this->_cookie,
-            $this->_cookieManager
+            $this->_cookieManager,
+            $this->_loggingHelper,
+            $this->_dbHelper
         );
-    }
-
-    private function createRowWithValue($keyValueArray)
-    {
-        $metadataRow = $this->getMockBuilder(Metadata::class)
-                  ->disableOriginalConstructor()
-                  ->setMethods(['load'])
-                  ->getMock();
-        if ($keyValueArray == null) {
-            $metadataRow->method('load')->willReturn(null);
-        } else {
-            $metadataRow->method('load')->willReturnCallback(function ($metadataKey) use ($keyValueArray) {
-                $value = $keyValueArray[$metadataKey];
-                $abstractMock = $this->getMockBuilder(AbstractModel::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['getData'])
-                ->getMock();
-                $abstractMock->method('getData')->willReturn($value);
-                return $abstractMock;
-            });
-        }
-        return $metadataRow;
-    }
-
-    private function saveRowMock()
-    {
-        return $this->getMockBuilder(AbstractModel::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['setData', 'save'])
-                ->getMock();
     }
 
     private function storeMock()
@@ -173,14 +159,6 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         return $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
                 ->setMethods(['getBaseUrl'])
-                ->getMock();
-    }
-
-    private function userMock()
-    {
-        return $this->getMockBuilder(AbstractModel::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['getEmail'])
                 ->getMock();
     }
 
@@ -194,11 +172,15 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
 
     public function testIsUserConnected()
     {
-        $this->_metadataFactory->method('create')->willReturn($this->createRowWithValue([
-            'pinterest/token/expires_in' => 1000,
-            'pinterest/token/access_token' => "now",
-        ]));
-        
+        $this->_dbHelper->method('getMetadataValue')->willReturnCallback(
+            function () {
+                $args = func_get_args();
+                if ($args[0] == 'pinterest/token/expires_in') {
+                    return 1000;
+                }
+            }
+        );
+        $this->_dbHelper->method('getUpdatedAt')->willReturn("now");
         $isUserConnected = $this->_pinterestHelper->isUserConnected();
         
         $this->assertTrue($isUserConnected);
@@ -206,27 +188,25 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
 
     public function testIsUserDisconnected()
     {
-        $this->_metadataFactory->method('create')->willReturn($this->createRowWithValue([
-            'pinterest/token/expires_in' => 10,
-            'pinterest/token/access_token' => "last monday",
-        ]));
-        
+        $this->_dbHelper->method('getMetadataValue')->willReturnCallback(
+            function () {
+                $args = func_get_args();
+                if ($args[0] == 'pinterest/token/expires_in') {
+                    return 10;
+                }
+            }
+        );
+        $this->_dbHelper->method('getUpdatedAt')->willReturn("last monday");
         $isUserConnected = $this->_pinterestHelper->isUserConnected();
         
         $this->assertFalse($isUserConnected);
     }
 
-    public function testRandomState()
+    public function testGetRandomState()
     {
-        $mock = $this->saveRowMock();
-        $mock->expects($this->once())->method('save');
-        $mock->expects($this->once())->method('setData')->willReturnCallback(function ($value) {
-            $this->assertEquals($value['metadata_key'], 'ui/state');
-            $this->assertTrue(strlen($value['metadata_value']) > 12);
-        });
-        $this->_metadataFactory->method('create')->willReturn($mock);
-
-        $this->_pinterestHelper->getRandomState();
+        $this->_dbHelper->expects($this->once())->method('saveMetadata');
+        $state = $this->_pinterestHelper->getRandomState();
+        $this->assertTrue(strlen($state) > 12);
     }
 
     public function testGetBaseUrls()

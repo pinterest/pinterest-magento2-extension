@@ -7,6 +7,7 @@ use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
 use Pinterest\PinterestMagento2Extension\Helper\SavedFile;
+use Pinterest\PinterestMagento2Extension\Helper\LoggingHelper;
 use Magento\Framework\Controller\Result\JsonFactory;
 
 class DisconnectHelper
@@ -38,6 +39,11 @@ class DisconnectHelper
     protected $_savedFile;
 
     /**
+     * @var LoggingHelper
+     */
+    protected $_loggingHelper;
+
+    /**
      *
      * @param Context $context
      * @param PinterestHelper $pinterestHelper
@@ -45,6 +51,7 @@ class DisconnectHelper
      * @param CatalogFeedClient $catalogFeedClient
      * @param JsonFactory $resultJsonFactory
      * @param SavedFile $savedFile
+     * @param LoggingHelper $loggingHelper
      */
     public function __construct(
         Context $context,
@@ -52,13 +59,15 @@ class DisconnectHelper
         PinterestHttpClient $pinterestHttpClient,
         CatalogFeedClient $catalogFeedClient,
         JsonFactory $resultJsonFactory,
-        SavedFile $savedFile
+        SavedFile $savedFile,
+        LoggingHelper $loggingHelper
     ) {
         $this->_pinterestHelper = $pinterestHelper;
         $this->_pinterestHttpClient = $pinterestHttpClient;
         $this->_catalogFeedClient = $catalogFeedClient;
         $this->_resultJsonFactory = $resultJsonFactory;
         $this->_savedFile = $savedFile;
+        $this->_loggingHelper = $loggingHelper;
     }
 
     /**
@@ -146,6 +155,9 @@ class DisconnectHelper
                 array_push($error_types, "deletePinterestMetadata");
             };
             $success &= $successDeletePinterestMetadata;
+
+            // flush log cache before delete access token
+            $this->_loggingHelper->flushCache();
 
             $successDeletePluginMetadata = $this->_pinterestHelper->deleteAllMetadata();
             if (!$successDeletePluginMetadata) {
