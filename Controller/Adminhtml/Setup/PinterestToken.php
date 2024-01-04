@@ -167,7 +167,7 @@ class PinterestToken extends Action
                 $this->_configHelper->saveFeatureFlags($info['feature_flags']);
             } catch (\Exception $e) {
                 $this->_pinterestHelper->logInfo("Failure saving feature flags:");
-                $this->_pinterestHelper->logInfo($e->getMessage());
+                $this->_pinterestHelper->logException($e);
                 return $this->createErrorRedirect();
             }
 
@@ -181,6 +181,7 @@ class PinterestToken extends Action
             $this->_pinterestHelper->logInfo("cache flush completed");
 
             // Website claiming
+            $this->_pinterestHelper->saveMetadata('pinterest/website_claiming/meta_tag', null);
             $this->_eventManager->dispatch("pinterest_commereceintegrationextension_website_claiming");
 
             $featureFlags = $info['feature_flags'];

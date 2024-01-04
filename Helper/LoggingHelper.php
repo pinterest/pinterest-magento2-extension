@@ -71,7 +71,7 @@ class LoggingHelper
     public function logError($logMessage)
     {
         $this->_logger->error($logMessage);
-        $payload = $this->createLogPayload(self::LEVEL_ERROR, $logMessage);
+        $payload = $this->createBaselogPayload(self::LEVEL_ERROR, $logMessage);
         $this->enqueueLog($payload);
     }
 
@@ -83,7 +83,7 @@ class LoggingHelper
     public function logInfo($logMessage)
     {
         $this->_logger->info($logMessage);
-        $payload = $this->createLogPayload(self::LEVEL_INFO, $logMessage);
+        $payload = $this->createBaselogPayload(self::LEVEL_INFO, $logMessage);
         $this->enqueueLog($payload);
     }
 
@@ -95,7 +95,7 @@ class LoggingHelper
     public function logWarning($logMessage)
     {
         $this->_logger->warning($logMessage);
-        $payload = $this->createLogPayload(self::LEVEL_WARNING, $logMessage);
+        $payload = $this->createBaselogPayload(self::LEVEL_WARNING, $logMessage);
         $this->enqueueLog($payload);
     }
 
@@ -109,7 +109,28 @@ class LoggingHelper
         $this->_logger->error($e->getMessage());
         $this->_logger->error($e->getTraceAsString());
         $this->_logger->error($e);
-        // TODO  cache exception
+        
+        $payload = $this->createBaselogPayload(self::LEVEL_ERROR);
+        $errorArray = $this->createErrorPayloadArray($e);
+        $payload['error'] = $errorArray;
+        $this->enqueueLog($payload);
+    }
+    
+    /**
+     * Create array to use in error portion of request payload
+     *
+     * @param Exception $e
+     */
+    public function createErrorPayloadArray(\Exception $e)
+    {
+        $error = [
+            'file_name' => $e->getFile(),
+            'line_number' => $e->getLine(),
+            'message' => $e->getMessage(),
+            'number' => $e->getCode(),
+            'stack_trace' => $e->getTraceAsString()
+        ];
+        return $error;
     }
 
     /**
@@ -121,16 +142,17 @@ class LoggingHelper
      *
      * @return array $payload
      */
-    protected function createlogPayload($logLevel, $message, $eventType = self::APP_EVENT)
+    protected function createBaselogPayload($logLevel, $message = null, $eventType = self::APP_EVENT)
     {
         $payload = [
             'client_timestamp' => floor(microtime(true) * 1000),
             'event_type' => $eventType,
             'log_level' => $logLevel,
-            'external_business_id' => $this->_externalBusinessIdHelper->generateExternalBusinessIdPrefix(),
-            'message' => $message
-
+            'external_business_id' => $this->_externalBusinessIdHelper->generateExternalBusinessIdPrefix()
         ];
+        if ($message) {
+            $payload['message'] = $message;
+        }
         // TODO append ad id to external business id + add other id fields.
         // We will do this seperately to properly address to performance issues of doing this.
         return $payload;
