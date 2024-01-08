@@ -10,5 +10,9 @@
             method="execute" name="pinterest_refresh_tokens">
             <schedule> 0 0 */15 * * </schedule> <!-- At 00:00 on every 15th day-of-month -->
         </job>
+        <job instance="Pinterest\PinterestMagento2Extension\Cron\ClaimDomains"
+            method="execute" name="pinterest_claim_domains">
+            <schedule>25 */12 * * *</schedule> <!-- At minute 25 past every 12th hour -->
+        </job>
     </group>
 </config>

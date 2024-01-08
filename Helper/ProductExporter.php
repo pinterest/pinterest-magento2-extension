@@ -514,8 +514,9 @@ class ProductExporter
             } else {
                 $escaper = new \Magento\Framework\Escaper;
                 $escapedValue = $escaper->escapeHtml("$value");
-                // add CDATA to prevent XML parsing error if its title or description
-                if ($key == "title" || $key == "description" || $key == "description_html") {
+                // add CDATA to prevent XML parsing error if its title or description or ends with link
+                if ($key == "title" || $key == "description" ||
+                    $key == "description_html" || substr($key, -4) == "link") {
                     $child = $xml->addChild($key);
                     // Set the string value as a CDATA section
                     $dom = dom_import_simplexml($child);
