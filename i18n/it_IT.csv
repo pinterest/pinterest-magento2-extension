@@ -6,6 +6,8 @@
 "Turn off Pinterest tag and Pinterest API for Conversions","Disattiva il tag di Pinterest e l'API di Pinterest per le conversioni"
 "Use Magento Cookie Restriction Mode","Utilizza la modalità di restrizione dei cookie Magento"
 "Enable Tracking if Cookie Exists","Abilita il monitoraggio se il cookie esiste"
+Yes,Sì
+No,No
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","Si è verificato un problema durante la rigenerazione del catalogo. Aggiorna la pagina o riprova."
 Success,Operazione riuscita
 "You must be logged into Pinterest to access this setting","Per accedere a questa impostazione devi aver eseguito l'accesso a Pinterest"

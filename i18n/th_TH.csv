@@ -6,6 +6,8 @@
 "Turn off Pinterest tag and Pinterest API for Conversions","ปิดแท็ก Pinterest และ Pinterest API สําหรับคอนเวอร์ชัน"
 "Use Magento Cookie Restriction Mode","ใช้โหมดจํากัดคุกกี้ Magento"
 "Enable Tracking if Cookie Exists","เปิดใช้งานการติดตามหากมีคุกกี้"
+Yes,ใช่
+No,ไม่
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","เกิดปัญหาในการสร้างแคตตาล็อกใหม่ โปรดรีเฟรชหน้านี้หรือลองอีกครั้งในภายหลัง"
 Success,สำเร็จ
 "You must be logged into Pinterest to access this setting","คุณต้องเข้าสู่ระบบ Pinterest จึงจะเข้าถึงการตั้งค่านี้ได้"

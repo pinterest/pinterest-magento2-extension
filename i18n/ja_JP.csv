@@ -6,6 +6,8 @@
 "Turn off Pinterest tag and Pinterest API for Conversions","Pinterest タグと Pinterest コンバージョン API をオフにする"
 "Use Magento Cookie Restriction Mode","Magento Cookie Restriction Mode（Cookie 制限モード）を使用する"
 "Enable Tracking if Cookie Exists","クッキーが存在する場合はトラッキングを有効にする"
+Yes,はい
+No,いいえ
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","カタログを再生成できませんでした。ページの表示を更新してもう一度お試しください。"
 Success,サクセス
 "You must be logged into Pinterest to access this setting","この設定にアクセスするには、Pinterest にログインしている必要があります"

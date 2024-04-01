@@ -914,4 +914,17 @@ class PinterestHelper extends AbstractHelper
         $unique_id = ProductExporter::getUniqueId($product);
         return $unique_id;
     }
+
+    /**
+     * Get error data from a response object
+     *
+     * @param mixed $response
+     * @return array error data
+     */
+    public function getErrorData($response)
+    {
+        $code = isset($response->code)? $response->code : "n/a";
+        $message = isset($response->message)? $response->message : "n/a";
+        return ['message' => $message, 'errorCode' => $code];
+    }
 }

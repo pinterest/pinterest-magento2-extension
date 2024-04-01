@@ -4,6 +4,9 @@ This repo contains the code for the Pinterest Magento extension.
 
 The Pinterest (Alpha) integration plugin allows Adobe Commerce Cloud store owners to easily showcase their products to millions of Pinterest users. Merchants can upload their product catalog to Pinterest, making their products visible to potential customers on Pinterest. Product stock and pricing are automatically updated in near real-time, ensuring that the information displayed on Pinterest is always up-to-date. Conversion tracking provided by the plugin allows merchants to track conversions using both frontend JavaScript and backend API tracking. For example, a clothing store could use the Pinterest integration plugin to showcase their latest seasonal collections on Pinterest, helping increase visibility and drive more sales.
 
+## Support
+For any questions regarding this plugin please contact ads-third-party-integration@pinterest.com
+
 ## Requirements
  - Magento Opensource/Enterprise Edition Adobe Commerce Cloud store
  - Magento 2.4.4+

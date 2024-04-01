@@ -183,12 +183,8 @@ class WebsiteClaimingObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         $this->_pinterestHelper->logInfo("Attemping to claim website");
-        $success = true;
-        $metaTag = $this->_pinterestHelper->getMetadataValue("pinterest/website_claiming/meta_tag");
         try {
-            if ($metaTag == null) {
-                $success = $this->getWebsiteClaimingMetaTag();
-            }
+            $success = $this->getWebsiteClaimingMetaTag();
             /**
              * Only if we were able to successfully get the website claiming html tag
              * will we try to call to API to claim the website

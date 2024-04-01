@@ -6,6 +6,8 @@
 "Turn off Pinterest tag and Pinterest API for Conversions","Pinterest etiketini ve Dönüşümler için Pinterest API'sini kapatın"
 "Use Magento Cookie Restriction Mode","Magento Çerez Kısıtlama Modunu Kullanın"
 "Enable Tracking if Cookie Exists","Çerez Varsa İzlemeyi Etkinleştirme"
+Yes,Evet
+No,No
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","Kataloğunuz yeniden oluşturulurken bir sorun oluştu. Lütfen sayfayı yenileyin veya daha sonra tekrar deneyin."
 Success,Başarılı
 "You must be logged into Pinterest to access this setting","Bu ayara erişmek için Pinterest'te oturum açmış olmanız gerekir"

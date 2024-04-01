@@ -2,6 +2,8 @@
 namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Magento\Framework\App\Request\Http;
+use Pinterest\PinterestMagento2Extension\Constants\IntegrationErrorId;
+use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
@@ -19,6 +21,11 @@ class CatalogFeedClient
      * @var PinterestHttpClient
      */
     protected $_pinterestHttpClient;
+
+    /**
+     * @var PluginErrorHelper
+     */
+    protected $_pluginErrorHelper;
 
     /**
      * @var PinterestHelper
@@ -52,18 +59,21 @@ class CatalogFeedClient
      * @param PinterestHelper $pinterestHelper
      * @param LocaleList $localeList
      * @param SavedFile $savedFile
+     * @param PluginErrorHelper $pluginErrorHelper
      */
     public function __construct(
         PinterestHttpClient $pinterestHttpClient,
         PinterestHelper $pinterestHelper,
         LocaleList $localeList,
-        SavedFile $savedFile
+        SavedFile $savedFile,
+        PluginErrorHelper $pluginErrorHelper
     ) {
         $this->_pinterestHttpClient = $pinterestHttpClient;
         $this->_pinterestHelper = $pinterestHelper;
         $this->_localeList = $localeList;
         $this->_savedFile = $savedFile;
         $this->feedsRegisteredOnPinterest = [];
+        $this->_pluginErrorHelper = $pluginErrorHelper;
     }
 
     /**
@@ -186,9 +196,10 @@ class CatalogFeedClient
     private function updateFeedInfo($feedId, $dataToUpdate)
     {
         try {
+            $this->_pinterestHelper->resetApiErrorState("errors/catalogs/feeds/patch/{$feedId}");
             $response = $this->_pinterestHttpClient->patch($this->getFeedAPI($feedId), $dataToUpdate, $this->getAccessToken());
             if (isset($response->code)) {
-                $this->_pinterestHelper->logAndSaveAPIErrors($response, "catalogs/feeds/patch/{$feedId}");
+                $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/catalogs/feeds/patch/{$feedId}");
             } else {
                 $updatesLogs = json_encode($dataToUpdate);
                 $this->_pinterestHelper->logInfo("FeedId: {$response->id} Updated successful {$updatesLogs}");
@@ -312,7 +323,7 @@ class CatalogFeedClient
         try {
             $feedname = $data['name'];
             $this->_pinterestHelper->logInfo("Creating catalog feed on Pinterest");
-            $this->_pinterestHelper->resetApiErrorState("errors/catalog/create/{$feedname}");
+            $this->_pluginErrorHelper->clearError("errors/catalog/create/{$feedname}");
             $response = $this->_pinterestHttpClient->post($this->getFeedAPI(), $data, $this->getAccessToken(), null, "application/json", null, $queryParams);
             if (isset($response->code)) {
                 $message = isset($response->message)? $response->message : "n/a";
@@ -320,7 +331,13 @@ class CatalogFeedClient
                 $this->_pinterestHelper->logError(
                     "Catalog feed creation failed for {$url}. HTTP {$status}: {$message}"
                 );
-                $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/catalog/create/{$feedname}");
+                $errorData = $this->_pinterestHelper->getErrorData($response);
+                $this->_pluginErrorHelper->logAndSaveError(
+                    "errors/catalog/create/{$feedname}",
+                    $errorData,
+                    $errorData['message'],
+                    IntegrationErrorId::ERROR_CREATE_CATALOG_FEED
+                );
             } else {
                 // Expect id to always be present in the response payload but adding as a defensive check
                 if (!isset($response->id)) {
@@ -385,6 +402,7 @@ class CatalogFeedClient
         $this->_pinterestHelper->logInfo("Deleting feed {$feedId} from Pinterest");
         try {
             $url = $this->_pinterestHttpClient->getV5ApiEndpoint("catalogs/feeds/{$feedId}");
+            $this->_pluginErrorHelper->clearError("errors/catalogs/feeds/delete/{$feedId}");
             $response = $this->_pinterestHttpClient->delete($url, $this->_pinterestHelper->getAccessToken());
             if ($response->getStatusCode() === 204 || $response->getStatusCode() === 404) {
                 /**
@@ -398,6 +416,13 @@ class CatalogFeedClient
                 $this->_pinterestHelper->logError("Could not delete feed ({$feedId}) from Pinterest with
                     status code:" . $response->getStatusCode());
                 $this->_pinterestHelper->logError(json_encode($response->getBody()));
+                $errorData = $this->_pinterestHelper->getErrorData(json_decode($response->getBody()));
+                $this->_pluginErrorHelper->logAndSaveError(
+                    "errors/catalogs/feeds/delete/{$feedId}",
+                    $errorData,
+                    $errorData['message'],
+                    IntegrationErrorId::ERROR_DELETE_CATALOG_FEED
+                );
             }
         } catch (\Exception $e) {
             $this->_pinterestHelper->logException($e);

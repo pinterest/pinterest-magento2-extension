@@ -1,32 +1,34 @@
-"Regenerate Catalog","Volver a generar catálogo"
-"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Permite que el indicador PLD cumpla con las obligaciones estipuladas en la CCPA y la CPRA cuando uses el servicio de anuncios de Pinterest. <a href='%1' target='_blank'>Más información</a>"
+"Regenerate Catalog","Regenerar catálogo"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Permite que el indicador de procesamiento de datos limitado se ajuste a las obligaciones en virtud de la CCPA y la CPRA cuando uses el servicio publicitario de Pinterest. <a href='%1' target='_blank'>Obtén más información</a>"
 "Turn on catalog ingestion","Activar el procesamiento de catálogos"
 "Turn off catalog ingestion","Desactivar el procesamiento de catálogos"
 "Turn on Pinterest tag and Pinterest API for Conversions","Activar la etiqueta de Pinterest y la API de Pinterest para conversiones"
 "Turn off Pinterest tag and Pinterest API for Conversions","Desactivar la etiqueta de Pinterest y la API de Pinterest para conversiones"
 "Use Magento Cookie Restriction Mode","Usar el modo de restricción de cookies de Magento"
-"Enable Tracking if Cookie Exists","Habilitar el seguimiento si hay una cookie"
-"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Hubo un problema al volver a generar tu catálogo. Actualiza la página e inténtalo de nuevo."
-Success,¡Conseguido!
-"You must be logged into Pinterest to access this setting","Debes haber iniciado sesión en Pinterest para acceder a esta configuración"
+"Enable Tracking if Cookie Exists","Activar el seguimiento si hay una cookie"
+Yes,Sí
+No,No
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","Ocurrió un problema al regenerar el catálogo. Actualiza la página o vuelve a intentarlo más tarde."
+Success,Operación exitosa
+"You must be logged into Pinterest to access this setting","Debes iniciar sesión en Pinterest para acceder a esta configuración"
 Pinterest,Pinterest
 Setup,Configuración
 Configurations,Configuraciones
 General,General
 "Client ID","ID de cliente"
-"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID de cliente para Pinterest. Esto se utiliza para identificar a los clientes de Adobe Commerce y Magento en Pinterest."
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","ID de cliente para Pinterest. Esto se usa para identificar a los clientes de Adobe Commerce/Magento en Pinterest."
 "Integration Base URL","URL base de integración"
-"Base URL path for Pinterest.","Ruta de URL base para Pinterest."
+"Base URL path for Pinterest.","Ruta de la URL base para Pinterest."
 "Catalog Ingestion","Procesamiento de catálogos"
 "Allow catalog ingestion to Pinterest","Permitir el procesamiento de catálogos en Pinterest"
 "Conversion tracking","Seguimiento de conversiones"
-"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Envía eventos de conversión en el lado del cliente y del servidor. Para actualizar esta configuración, desconecta y vuelve a conectar tu cuenta para empresas de Pinterest con Adobe Commerce."
-"Catalog Sync","Sincronización de catálogo"
-"Manually run catalog creation and feed registration","Ejecutar manualmente la creación de catálogos y el registro de feed"
-"General Data Protection Regulation (GDPR)","Reglamento general de protección de datos (RGPD)"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","Envía eventos de conversión del lado del cliente y del servidor. Para actualizar esta configuración, desvincula y vuelve a vincular tu cuenta para empresa de Pinterest con Adobe Commerce."
+"Catalog Sync","Sincronización del catálogo"
+"Manually run catalog creation and feed registration","Ejecutar manualmente la creación de catálogos y el registro de feeds"
+"General Data Protection Regulation (GDPR)","Reglamento General de Protección de Datos (RGPD)"
 "Enable GDPR","Activar el RGPD"
 Options,Opciones
 "Cookie Name","Nombre de la cookie"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","El seguimiento se controla en Tiendas > Configuración > General > Web > Configuración de cookies predeterminada > Modo de restricción de cookies"
-"Limited Data Processing (LDP)","Procesamiento limitado de datos (LDP)"
-"Enable Limited Data Processing flag","Habilitar indicador de procesamiento de datos limitado"
+"Limited Data Processing (LDP)","Procesamiento de datos limitado (LDP, por sus siglas en inglés)"
+"Enable Limited Data Processing flag","Indicador para activar el procesamiento de datos limitado"
