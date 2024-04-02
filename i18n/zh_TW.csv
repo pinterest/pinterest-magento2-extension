@@ -1,32 +1,34 @@
-"Regenerate Catalog","重新生成目录"
-"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","在使用 Pinterest 广告服务时，启用 LDP 标志以遵守 CCPA 和 CPRA 规定的义务。 <a href='%1' target='_blank'>了解更多</a>"
-"Turn on catalog ingestion","开启目录接入"
-"Turn off catalog ingestion","关闭目录接入"
-"Turn on Pinterest tag and Pinterest API for Conversions","开启 Pinterest 标签和 Pinterest 转化 API"
-"Turn off Pinterest tag and Pinterest API for Conversions","关闭 Pinterest 标签和 Pinterest 转化 API"
+"Regenerate Catalog","重新產生目錄"
+"Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","啟用 LDP 標示，以便在使用 Pinterest 的廣告服務時，遵守 CCPA 和 CPRA 所規定的義務。<a href='%1' target='_blank'>瞭解詳情</a>"
+"Turn on catalog ingestion","開啟目錄擷取功能"
+"Turn off catalog ingestion","關閉目錄擷取功能"
+"Turn on Pinterest tag and Pinterest API for Conversions","開啟 Pinterest 標籤和 Pinterest 轉換 API"
+"Turn off Pinterest tag and Pinterest API for Conversions","關閉 Pinterest 標籤和 Pinterest 轉換 API"
 "Use Magento Cookie Restriction Mode","使用 Magento Cookie 限制模式"
-"Enable Tracking if Cookie Exists","如果存在 Cookie，则启用跟踪"
-"There was an issue regenerating your catalog. Please refresh the page or trying again later.","重新生成目录时出现问题。请刷新页面或稍后重试。"
+"Enable Tracking if Cookie Exists","如果 Cookie 存在，請啟用追蹤功能"
+Yes,是
+No,否
+"There was an issue regenerating your catalog. Please refresh the page or trying again later.","重新產生目錄時發生問題，請重新整理頁面或稍後再試。"
 Success,成功
-"You must be logged into Pinterest to access this setting","你必须登录 Pinterest 才能访问此设置"
+"You must be logged into Pinterest to access this setting","須先登入 Pinterest 才能存取這項設定"
 Pinterest,Pinterest
-Setup,设置
-Configurations,配置
+Setup,設置
+Configurations,設定
 General,一般
-"Client ID","客户 ID"
-"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest 的客户 ID。此 ID 用于识别 Pinterest 上的 Adobe Commerce/Magento 客户。"
-"Integration Base URL","集成基本网址"
-"Base URL path for Pinterest.","Pinterest 的基本网址路径。"
-"Catalog Ingestion","目录接入"
-"Allow catalog ingestion to Pinterest","允许目录接入到 Pinterest"
-"Conversion tracking","转化追踪"
-"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","发送客户端和服务器端转化事件。 如需更新此设置，请取消关联 Pinterest 企业帐户，然后重新连接到 Adobe Commerce。"
-"Catalog Sync","目录同步"
-"Manually run catalog creation and feed registration","手动运行目录创建和页面注册"
-"General Data Protection Regulation (GDPR)","通用数据保护条例 (GDPR)"
-"Enable GDPR","启用 GDPR"
-Options,选择
-"Cookie Name","Cookie 名称"
-"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","可通过转至以下位置控制跟踪：商店 > 配置 > 通用 > 网页 > 默认 Cookie 设置 > Cookie 限制模式"
-"Limited Data Processing (LDP)","有限数据处理（LDP）"
-"Enable Limited Data Processing flag","启用有限数据处理标志"
+"Client ID","客戶 ID"
+"Client ID for Pinterest. This is used to identify Adobe Commerce/Magento clients on Pinterest.","Pinterest 用戶端 ID。用途是識別 Pinterest 上的 Adobe Commerce/Magento 用戶端。"
+"Integration Base URL","整合基本網址"
+"Base URL path for Pinterest.","Pinterest 基本網址路徑。"
+"Catalog Ingestion","目錄擷取"
+"Allow catalog ingestion to Pinterest","允許將目錄擷取至 Pinterest"
+"Conversion tracking","轉換追蹤"
+"Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.","傳送用戶端和伺服器端的轉換事件。若要更新這項設定，請先中斷 Pinterest 企業帳號與 Adobe Commerce 的連線，然後再重新連線。"
+"Catalog Sync","目錄同步"
+"Manually run catalog creation and feed registration","手動執行目錄建立和動態註冊作業"
+"General Data Protection Regulation (GDPR)","一般資料保護規則 (GDPR)"
+"Enable GDPR","啟用 GDPR"
+Options,選項
+"Cookie Name","Cookie 名稱"
+"Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","前往「商店 > 設定 > 一般 > 網頁 > 預設 Cookie 設定 > Cookie 限制模式」即可控制追蹤功能"
+"Limited Data Processing (LDP)","限制資料處理 (LDP)"
+"Enable Limited Data Processing flag","啟用「限制資料處理」標示"

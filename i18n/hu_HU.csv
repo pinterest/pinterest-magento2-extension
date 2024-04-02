@@ -6,6 +6,8 @@
 "Turn off Pinterest tag and Pinterest API for Conversions","A Pinterest-címke és a konverziós Pinterest API kikapcsolása"
 "Use Magento Cookie Restriction Mode","A Magento cookie‑korlátozási módjának használata"
 "Enable Tracking if Cookie Exists","A nyomon követés engedélyezése meglévő cookie esetén"
+Yes,Igen
+No,Nem
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","Hiba történt a katalógusod újragenerálása során. Frissítsd az oldalt, vagy próbáld újra később."
 Success,Sikerült
 "You must be logged into Pinterest to access this setting","Ehhez a beállításhoz be kell jelentkezned a Pinterestbe"

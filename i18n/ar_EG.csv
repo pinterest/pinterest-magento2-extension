@@ -6,6 +6,8 @@
 "Turn off Pinterest tag and Pinterest API for Conversions","إيقاف تشغيل علامة Pinterest وواجهة برمجة تطبيقات Pinterest للتحويلات"
 "Use Magento Cookie Restriction Mode","استخدام وضع تقييد ملفات تعريف الارتباط Magento"
 "Enable Tracking if Cookie Exists","تمكين التتبع إذا كان ملف تعريف الارتباط موجودًا"
+Yes,نعم
+No,لا
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","حدثت مشكلة في إعادة إنشاء الكتالوج لديك. يُرجى تحديث الصفحة أو المحاولة مرة أخرى لاحقًا."
 Success,تم بنجاح
 "You must be logged into Pinterest to access this setting","يجب تسجيل الدخول إلى Pinterest للوصول إلى هذا الإعداد"

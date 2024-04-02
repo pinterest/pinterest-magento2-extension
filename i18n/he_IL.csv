@@ -6,6 +6,8 @@
 "Turn off Pinterest tag and Pinterest API for Conversions","כבו תג Pinterest ואת ה-Pinterest API להמרות"
 "Use Magento Cookie Restriction Mode","שימוש במצב הגבלת קובצי Cookie של Magento"
 "Enable Tracking if Cookie Exists","אפשרו מעקב אם קיים קובץ Cookie"
+Yes,כן
+No,לא
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","אירעה בעיה בעת יצירה מחדש של הקטלוג שלכם. רעננו את הדף או נסו שוב מאוחר יותר."
 Success,הצלחה
 "You must be logged into Pinterest to access this setting","יש להיכנס ל-Pinterest כדי לגשת להגדרה זו"

@@ -6,6 +6,8 @@
 "Turn off Pinterest tag and Pinterest API for Conversions","रूपांतरण के लिए Pinterest API और Pinterest टैग को बंद करें"
 "Use Magento Cookie Restriction Mode","Magento कुकी प्रतिबंध मोड का उपयोग करें"
 "Enable Tracking if Cookie Exists","अगर कुकी मौजूद है तो ट्रैकिंग सक्षम करें"
+Yes,हाँ
+No,नहीं
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","आपके कैटलॉग को फिर से उत्पन्न करने में समस्या हुई। कृपया पेज रीफ़्रेश करें या बाद में फिर से कोशिश करें।"
 Success,सफल हुआ
 "You must be logged into Pinterest to access this setting","इस सेटिंग तक पहुँचने के लिए आपको Pinterest में लॉग इन करना होगा"

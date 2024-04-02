@@ -181,7 +181,6 @@ class PinterestToken extends Action
             $this->_pinterestHelper->logInfo("cache flush completed");
 
             // Website claiming
-            $this->_pinterestHelper->saveMetadata('pinterest/website_claiming/meta_tag', null);
             $this->_eventManager->dispatch("pinterest_commereceintegrationextension_website_claiming");
 
             $featureFlags = $info['feature_flags'];
