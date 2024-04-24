@@ -142,9 +142,9 @@ class ConversionEvent extends Action
             "event_name" => "view_category",
             "custom_data" => [
                 "currency" => $currency,
-                "content_ids" => $productDetails["content_ids"],
-                "contents" => $productDetails["contents"],
-                "content_category" => $productDetails["category"]
+                "content_ids" => isset($productDetails['content_ids']) ? $productDetails["content_ids"] : [],
+                "contents" => isset($productDetails['contents']) ? $productDetails["contents"] : [],
+                "content_category" =>  isset($productDetails['category']) ? $productDetails["category"] : ''
             ],
         ]);
     }
