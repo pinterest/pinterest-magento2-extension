@@ -2,8 +2,8 @@
 "Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Permite semnalizarea LDP pentru a respecta obligațiile din CCPA și CPRA atunci când folosești serviciul de reclame Pinterest. <a href='%1' target='_blank'>Află detalii</a>"
 "Turn on catalog ingestion","Activează ingestia din catalog"
 "Turn off catalog ingestion","Dezactivează ingestia din catalog"
-"Turn on Pinterest tag and Pinterest API for Conversions","Activează marcajul Pinterest și API-ul Pinterest pentru conversii"
-"Turn off Pinterest tag and Pinterest API for Conversions","Dezactivează marcajul Pinterest și API-ul Pinterest pentru conversii"
+"Turn on Pinterest tag and Pinterest Conversions API","Activează marcajul Pinterest și API-ul Pinterest pentru conversii"
+"Turn off Pinterest tag and Pinterest Conversions API","Dezactivează marcajul Pinterest și API-ul Pinterest pentru conversii"
 "Use Magento Cookie Restriction Mode","Folosește modul de restricționare a cookie-urilor Magento"
 "Enable Tracking if Cookie Exists","Activează urmărirea dacă există cookie-uri"
 Yes,Da

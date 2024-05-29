@@ -2,8 +2,8 @@
 "Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Pinterest'in reklam hizmetini kullanırken CCPA ve CPRA kapsamındaki yükümlülüklere uymak için LDP bayrağını etkinleştirin. <a href='%1' target='_blank'>Daha fazla bilgi edinin</a>"
 "Turn on catalog ingestion","Katalog alımını aç"
 "Turn off catalog ingestion","Katalog alımını kapat"
-"Turn on Pinterest tag and Pinterest API for Conversions","Pinterest etiketini ve Dönüşümler için Pinterest API'sini açın"
-"Turn off Pinterest tag and Pinterest API for Conversions","Pinterest etiketini ve Dönüşümler için Pinterest API'sini kapatın"
+"Turn on Pinterest tag and Pinterest Conversions API","Pinterest etiketini ve Pinterest Dönüşüm API'sini aç"
+"Turn off Pinterest tag and Pinterest Conversions API","Pinterest etiketini ve Pinterest Dönüşüm API'sini kapat"
 "Use Magento Cookie Restriction Mode","Magento Çerez Kısıtlama Modunu Kullanın"
 "Enable Tracking if Cookie Exists","Çerez Varsa İzlemeyi Etkinleştirme"
 Yes,Evet
