@@ -14,8 +14,8 @@ class PinterestConversionConfigList implements OptionSourceInterface
     public function toOptionArray()
     {
         return [
-        ['value' => ConfigSetting::ENABLED, 'label' => __('Turn on Pinterest tag and Pinterest API for Conversions')],
-        ['value' => ConfigSetting::DISABLED, 'label' => __('Turn off Pinterest tag and Pinterest API for Conversions')]
+        ['value' => ConfigSetting::ENABLED, 'label' => __('Turn on Pinterest tag and Pinterest Conversions API')],
+        ['value' => ConfigSetting::DISABLED, 'label' => __('Turn off Pinterest tag and Pinterest Conversions API')]
         ];
     }
 }

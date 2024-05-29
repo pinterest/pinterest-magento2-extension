@@ -2,8 +2,8 @@
 "Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Pinterest-এর বিজ্ঞাপন পরিষেবা ব্যবহার করার সময় CCPA এবং CPRA-এর অধীনে বাধ্যবাধকতা মেনে চলতে LDP ফ্ল্যাগ সক্রিয় করুন। <a href='%1' target='_blank'>আরও জানুন</a>"
 "Turn on catalog ingestion","ক্যাটালগ ইনজেশন চালু করুন"
 "Turn off catalog ingestion","ক্যাটালগ ইনজেশন বন্ধ করুন"
-"Turn on Pinterest tag and Pinterest API for Conversions","রূপান্তরের জন্য Pinterest ট্যাগ এবং Pinterest API চালু করুন"
-"Turn off Pinterest tag and Pinterest API for Conversions","রূপান্তরের জন্য Pinterest ট্যাগ এবং Pinterest API বন্ধ করুন"
+"Turn on Pinterest tag and Pinterest Conversions API","Pinterest ট্যাগ এবং Pinterest রূপান্তরের API চালু করুন"
+"Turn off Pinterest tag and Pinterest Conversions API","Pinterest ট্যাগ এবং Pinterest রূপান্তরের API বন্ধ করুন"
 "Use Magento Cookie Restriction Mode","Magento-র কুকি দিয়ে সীমাবদ্ধতা মোড ব্যবহার করুন"
 "Enable Tracking if Cookie Exists","কুকি থাকলে ট্র্যাকিং সক্রিয় করুন"
 Yes,হ্যাঁ

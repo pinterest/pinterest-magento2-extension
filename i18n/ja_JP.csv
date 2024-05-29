@@ -2,8 +2,8 @@
 "Enable the LDP flag to comply with obligations under CCPA and CPRA when using Pinterest's ad service. <a href='%1' target='_blank'>Learn more</a>","Pinterest の広告サービスを利用する際は、LDP フラグを有効にして、CCPA および CPRA を遵守する義務があります。<a href='%1' target='_blank'>詳細</a>"
 "Turn on catalog ingestion","カタログの取得をオンにする"
 "Turn off catalog ingestion","カタログの取得をオフにする"
-"Turn on Pinterest tag and Pinterest API for Conversions","Pinterest タグと Pinterest コンバージョン API をオンにする"
-"Turn off Pinterest tag and Pinterest API for Conversions","Pinterest タグと Pinterest コンバージョン API をオフにする"
+"Turn on Pinterest tag and Pinterest Conversions API","Pinterest タグと Pinterest コンバージョン API をオンにする"
+"Turn off Pinterest tag and Pinterest Conversions API","Pinterest タグと Pinterest コンバージョン API をオフにする"
 "Use Magento Cookie Restriction Mode","Magento Cookie Restriction Mode（Cookie 制限モード）を使用する"
 "Enable Tracking if Cookie Exists","クッキーが存在する場合はトラッキングを有効にする"
 Yes,はい
