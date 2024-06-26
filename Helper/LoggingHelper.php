@@ -33,6 +33,11 @@ class LoggingHelper
     protected $_dbHelper;
 
     /**
+     * @var ExternalBusinessIdHelper
+     */
+    protected $_externalBusinessIdHelper;
+    
+    /**
      * @var Logger
      */
     protected $_logger;
