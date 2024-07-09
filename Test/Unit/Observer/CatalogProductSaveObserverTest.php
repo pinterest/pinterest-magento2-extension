@@ -21,6 +21,11 @@ use Magento\Catalog\Api\Data\ProductInterface;
 class CatalogProductSaveObserverTest extends TestCase
 {
     /**
+     * @var CacheInterface
+     */
+    protected $_cache;
+
+    /**
      * @var PinterestHelper
      */
     protected $_pinterestHelper;
@@ -28,37 +33,42 @@ class CatalogProductSaveObserverTest extends TestCase
     /**
      * @var ProductRepositoryInterface
      */
-    protected $productloader;
+    protected $_productloader;
 
     /**
      *
      * @var ManagerInterface
      */
-    protected $messageManager;
+    protected $_messageManager;
 
     /**
      *
      * @var LocaleList
      */
-    protected $localehelper;
+    protected $_localehelper;
 
     /**
      *
      * @var CatalogFeedClient
      */
-    protected $httpClient;
+    protected $_httpClient;
 
     /**
      *
      * @var Logger
      */
-    protected $logger;
+    protected $_logger;
+
+    /**
+     * @var CatalogFeedClient
+     */
+    protected $_catalogFeedClient;
 
     /**
      *
      * @var CatalogProductSaveObserver
      */
-    protected $catalogProductSaveObserver;
+    protected $_catalogProductSaveObserver;
 
     /**
      * Used to set the values before running a test
@@ -67,22 +77,22 @@ class CatalogProductSaveObserverTest extends TestCase
      */
     public function setUp() : void
     {
-        $this->productloader = $this->createMock(ProductRepositoryInterface::class);
-        $this->pinterestHelper = $this->createMock(PinterestHelper::class);
-        $this->messageManager = $this->createMock(ManagerInterface::class);
-        $this->catalogFeedClient = $this->createMock(CatalogFeedClient::class);
-        $this->localehelper = $this->createMock(LocaleList::class);
-        $this->logger = $this->createMock(Logger::class);
-        $this->cache = $this->createMock(CacheInterface::class);
+        $this->_productloader = $this->createMock(ProductRepositoryInterface::class);
+        $this->_pinterestHelper = $this->createMock(PinterestHelper::class);
+        $this->_messageManager = $this->createMock(ManagerInterface::class);
+        $this->_catalogFeedClient = $this->createMock(CatalogFeedClient::class);
+        $this->_localehelper = $this->createMock(LocaleList::class);
+        $this->_logger = $this->createMock(Logger::class);
+        $this->_cache = $this->createMock(CacheInterface::class);
 
-        $this->catalogProductSaveObserver = new CatalogProductSaveObserver(
-            $this->productloader,
-            $this->pinterestHelper,
-            $this->messageManager,
-            $this->localehelper,
-            $this->catalogFeedClient,
-            $this->logger,
-            $this->cache
+        $this->_catalogProductSaveObserver = new CatalogProductSaveObserver(
+            $this->_productloader,
+            $this->_pinterestHelper,
+            $this->_messageManager,
+            $this->_localehelper,
+            $this->_catalogFeedClient,
+            $this->_logger,
+            $this->_cache
         );
     }
     public function testExecute()
@@ -113,14 +123,14 @@ class CatalogProductSaveObserverTest extends TestCase
                 "availability" => "in stock"
             ],
         ]);
-        $this->localehelper->method('getCurrency')->willReturn("USD");
-        $this->localehelper->method('getLocale')->willReturn("en_US");
-        $this->catalogFeedClient->method('isUserConnected')->willReturn(true);
-        $this->catalogFeedClient->method('updateCatalogItems')->willReturn(true);
-        $this->pinterestHelper->method('isCatalogAndRealtimeUpdatesEnabled')->willReturn(true);
+        $this->_localehelper->method('getCurrency')->willReturn("USD");
+        $this->_localehelper->method('getLocale')->willReturn("en_US");
+        $this->_catalogFeedClient->method('isUserConnected')->willReturn(true);
+        $this->_catalogFeedClient->method('updateCatalogItems')->willReturn(true);
+        $this->_pinterestHelper->method('isCatalogAndRealtimeUpdatesEnabled')->willReturn(true);
 
-        $success = $this->catalogProductSaveObserver->execute($observer);
+        $success = $this->_catalogProductSaveObserver->execute($observer);
         $this->assertTrue($success);
-        $this->assertEquals($cacheValue, $this->catalogProductSaveObserver->data_for_unittest);
+        $this->assertEquals($cacheValue, $this->_catalogProductSaveObserver->data_for_unittest);
     }
 }

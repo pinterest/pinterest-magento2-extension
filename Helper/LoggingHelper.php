@@ -36,7 +36,7 @@ class LoggingHelper
      * @var ExternalBusinessIdHelper
      */
     protected $_externalBusinessIdHelper;
-    
+
     /**
      * @var Logger
      */

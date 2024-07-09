@@ -4,6 +4,7 @@ namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
 use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
 use Pinterest\PinterestMagento2Extension\Helper\SavedFile;
 use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
@@ -26,6 +27,11 @@ class CatalogFeedClientTest extends TestCase
     protected $_pinterestHelper;
 
     /**
+     * @var PluginErrorHelper
+     */
+    protected $_pluginErrorHelper;
+
+    /**
      * @var LocaleList
      */
     protected $_localeList;
@@ -46,12 +52,14 @@ class CatalogFeedClientTest extends TestCase
         $this->_pinterestHelper = $this->createMock(PinterestHelper::class);
         $this->_localeList = $this->createMock(LocaleList::class);
         $this->_savedFile = $this->createMock(SavedFile::class);
+        $this->_pluginErrorHelper = $this->createMock(PluginErrorHelper::class);
 
         $this->_catalogFeedClient = new CatalogFeedClient(
             $this->_pinterestHttpClient,
             $this->_pinterestHelper,
             $this->_localeList,
             $this->_savedFile,
+            $this->_pluginErrorHelper,
         );
     }
 

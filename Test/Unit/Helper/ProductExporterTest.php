@@ -30,6 +30,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
     protected $_savedFile;
     protected $_pinterestHelper;
     protected $_localelist;
+    protected $_productExporter;
     protected $_productRepository;
     protected $_collectionFactory;
     protected $_stockRegistryInterface;
