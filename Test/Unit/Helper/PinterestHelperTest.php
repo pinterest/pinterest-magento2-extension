@@ -39,9 +39,14 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
     protected $_cart;
 
     /**
+     * @var PinterestHelper
+     */
+    protected $_pinterestHelper;
+    
+    /**
      * @var ProductRepositoryInterface
      */
-    protected $_productRepository;
+    protected $_productRepositoryInterface;
 
     /**
      * @var Context

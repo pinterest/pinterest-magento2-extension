@@ -41,7 +41,7 @@ class ConversionEventHelperTest extends TestCase
     /**
      * @var CacheInterface
      */
-    protected $cache;
+    protected $_cache;
 
     /**
      * @var CookieManagerInterface

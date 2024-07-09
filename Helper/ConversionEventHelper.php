@@ -38,7 +38,7 @@ class ConversionEventHelper
     /**
      * @var CacheInterface
      */
-    protected $cache;
+    protected $_cache;
 
     /**
      * @var bool
