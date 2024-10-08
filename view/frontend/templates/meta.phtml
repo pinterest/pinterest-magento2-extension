@@ -13,32 +13,44 @@
                 r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
             window.pintrk.partnerData={"np":"adobe"};
             <?php if ($block->isLdpEnabled()) { ?>
-                const state = "<?= $block->escapeJs($block->getHashedState())?>";
-                const country = "<?= $block->escapeJs($block->getHashedCountry())?>";
+                var state = "<?= $escaper->escapeJs($block->getHashedState())?>";
+                var country = "<?= $escaper->escapeJs($block->getHashedCountry())?>";
                 pintrk('set', {
                     opt_out_type: 'LDP',
                     st: state,
                     country: country,
                 });
             <?php } ?>
+            var setCMSConsentCookie = function(value) {
+                document.cookie = "PinterestMagento2ExtensionConsentCookie=" + JSON.stringify({consent: value}) + ";path=/";
+            }
+            var cmsCookieCallback = function(e) {
+                if (Cookiebot && Cookiebot.consent && Cookiebot.consent.marketing) {
+                    setCMSConsentCookie(true);
+                    pintrk('setconsent', true);
+                } else {
+                    setCMSConsentCookie(false);
+                    pintrk('setconsent', false);
+                }
+            }
             pintrk('setconsent', function() {
                     // Keep in sync with PinterestHelper::isUserOptedOutOfTracking
-                    const config = {
+                    var config = {
                         "isCookieRestrictionModeEnabled": <?= /* @noEscape */ $block->isCookieRestrictionModeEnabled() ?>,
                         "currentWebsite": <?= /* @noEscape */ $block->getCurrentWebsiteId() ?>,
                         "cookieName": "<?= /* @noEscape */ $block->getGDPRCookieName() ?>",
                         "isGdprEnabled": <?= /* @noEscape */ $block->isGdprEnabled() ?>,
                         "gdprOption": <?= /* @noEscape */ $block->getGdprOption() ?>
                     }
-                    const getCookie = function(name) {
-                        const value = `; ${document.cookie}`;
-                        const parts = value.split(`; ${name}=`);
+                    var getCookie = function(name) {
+                        var value = `; ${document.cookie}`;
+                        var parts = value.split(`; ${name}=`);
                         if (parts.length === 2) return parts.pop().split(';').shift();
                     }
                     if (!config.isGdprEnabled) {
                         return true;
                     } else if (config.isCookieRestrictionModeEnabled && config.gdprOption === 1) {
-                        const cookieValue = getCookie(config.cookieName);
+                        var cookieValue = getCookie(config.cookieName);
                         if (cookieValue) {
                             gdprCookie = unescape(cookieValue);
                             if (gdprCookie) {
@@ -48,7 +60,21 @@
                         }
                         return false;
                     } else if (config.gdprOption === 2) {
-                        return getCookie(config.cookieName) === undefined || getCookie(config.cookieName) === null;
+                        return !!(getCookie(config.cookieName)) && getCookie(config.cookieName) !== "0";
+                    } else if (config.gdprOption === 3) {
+                        window.addEventListener('CookiebotOnConsentReady', cmsCookieCallback);
+                        window.addEventListener('CookiebotOnLoad', cmsCookieCallback);
+                        cookieValue = getCookie('PinterestMagento2ExtensionConsentCookie');
+                        if (cookieValue) {
+                            gdprCookieObj = JSON.parse(unescape(cookieValue));
+                            if(gdprCookieObj.consent) {
+                                return true;
+                            }
+                        } else if (Cookiebot && Cookiebot.consent && Cookiebot.consent.marketing) {
+                            setCMSConsentCookie(true);
+                            return true;
+                        }
+                        return false;
                     }
                     return true;
                 }());

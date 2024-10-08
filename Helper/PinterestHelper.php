@@ -46,6 +46,7 @@ class PinterestHelper extends AbstractHelper
     public const ADMINHTML_SETUP_URI='pinterestadmin/Setup/Index';
     public const MODULE_NAME='Pinterest_PinterestMagento2Extension';
     public const IFRAME_VERSION='v2';
+    public const CMS_DEFAULT_COOKIE_NAME='PinterestMagento2ExtensionConsentCookie';
 
     /**
      * @var Session
@@ -866,8 +867,30 @@ class PinterestHelper extends AbstractHelper
                     && $this->getGdprOption() == PinterestGDPROptions::USE_COOKIE_RESTRICTION_MODE) {
             return $this->_cookie->isUserNotAllowSaveCookie();
         } elseif ($this->getGdprOption() == PinterestGDPROptions::IF_COOKIE_NOT_EXIST) {
-            // Allowed to track if cookie value is not set
-            return $this->_cookieManager->getCookie($self->getGDPRCookieName(), null) != null;
+            // Allowed to track if cookie value is set to truthy value
+            $value = $this->_cookieManager->getCookie($this->getGDPRCookieName(), null);
+            if ($value == null ||
+                (is_bool($value) && $value == false) ||
+                (is_string($value) && strtolower($value) == "false") ||
+                $value == 0 ||
+                (is_string($value) && strtolower($value) == "0")) {
+                return true;
+            }
+            return false;
+        } elseif ($this->getGdprOption() == PinterestGDPROptions::CMS_COOKIE_BOT) {
+            // Allowed to track if cookie value is not set to {consent: true}
+            $value = $this->_cookieManager->getCookie(self::CMS_DEFAULT_COOKIE_NAME, null);
+            if ($value == null) {
+                return true;
+            }
+            $json_value = json_decode($value, true);
+            if ($json_value == null ||
+                !isset($json_value['consent']) ||
+                ( is_bool($json_value['consent']) && $json_value['consent'] == false) ||
+                ( is_string($json_value['consent']) && strtolower($json_value['consent']) == "false")) {
+                return true;
+            }
+            return false;
         }
         return false;
     }

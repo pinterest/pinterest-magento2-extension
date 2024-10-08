@@ -332,10 +332,11 @@ class CatalogFeedClient
                     "Catalog feed creation failed for {$url}. HTTP {$status}: {$message}"
                 );
                 $errorData = $this->_pinterestHelper->getErrorData($response);
+                $message = isset($response->message)? $response->message : "n/a";
                 $this->_pluginErrorHelper->logAndSaveError(
                     "errors/catalog/create/{$feedname}",
                     $errorData,
-                    $errorData['message'],
+                    $message,
                     IntegrationErrorId::ERROR_CREATE_CATALOG_FEED
                 );
             } else {

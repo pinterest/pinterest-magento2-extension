@@ -14,10 +14,10 @@
                 let ajaxData = {};
                 let pintrkData = {};
                 <?php if (!empty($productDetails)) { ?>
-                    const productData = {
-                        product_id: "<?= $block->escapeJs($productDetails["product_id"])  ?>",
+                    var productData = {
+                        product_id: "<?= $escaper->escapeJs($productDetails["product_id"])  ?>",
                         product_price: <?= $productDetails["product_price"] ?>,
-                        product_name: "<?= $block->escapeJs($productDetails["product_name"]) ?>",
+                        product_name: "<?= $escaper->escapeJs($productDetails["product_name"]) ?>",
                         product_quantity: 1,
                         product_category: <?= json_encode($productDetails["product_category"]) ?>
                     }

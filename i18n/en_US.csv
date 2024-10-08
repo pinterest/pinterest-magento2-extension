@@ -5,7 +5,8 @@
 "Turn on Pinterest tag and Pinterest Conversions API","Turn on Pinterest tag and Pinterest Conversions API"
 "Turn off Pinterest tag and Pinterest Conversions API","Turn off Pinterest tag and Pinterest Conversions API"
 "Use Magento Cookie Restriction Mode","Use Magento Cookie Restriction Mode"
-"Enable Tracking if Cookie Exists","Enable Tracking if Cookie Exists"
+"Enable Tracking if Cookie Exists and not false","Enable Tracking if Cookie Exists and not false"
+"Use CookieBot Consent management Integration","Use CookieBot Consent management Integration"
 Yes,Yes
 No,No
 "There was an issue regenerating your catalog. Please refresh the page or trying again later.","There was an issue regenerating your catalog. Please refresh the page or trying again later."
@@ -28,7 +29,12 @@ General,General
 "General Data Protection Regulation (GDPR)","General Data Protection Regulation (GDPR)"
 "Enable GDPR","Enable GDPR"
 Options,Options
+Description,Description
+"This option integrates with CookieBot CMS to check if the user has accepted cookies.
+                        The app listens to CookiebotOnConsentReady/CookiebotOnLoad events and checks Cookiebot.consent.marketing value to be true. <a href=""https://www.cookiebot.com/en/developer/?_gl=1*1ew7pv1*_ga*MzYzMjcyOTM3LjE3Mjc5Nzc2ODk.*_ga_HXY5PN80YH*MTcyNzk3NzY4OC4xLjEuMTcyNzk4MjE3NS4wLjAuMA..*_fplc*ME1xZlJTTHU4SW5Oa1puRXRjTlY3a2hOZVRPU1ZhQnkyTnNRMU9EQjElMkJ1dkJwdU9wU05FSmtHNXozZW5vQnROc1JiY1J2TWdDem9JRVAlMkZ1ZkZUWlNGWTFxZnduV3ltciUyQlIwYjBkJTJCVmpFayUyQmJHTVA2emtzJTJGQURDSmlHdlV3JTNEJTNE"" target=""_blank"">For more details refer to the cookiebot documentation.</a>","This option integrates with CookieBot CMS to check if the user has accepted cookies.
+                        The app listens to CookiebotOnConsentReady/CookiebotOnLoad events and checks Cookiebot.consent.marketing value to be true. <a href=""https://www.cookiebot.com/en/developer/?_gl=1*1ew7pv1*_ga*MzYzMjcyOTM3LjE3Mjc5Nzc2ODk.*_ga_HXY5PN80YH*MTcyNzk3NzY4OC4xLjEuMTcyNzk4MjE3NS4wLjAuMA..*_fplc*ME1xZlJTTHU4SW5Oa1puRXRjTlY3a2hOZVRPU1ZhQnkyTnNRMU9EQjElMkJ1dkJwdU9wU05FSmtHNXozZW5vQnROc1JiY1J2TWdDem9JRVAlMkZ1ZkZUWlNGWTFxZnduV3ltciUyQlIwYjBkJTJCVmpFayUyQmJHTVA2emtzJTJGQURDSmlHdlV3JTNEJTNE"" target=""_blank"">For more details refer to the cookiebot documentation.</a>"
 "Cookie Name","Cookie Name"
+"Provide a custom cookie name to check. Disable user tracking if the value is falsy. i.e null, undefined, false or 0","Provide a custom cookie name to check. Disable user tracking if the value is falsy. i.e null, undefined, false or 0"
 "Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode","Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode"
 "Limited Data Processing (LDP)","Limited Data Processing (LDP)"
 "Enable Limited Data Processing flag","Enable Limited Data Processing flag"
