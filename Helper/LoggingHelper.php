@@ -249,7 +249,6 @@ class LoggingHelper
             return;
         }
         try {
-            $this->_logger->info("Sending batched logs to Pinterest");
             $requestPayload = [
                 "logs" => $logs
             ];
@@ -267,11 +266,9 @@ class LoggingHelper
             $this->resetCache(); // reset cache in all cases to avoid backup
             if ($response && $response["statusCode"]) {
                 $status = $response["statusCode"];
-                $this->_logger->info("integrations/logs response: ".$status." ".$response["body"]);
-                if ($status > 299) {
-                    $this->_logger->info("Failed to send batched logs to Pinterest.");
-                } elseif ($status > 200) {
-                    $this->_logger->info("Success sending logs to Pinterest");
+                if ($status >= 300) {
+                    $this->_logger->error("Failed to send batched logs to Pinterest.");
+                    $this->_logger->error(http_build_query($requestPayload));
                 }
             }
         } catch (\Exception $e) {

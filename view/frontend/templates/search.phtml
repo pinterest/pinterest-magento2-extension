@@ -10,7 +10,7 @@
         ], function ($) {
             var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
             $(document).ready(function () {
-                const search_query = "<?= $search_query ?>"
+                var search_query = "<?= $search_query ?>"
                 $.ajax({
                     url: conversionEventUrl,
                     data: {

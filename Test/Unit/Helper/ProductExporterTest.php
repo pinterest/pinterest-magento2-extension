@@ -97,7 +97,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
         $this->_localelist->method('getListLocaleForAllStores')->willReturn([1 =>"US\nen_US"]);
         $this->_savedFile->method('isEnabled')->willReturn(true);
         $this->_savedFile->method('getFileSystemPath')->willReturn("/dev/null");
-        $this->setPrivateProperty($this->_productExporter, "productsData", [""]);
+        $this->setPrivateProperty($this->_productExporter, "productsData", []);
         $this->assertEquals(1, $this->_productExporter->processExport());
         $this->assertEquals("/dev/null", $this->getPrivateProperty($this->_productExporter, "absolute_path"));
     }
@@ -109,7 +109,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
         $this->_pinterestHelper->method('getMediaBaseUrlByStoreId')->willReturn("https://abc.com/");
         $this->_savedFile->method('isEnabled')->willReturn(true);
         $this->_savedFile->method('getFileSystemPath')->willReturn("/dev/null");
-        $this->setPrivateProperty($this->_productExporter, "productsData", [""]);
+        $this->setPrivateProperty($this->_productExporter, "productsData", []);
         $this->assertEquals(2, $this->_productExporter->processExport());
         $this->assertEquals("/dev/null", $this->getPrivateProperty($this->_productExporter, "absolute_path"));
     }

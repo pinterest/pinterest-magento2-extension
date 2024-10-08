@@ -56,11 +56,20 @@
                         <field id="*/*/enabled">1</field>
                     </depends>
                 </field>
-                <field id="gdpr_cookie_name" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="cms_cookiebot" translate="label comment" type="note" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Description</label>
+                    <comment><![CDATA[ 
+                        This option integrates with CookieBot CMS to check if the user has accepted cookies.
+                        The app listens to CookiebotOnConsentReady/CookiebotOnLoad events and checks Cookiebot.consent.marketing value to be true. <a href="https://www.cookiebot.com/en/developer/?_gl=1*1ew7pv1*_ga*MzYzMjcyOTM3LjE3Mjc5Nzc2ODk.*_ga_HXY5PN80YH*MTcyNzk3NzY4OC4xLjEuMTcyNzk4MjE3NS4wLjAuMA..*_fplc*ME1xZlJTTHU4SW5Oa1puRXRjTlY3a2hOZVRPU1ZhQnkyTnNRMU9EQjElMkJ1dkJwdU9wU05FSmtHNXozZW5vQnROc1JiY1J2TWdDem9JRVAlMkZ1ZkZUWlNGWTFxZnduV3ltciUyQlIwYjBkJTJCVmpFayUyQmJHTVA2emtzJTJGQURDSmlHdlV3JTNEJTNE" target="_blank">For more details refer to the cookiebot documentation.</a>
+                    ]]></comment>
+                    <depends>
+                        <field id="*/*/option" separator=",">3</field>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="gdpr_cookie_name" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Cookie Name</label>
-                    <comment>
-                        Provide a custom cookie name to check. Allow tracking of user if this cookie value is set to any value (i.e not null)
-                    </comment>
+                    <comment><![CDATA[Provide a custom cookie name to check. Disable user tracking if the value is falsy. i.e null, undefined, false or 0]]></comment>
                     <depends>
                         <field id="*/*/option" separator=",">2</field>
                         <field id="*/*/enabled">1</field>
@@ -68,6 +77,7 @@
                     <validate>required-entry alphanumeric</validate>
                 </field>
                 <field id="note" translate="label comment" type="note" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" >
+                    <label>Description</label>
                     <comment>Tracking is controlled at Stores > Configuration > General > Web > Default Cookie Settings > Cookie Restriction Mode</comment>
                     <depends>
                         <field id="*/*/option" separator=",">1</field>

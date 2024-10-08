@@ -7,6 +7,7 @@ class PinterestGDPROptions implements OptionSourceInterface
 {
     const USE_COOKIE_RESTRICTION_MODE = 1;
     const IF_COOKIE_NOT_EXIST = 2;
+    const CMS_COOKIE_BOT = 3;
     /**
      * Returns the options for the config
      *
@@ -16,7 +17,8 @@ class PinterestGDPROptions implements OptionSourceInterface
     {
         return [
             ['value' => self::USE_COOKIE_RESTRICTION_MODE, 'label' => __('Use Magento Cookie Restriction Mode')],
-            ['value' => self::IF_COOKIE_NOT_EXIST, 'label' => __('Enable Tracking if Cookie Exists')]
+            ['value' => self::IF_COOKIE_NOT_EXIST, 'label' => __('Enable Tracking if Cookie Exists and not false')],
+            ['value' => self::CMS_COOKIE_BOT, 'label' => __('Use CookieBot Consent management Integration')]
         ];
     }
 }
