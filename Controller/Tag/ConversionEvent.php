@@ -92,9 +92,9 @@ class ConversionEvent extends Action
         if ($productDetails && $currency) {
             $custom_data = [
                 "content_ids" => [$productDetails["product_id"]],
-                "contents" => [[
+                "contents" => array_values([[
                     "item_price" => (string) ($productDetails["product_price"])
-                ]],
+                ]]),
                 "currency" => $currency,
             ];
         } else {

@@ -46,15 +46,15 @@ class ProductInfoForAddToCart extends Action
     private function getProductInfo($last_product_items)
     {
         $response_data = [];
-        $response_data["line_items"] = [];
-        $response_data["content_ids"] = [];
+        $line_items = [];
+        $content_ids = [];
 
         for ($i = 0; $i < count($last_product_items); $i++) {
             $item = $last_product_items[$i];
             $product = $item->getProduct();
 
-            $response_data["content_ids"][] = $this->_pinterestHelper->getContentId($product);
-            $response_data["line_items"][] = [
+            $content_ids[] = $this->_pinterestHelper->getContentId($product);
+            $line_items[] = [
                 "product_id" => $this->_pinterestHelper->getContentId($product),
                 "product_price" => $item->getPrice(),
                 "product_name" => $product->getName(),
@@ -64,6 +64,8 @@ class ProductInfoForAddToCart extends Action
         $response_data["num_items"] = $this->_pinterestHelper->getCartNumItems();
         $response_data["value"] = $this->_pinterestHelper->getCartSubtotal();
         $response_data["currency"] = $this->_pinterestHelper->getCurrency();
+        $response_data["line_items"] = array_values($line_items);
+        $response_data["content_ids"] = array_values($content_ids);
         //TODO: content.quantity && content.item_price COIN-1838
 
         return $response_data;
