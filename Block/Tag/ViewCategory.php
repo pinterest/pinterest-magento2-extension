@@ -108,9 +108,9 @@ class ViewCategory extends Setup
                 ];
             }
             return [
-                "content_ids" => $productCollection->getAllIds(),
-                "contents" => $contents,
-                "line_tems" => $line_items,
+                "content_ids" => array_values($productCollection->getAllIds()),
+                "contents" => array_values($contents),
+                "line_tems" => array_values($line_items),
                 "category" => $category,
             ];
         }

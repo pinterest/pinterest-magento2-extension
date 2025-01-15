@@ -105,7 +105,7 @@ class DisconnectHelper
      *
      * @return bool if the call was successful
      */
-    private function deleteFeedsFromPinterest()
+    public function deleteFeedsFromPinterest()
     {
         $this->_pinterestHelper->logInfo("Deleting feeds from Pinterest");
         $feedIds = $this->_pinterestHelper->getMetadataValue("pinterest/info/feed_ids") ?

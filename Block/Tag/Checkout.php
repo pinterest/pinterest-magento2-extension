@@ -119,11 +119,11 @@ class Checkout extends Setup
             }
         }
         return [
-            "content_ids" => $productIds,
-            "contents" => $contents,
+            "content_ids" => array_values($productIds),
+            "contents" => array_values($contents),
             "num_items" => $numItems,
             "value" => $subTotal,
-            "line_tems" => $lineItems,
+            "line_tems" => array_values($lineItems),
             "order_id" => $orderId,
         ];
     }
