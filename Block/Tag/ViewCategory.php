@@ -75,10 +75,10 @@ class ViewCategory extends Setup
     {
         $products = null;
         try {
-            $products = $this->getLayout()->getBlock('category.products.list')->getLoadedProductCollection();
-        } catch (\Exception $e) {
+            $products =  $this->getLayout()->getBlock('category.products.list')->getLoadedProductCollection();
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logError("Couldn't load category products");
-            $this->_pinterestHelper->logException($e);
+            $this->_pinterestHelper->logException(new \Exception($e));
         }
         return $products;
     }
