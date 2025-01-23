@@ -4,8 +4,9 @@ $config = $block->scriptConfigBeforeConnect()
 <div>
     <script type="text/javascript">
         require(['setup_script'], function(initScript) {
-            initScript(<?php print(json_encode($config, JSON_UNESCAPED_SLASHES)) ?>);
+            const SETUP_PAGE = "<?= $config['pinterestBaseUrl'] ?>/business/commerce-integrations/apps/<?= $config['iframeVersion'] ?>/connect/<?= $config['locale'] ? "?locale=".$config['locale'] : "" ?>";
+            initScript(<?php print(json_encode($config, JSON_UNESCAPED_SLASHES)) ?>, SETUP_PAGE);
         });
     </script>
-    <iframe id="pinterest-iframe" src="<?= $config['pinterestBaseUrl'] ?>/business/commerce-integrations/apps/<?= $config['iframeVersion'] ?>/connect/<?= $config['locale'] ? "?locale=".$config['locale'] : "" ?>" width="600px" height="800px" frameBorder="0"></iframe>
+    <iframe id="pinterest-iframe" width="600px" height="800px" frameBorder="0"></iframe>
 </div>

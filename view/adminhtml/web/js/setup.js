@@ -1,6 +1,6 @@
 define(['domReady!'], function(){
     "use strict";
-        return function initScript(config)  {
+        return function initScript(config, setup_url)  {
 
             const params = new URL(location.href).searchParams;
             const error = params.get('error');
@@ -33,5 +33,7 @@ define(['domReady!'], function(){
                     }
                 }
             });
+
+            document.getElementById('pinterest-iframe').src = setup_url;
         }
  });
