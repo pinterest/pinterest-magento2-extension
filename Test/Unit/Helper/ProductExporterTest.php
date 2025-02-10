@@ -3,7 +3,7 @@
 namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
 use SimpleXMLElement;
-use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\InventorySalesApi\Api\IsProductSalableInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Category;
@@ -33,7 +33,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
     protected $_productExporter;
     protected $_productRepository;
     protected $_collectionFactory;
-    protected $_stockRegistryInterface;
+    protected $_isProductSalable;
     protected $_storeManager;
     protected $_reflection;
     protected $_logger;
@@ -50,7 +50,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
         $this->_localelist = $this->createMock(LocaleList::class);
         $this->_productRepository = $this->createMock(ProductRepositoryInterface::class);
         $this->_collectionFactory = $this->createMock(CollectionFactory::class);
-        $this->_stockRegistryInterface = $this->createMock(StockRegistryInterface::class);
+        $this->_isProductSalable = $this->createMock(IsProductSalableInterface::class);
         $this->_storeManager = $this->createMock(StoreManagerInterface::class);
         $this->_logger = $this->createMock(Logger::class);
         $this->_pluginErrorHelper = $this->createMock(PluginErrorHelper::class);
@@ -64,10 +64,10 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
             $this->_localelist,
             $this->_productRepository,
             $this->_collectionFactory,
-            $this->_stockRegistryInterface,
             $this->_pluginErrorHelper,
             $this->_storeManager,
-            $this->configurableProductType
+            $this->configurableProductType,
+            $this->_isProductSalable,
         );
         $this->_reflection = new \ReflectionClass($this->_productExporter);
 

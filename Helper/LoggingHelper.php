@@ -107,9 +107,9 @@ class LoggingHelper
     /**
      * Log an exception
      *
-     * @param Exception $e
+     * @param Throwable $e
      */
-    public function logException(\Exception $e)
+    public function logException(\Throwable $e)
     {
         $this->_logger->error($e->getMessage());
         $this->_logger->error($e->getTraceAsString());
@@ -124,14 +124,27 @@ class LoggingHelper
     /**
      * Create array to use in error portion of request payload
      *
-     * @param Exception $e
+     * @param Throwable $e
      */
-    public function createErrorPayloadArray(\Exception $e)
+    public function createErrorPayloadArray(\Throwable $e)
     {
+        $fileName = $e->getFile();
+        $message = $e->getMessage();
+
+        // API maxLength: 256
+        if (strlen($fileName) > 250) {
+            $fileName = substr($fileName, 0, 250);
+        }
+
+        // API maxLength: 2048
+        if (strlen($message) > 2000) {
+            $message = substr($message, 0, 2000);
+        }
+
         $error = [
-            'file_name' => $e->getFile(),
+            'file_name' => $fileName,
             'line_number' => $e->getLine(),
-            'message' => $e->getMessage(),
+            'message' => $message,
             'number' => $e->getCode(),
             'stack_trace' => $e->getTraceAsString()
         ];
@@ -156,6 +169,10 @@ class LoggingHelper
             'external_business_id' => $this->_externalBusinessIdHelper->generateExternalBusinessIdPrefix()
         ];
         if ($message) {
+            // API maxLength: 2048
+            if (strlen($message) > 2000) {
+                $message = substr($message, 0, 2000);
+            }
             $payload['message'] = $message;
         }
         // TODO append ad id to external business id + add other id fields.
@@ -271,7 +288,7 @@ class LoggingHelper
                     $this->_logger->error(http_build_query($requestPayload));
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_logger->error($e->getMessage());
             $this->_logger->error($e->getTraceAsString());
         }

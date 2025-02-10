@@ -102,7 +102,7 @@ class Catalog
                 $this->_pinterestHelper->logInfo("Catalog export skipped: Pinterest user is not connected");
                 $response['user_logged_out'] = true;
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         $this->_pinterestHelper->logInfo("Pinterest catalog cron job completed");

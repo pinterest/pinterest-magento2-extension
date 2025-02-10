@@ -221,7 +221,7 @@ class ConversionEventHelper
             $eventData = $this->createEventPayload($eventId, $eventName, $customData);
             $this->_lastEventEnqueued = $eventData;
             $this->enqueueEvent($eventData);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
     }
@@ -313,7 +313,7 @@ class ConversionEventHelper
                     "Failed to send events via conversion API with {$response->code}:{$message}"
                 );
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
     }

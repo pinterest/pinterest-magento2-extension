@@ -81,7 +81,7 @@ class TokensHelper
                 $this->_pinterestHelper->logError("Message: ".$response->message);
             }
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pinterest\PinterestMagento2Extension\Helper;
 
-use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\InventorySalesApi\Api\IsProductSalableInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\Category;
@@ -47,11 +47,6 @@ class ProductExporter
     protected $productLoader;
 
     /**
-     * @var StockRegistryInterface
-     */
-    protected $stockRegistryInterface;
-
-    /**
      * @var StoreManagerInterface
      */
     protected $storeManager;
@@ -87,6 +82,11 @@ class ProductExporter
     private $pinterestHelper;
 
     /**
+     * @var IsProductSalableInterface
+     */
+    private $isProductSalable;
+
+    /**
      * @var Logger
      */
     private $appLogger;
@@ -102,10 +102,10 @@ class ProductExporter
      * @param LocaleList $localelist
      * @param ProductRepositoryInterface $productRepository
      * @param CollectionFactory $collectionFactory
-     * @param StockRegistryInterface $stockRegistryInterface
      * @param PluginErrorHelper $pluginErrorHelper
      * @param StoreManagerInterface $storeManager
      * @param ConfigurableProductType $configurableProductType
+     * @param IsProductSalableInterface $isProductSalable
      */
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
@@ -115,10 +115,10 @@ class ProductExporter
         LocaleList $localelist,
         ProductRepositoryInterface $productRepository,
         CollectionFactory $collectionFactory,
-        StockRegistryInterface $stockRegistryInterface,
         PluginErrorHelper $pluginErrorHelper,
         StoreManagerInterface $storeManager,
-        ConfigurableProductType $configurableProductType
+        ConfigurableProductType $configurableProductType,
+        IsProductSalableInterface $isProductSalable,
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->savedFile = $savedFile;
@@ -127,12 +127,12 @@ class ProductExporter
         $this->localelist = $localelist;
         $this->productLoader = $productRepository;
         $this->collectionFactory = $collectionFactory;
-        $this->stockRegistryInterface = $stockRegistryInterface;
         $this->pluginErrorHelper = $pluginErrorHelper;
         $this->storeManager = $storeManager;
         $this->configurableProductType = $configurableProductType;
         $this->lastProcessTime = 0;
         $this->productsData = null;
+        $this->isProductSalable = $isProductSalable;
     }
 
     /**
@@ -246,7 +246,7 @@ class ProductExporter
             }
             $options = http_build_query($options);
             return $options ? '#' . $options : '';
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->appLogger->error(
                 "Error generating attribute hash for product ID = " . $simpleProduct->getId() . $e->getMessage()
             );
@@ -268,8 +268,7 @@ class ProductExporter
         $collection = $this->collectionFactory->create();
 
         // use type_id to filter out variants items here. variants will be through a different function.
-        $collection->setStoreId($storeId)
-                   ->addStoreFilter($storeId)
+        $collection->addStoreFilter($storeId)
                    ->addAttributeToFilter('status', Status::STATUS_ENABLED)
                    ->addAttributeToFilter('type_id', ProductType::TYPE_SIMPLE)
                    ->addFieldToFilter([['attribute'=>'visibility',
@@ -401,7 +400,7 @@ class ProductExporter
                     if ($counter % 1000 == 0) {
                         $this->appLogger->info("Store{$storeId} prepareConfigurableProductData processed ".$counter);
                     }
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $this->appLogger->error(
                         "Error parsing variable product ID = " . $product->getId() . $e->getMessage()
                     );
@@ -445,7 +444,7 @@ class ProductExporter
                 }
                 $chain []= $this->categoryRepository->get($parentId)->getName();
             }
-            $chain []= $category->getName();
+            $chain []= PinterestHelper::trimUTF8string($category->getName());
             if (count($chain) > count($longest_chain)) {
                 $longest_chain = $chain;
             }
@@ -582,7 +581,7 @@ class ProductExporter
      */
     private function getProductName($product)
     {
-        return $product->getName();
+        return PinterestHelper::trimUTF8string($product->getName());
     }
 
     /**
@@ -594,7 +593,7 @@ class ProductExporter
      */
     private function getProductDescription($product)
     {
-        return $product->getDescription();
+        return PinterestHelper::trimUTF8string($product->getDescription());
     }
 
     /**
@@ -625,7 +624,7 @@ class ProductExporter
     private function getProductImageUrl($storeId, $product)
     {
         return $this->storeManager->getStore($storeId)->getBaseUrl(UrlInterface::URL_TYPE_MEDIA)
-            . 'catalog/product' . $product->getImage();
+        . 'catalog/product' . $product->getImage();
     }
 
     /**
@@ -674,7 +673,7 @@ class ProductExporter
      */
     private function getProductAvailability($product)
     {
-        if ($this->stockRegistryInterface->getStockItem($product->getId())->getIsInStock()) {
+        if ($this->isProductSalable->execute($product->getSku(), 1)) {
             return "in stock";
         } else {
             return "out of stock";
