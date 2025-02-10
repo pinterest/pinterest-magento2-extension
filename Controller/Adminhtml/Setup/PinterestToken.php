@@ -157,7 +157,7 @@ class PinterestToken extends Action
                 );
                 
                 $this->_pinterestHelper->logInfo("Successfully saved connection details to database");
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->_pinterestHelper->logInfo("Failure saving plugin metadata.");
                 return $this->createErrorRedirect();
             }
@@ -165,7 +165,7 @@ class PinterestToken extends Action
             // save feature flags to config
             try {
                 $this->_configHelper->saveFeatureFlags($info['feature_flags']);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->_pinterestHelper->logInfo("Failure saving feature flags:");
                 $this->_pinterestHelper->logException($e);
                 return $this->createErrorRedirect();

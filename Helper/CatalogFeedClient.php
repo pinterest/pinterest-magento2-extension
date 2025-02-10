@@ -77,6 +77,16 @@ class CatalogFeedClient
     }
 
     /**
+     * Validates response codes
+     *
+     * @param string code
+     */
+    private function validateErrorCode($code)
+    {
+        return in_array($code, [2625]);
+    }
+
+    /**
      * Create all the feeds based on the number of locales
      *
      * @param bool $newInstall
@@ -193,19 +203,25 @@ class CatalogFeedClient
      * @param array $newDataUpdate
      * @return boolean true if call was successful
      */
-    private function updateFeedInfo($feedId, $dataToUpdate)
+    public function updateFeedInfo($feedId, $dataToUpdate)
     {
         try {
             $this->_pinterestHelper->resetApiErrorState("errors/catalogs/feeds/patch/{$feedId}");
             $response = $this->_pinterestHttpClient->patch($this->getFeedAPI($feedId), $dataToUpdate, $this->getAccessToken());
             if (isset($response->code)) {
-                $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/catalogs/feeds/patch/{$feedId}");
+                $message = isset($response->message)? $response->message : "n/a";
+                $status = $this->_pinterestHttpClient->getStatus();
+                if ($this->validateErrorCode($response->code)) {
+                    $this->_pinterestHelper->logInfo("Catalog feed update failed. HTTP {$status}: {$message}");
+                } else {
+                    $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/catalogs/feeds/patch/{$feedId}");
+                }
             } else {
                 $updatesLogs = json_encode($dataToUpdate);
                 $this->_pinterestHelper->logInfo("FeedId: {$response->id} Updated successful {$updatesLogs}");
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -256,7 +272,7 @@ class CatalogFeedClient
                 $this->deleteFeed($existingFeedId);
             }
             return $this->createFeed($data["location"], $data, $queryParams);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -303,7 +319,7 @@ class CatalogFeedClient
                 }
             }
             return $this->createFeed($data["location"], $data, $queryParams);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -328,17 +344,19 @@ class CatalogFeedClient
             if (isset($response->code)) {
                 $message = isset($response->message)? $response->message : "n/a";
                 $status = $this->_pinterestHttpClient->getStatus();
-                $this->_pinterestHelper->logError(
-                    "Catalog feed creation failed for {$url}. HTTP {$status}: {$message}"
-                );
-                $errorData = $this->_pinterestHelper->getErrorData($response);
-                $message = isset($response->message)? $response->message : "n/a";
-                $this->_pluginErrorHelper->logAndSaveError(
-                    "errors/catalog/create/{$feedname}",
-                    $errorData,
-                    $message,
-                    IntegrationErrorId::ERROR_CREATE_CATALOG_FEED
-                );
+                if ($this->validateErrorCode($response->code)) {
+                    $this->_pinterestHelper->logInfo("Catalog feed creation failed for {$url}. HTTP {$status}: {$message}");
+                } else {
+                    $this->_pinterestHelper->logError("Catalog feed creation failed for {$url}. HTTP {$status}: {$message}");
+                    $errorData = $this->_pinterestHelper->getErrorData($response);
+                    $message = isset($response->message)? $response->message : "n/a";
+                    $this->_pluginErrorHelper->logAndSaveError(
+                        "errors/catalog/create/{$feedname}",
+                        $errorData,
+                        $message,
+                        IntegrationErrorId::ERROR_CREATE_CATALOG_FEED
+                    );
+                }
             } else {
                 // Expect id to always be present in the response payload but adding as a defensive check
                 if (!isset($response->id)) {
@@ -349,7 +367,7 @@ class CatalogFeedClient
                 $this->_pinterestHelper->logInfo("Catalog feed creation successful {$response->id}");
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -382,12 +400,16 @@ class CatalogFeedClient
             $http_status = $this->_pinterestHttpClient->getStatus();
             if (isset($response->code)) {
                 $message = isset($response->message)? $response->message : "n/a";
-                $this->_pinterestHelper->logError("Catalog item update failed: HTTP {$http_status}: {$message}");
+                if ($this->validateErrorCode($response->code)) {
+                    $this->_pinterestHelper->logInfo("Catalog item update failed: HTTP {$http_status}: {$message}");
+                } else {
+                    $this->_pinterestHelper->logError("Catalog item update failed: HTTP {$http_status}: {$message}");
+                }
             } else {
                 $message = isset($response->status) ? $response->status : "";
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -425,7 +447,7 @@ class CatalogFeedClient
                     IntegrationErrorId::ERROR_DELETE_CATALOG_FEED
                 );
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -444,7 +466,11 @@ class CatalogFeedClient
             if (isset($response->code)) {
                 $message = isset($response->message)? $response->message : "n/a";
                 $status = $this->_pinterestHttpClient->getStatus();
-                $this->_pinterestHelper->logError("Catalog feed get failed for {$url}. HTTP {$status}: {$message}");
+                if ($this->validateErrorCode($response->code)) {
+                    $this->_pinterestHelper->logInfo("Catalog feed get failed for {$url}. HTTP {$status}: {$message}");
+                } else {
+                    $this->_pinterestHelper->logError("Catalog feed get failed for {$url}. HTTP {$status}: {$message}");
+                }
             } else {
                 if (isset($response->items)) {
                     $count = count($response->items);
@@ -457,7 +483,7 @@ class CatalogFeedClient
                     return $result;
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return [];

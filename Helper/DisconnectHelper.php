@@ -94,7 +94,7 @@ class DisconnectHelper
                 $this->_pinterestHelper->logError("Could not delete metadata from Pinterest with
                  status code:" . $response->getStatusCode());
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;

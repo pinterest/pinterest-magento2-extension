@@ -75,7 +75,7 @@ class ConversionEvent extends Action
                 $result->setData(array_filter($response_data));
                 return $result;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
     }

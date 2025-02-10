@@ -94,7 +94,7 @@ class ProductInfoForAddToCart extends Action
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
     }

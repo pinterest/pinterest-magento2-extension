@@ -64,7 +64,7 @@ class DbHelper
                 'metadata_value' => $metadataValue
             ]);
             $metadataRow->save();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_logger->info("In exception of saveMetadata ". $e->getMessage());
             $this->logException($e);
         }
@@ -90,7 +90,7 @@ class DbHelper
     {
         try {
             $metadataRow = $this->_metadataFactory->create()->load($metadataKey);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logException($e);
             return null;
         }
@@ -106,7 +106,7 @@ class DbHelper
     {
         try {
             $metadataRow = $this->_metadataFactory->create()->load($metadataKey);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logException($e);
             return null;
         }
@@ -123,7 +123,7 @@ class DbHelper
         try {
             $metadataRow = $this->_metadataFactory->create()->load($metadataKey);
             $metadataRow->delete();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logException($e);
         }
     }
@@ -140,7 +140,7 @@ class DbHelper
             }
             $this->_logger->info("Successfully deleted connection details from database");
             return true;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logException($e);
             return false;
         }

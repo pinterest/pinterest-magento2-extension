@@ -234,7 +234,7 @@ class CatalogProductSaveObserver implements ObserverInterface
             $is_updated = $this->isChanged($product_id, $json_data);
             $this->checkQueue($locale, $is_updated? $product_id : null);
             return $is_updated;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->_messageManager->addError(
                 "Exception when sending notification, message: {$e}"
             );

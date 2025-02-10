@@ -72,7 +72,7 @@ class WebsiteClaimingObserver implements ObserverInterface
                 $this->_pinterestHelper->logError("Unable to generate meta tag details");
                 $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/website_claiming/meta_tag");
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -102,7 +102,7 @@ class WebsiteClaimingObserver implements ObserverInterface
                 $this->_pinterestHelper->logError("Failed to get existing claimed websites");
                 $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/website_claiming/existing_websites/");
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return [];
@@ -160,7 +160,7 @@ class WebsiteClaimingObserver implements ObserverInterface
                     IntegrationErrorId::ERROR_DOMAIN_CLAIMING
                 );
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -197,7 +197,7 @@ class WebsiteClaimingObserver implements ObserverInterface
                 }
                 return $success;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logException($e);
         }
         return false;

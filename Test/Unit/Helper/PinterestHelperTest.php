@@ -312,4 +312,13 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $lastModifiedItems = $this->_pinterestHelper->getLastAddedItemsToCart();
         $this->assertEquals(1, count($lastModifiedItems));
     }
+
+    public function testtrimUTF8string()
+    {
+        $hexChar = chr(0x0B);
+        $str = 'test '. $hexChar;
+        $this->assertEquals(strpos($str, $hexChar), true);
+        $str = $this->_pinterestHelper->trimUTF8string($str);
+        $this->assertEquals(strpos($str, $hexChar), false);
+    }
 }

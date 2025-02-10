@@ -88,7 +88,7 @@ class PluginErrorHelper
                 }
                 
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->_pinterestHelper->logException($e);
         }
         return $errors;

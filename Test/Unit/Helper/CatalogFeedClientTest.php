@@ -105,6 +105,25 @@ class CatalogFeedClientTest extends TestCase
         $this->assertFalse($ret);
     }
 
+    public function testCreateFeedDisaprovedMerchant()
+    {
+        $response_403 ='{
+                      "code": 2625,
+                      "message": "Sorry, you cannot perform this action as your account has been disapproved. Please see business hub for more details. https://www.pinterest.com/business/hub/"
+        }';
+        $this->_pinterestHttpClient->expects($this->once())->method("post")->willReturn(json_decode($response_403));
+        $this->_pinterestHttpClient->expects($this->once())->method("getStatus")->willReturn(403);
+        $this->_pinterestHelper->expects($this->exactly(2))->method("logInfo");
+        $ret = $this->_catalogFeedClient->createFeed(
+            "https://abc.com/media/Pinterest/catalogs/en_US/catalog.xml",
+            [
+                "location" => "www.pinterest.com",
+                "name" => "testFeedName"
+            ]
+        );
+        $this->assertFalse($ret);
+    }
+
     public function testCreateAllFeedsSuccess()
     {
         $this->_localeList->method('getListLocaleForAllStores')->willReturn([1=>"US\nen_US", 2=>"GB\nen_GB"]);
@@ -193,6 +212,19 @@ class CatalogFeedClientTest extends TestCase
           "message": "You are not permitted to access that resource."
         }';
         $this->_pinterestHttpClient->method("get")->willReturn(json_decode($response_401));
+        $ret = $this->_catalogFeedClient->getAllFeeds();
+        $this->assertEquals($ret, []);
+    }
+
+    public function testGetAllFeedsDisaprovedMerchant()
+    {
+        $response_403 ='{
+                "code": 2625,
+                "message": "Sorry, you cannot perform this action as your account has been disapproved. Please see business hub for more details. https://www.pinterest.com/business/hub/"
+        }';
+        $this->_pinterestHttpClient->method("get")->willReturn(json_decode($response_403));
+        $this->_pinterestHttpClient->expects($this->once())->method("getStatus")->willReturn(403);
+        $this->_pinterestHelper->expects($this->exactly(2))->method("logInfo");
         $ret = $this->_catalogFeedClient->getAllFeeds();
         $this->assertEquals($ret, []);
     }
@@ -439,5 +471,31 @@ class CatalogFeedClientTest extends TestCase
         $responseMock->method('getStatusCode')->willReturn(204);
         $this->_pinterestHttpClient->expects($this->once())->method("delete")->willReturn($responseMock);
         $this->_catalogFeedClient->deleteStaleFeedsFromPinterest(["1234", "1235", "1236"], ["1234", "1235"]);
+    }
+
+    public function testUpdateFeedInfoDisaprovedMerchant()
+    {
+        $response_403 ='{
+                "code": 2625,
+                "message": "Sorry, you cannot perform this action as your account has been disapproved. Please see business hub for more details. https://www.pinterest.com/business/hub/"
+        }';
+        $this->_pinterestHttpClient->method("patch")->willReturn(json_decode($response_403));
+        $this->_pinterestHttpClient->expects($this->once())->method("getStatus")->willReturn(403);
+        $this->_pinterestHelper->expects($this->once())->method("logInfo");
+        $ret = $this->_catalogFeedClient->updateFeedInfo('1', ['test'=> 'test']);
+        $this->assertEquals($ret, false);
+    }
+
+    public function testUpdateCatalogItemsDisaprovedMerchant()
+    {
+        $response_403 ='{
+                "code": 2625,
+                "message": "Sorry, you cannot perform this action as your account has been disapproved. Please see business hub for more details. https://www.pinterest.com/business/hub/"
+        }';
+        $this->_pinterestHttpClient->method("post")->willReturn(json_decode($response_403));
+        $this->_pinterestHttpClient->expects($this->once())->method("getStatus")->willReturn(403);
+        $this->_pinterestHelper->expects($this->once())->method("logInfo");
+        $ret = $this->_catalogFeedClient->updateCatalogItems('en_US', ['test'=> 'test']);
+        $this->assertEquals($ret, false);
     }
 }

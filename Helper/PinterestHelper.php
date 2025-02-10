@@ -722,9 +722,9 @@ class PinterestHelper extends AbstractHelper
     /**
      * Log exception
      *
-     * @param Exception $e
+     * @param Throwable $e
      */
-    public function logException(\Exception $e)
+    public function logException(\Throwable $e)
     {
         $this->_loggingHelper->logException($e);
     }
@@ -949,5 +949,20 @@ class PinterestHelper extends AbstractHelper
         $code = isset($response->code)? $response->code : "n/a";
         $message = isset($response->message)? $response->message : "n/a";
         return ['message' => $message, 'errorCode' => $code];
+    }
+
+    /**
+     * Trim string from invalid UTF8 characters
+     *
+     * @param string $str
+     * @return string trimedString
+     */
+    public static function trimUTF8string($str)
+    {
+        if (!$str) {
+            return $str;
+        }
+        // Remove invalid UTF8 Characters
+        return preg_replace('/[\x00-\x1F\x7F]/u', '', $str);
     }
 }
