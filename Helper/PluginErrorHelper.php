@@ -89,6 +89,7 @@ class PluginErrorHelper
                 
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while getting all stored errors");
             $this->_pinterestHelper->logException($e);
         }
         return $errors;

@@ -222,6 +222,7 @@ class CatalogFeedClient
                 return true;
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while updating feed info");
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -273,6 +274,7 @@ class CatalogFeedClient
             }
             return $this->createFeed($data["location"], $data, $queryParams);
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while creating feed for new install");
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -320,6 +322,7 @@ class CatalogFeedClient
             }
             return $this->createFeed($data["location"], $data, $queryParams);
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while creating missing feed from Pinterest");
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -368,6 +371,7 @@ class CatalogFeedClient
                 return true;
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while creating feed on Pinterest");
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -410,6 +414,7 @@ class CatalogFeedClient
                 return true;
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while updating catalog items");
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -448,6 +453,7 @@ class CatalogFeedClient
                 );
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while deleting feed from Pinterest");
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -484,6 +490,7 @@ class CatalogFeedClient
                 }
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while getting feeds from Pinterest");
             $this->_pinterestHelper->logException($e);
         }
         return [];

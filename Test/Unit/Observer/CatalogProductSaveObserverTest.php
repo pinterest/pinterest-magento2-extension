@@ -99,7 +99,8 @@ class CatalogProductSaveObserverTest extends TestCase
     {
         $all_data = [];
         $observer = new Observer([
-            "product" => [
+            "product" => new DataObject([
+                "id" => 4,
                 "entity_id" => 4,
                 "store_id" => 1,
                 "price" => "12.0",
@@ -112,11 +113,95 @@ class CatalogProductSaveObserverTest extends TestCase
                     "qty" => "1"
                 ],
                 "sku" => "111"
-            ]
+            ])
         ]);
 
         $cacheValue = json_encode([
-            "item_id"  => "111",
+            "item_id"  => "4_111",
+            "attributes" => [
+                "price" => "12.0 USD",
+                "sale_price" => "8.0 USD",
+                "availability" => "in stock"
+            ],
+        ]);
+        $this->_localehelper->method('getCurrency')->willReturn("USD");
+        $this->_localehelper->method('getLocale')->willReturn("en_US");
+        $this->_catalogFeedClient->method('isUserConnected')->willReturn(true);
+        $this->_catalogFeedClient->method('updateCatalogItems')->willReturn(true);
+        $this->_pinterestHelper->method('isCatalogAndRealtimeUpdatesEnabled')->willReturn(true);
+
+        $success = $this->_catalogProductSaveObserver->execute($observer);
+        $this->assertTrue($success);
+        $this->assertEquals($cacheValue, $this->_catalogProductSaveObserver->data_for_unittest);
+    }
+
+    public function testExecuteOutsideSpecialPriceDates()
+    {
+        $all_data = [];
+        $observer = new Observer([
+            "product" => new DataObject([
+                "id" => 4,
+                "entity_id" => 4,
+                "store_id" => 1,
+                "price" => "12.0",
+                "special_price" => "8.0",
+                "special_from_date" => date("Y-m-d H:i:s", time() - 7200),
+                "special_to_date" => date("Y-m-d H:i:s", time() - 3600),
+                "quantity_and_stock_status" => [
+                    "qty" => "0"
+                ],
+                "stock_data" => [
+                    "is_in_stock"=> "1",
+                    "qty" => "1"
+                ],
+                "sku" => "111"
+            ])
+        ]);
+
+        $cacheValue = json_encode([
+            "item_id"  => "4_111",
+            "attributes" => [
+                "price" => "12.0 USD",
+                "sale_price" => null,
+                "availability" => "in stock"
+            ],
+        ]);
+        $this->_localehelper->method('getCurrency')->willReturn("USD");
+        $this->_localehelper->method('getLocale')->willReturn("en_US");
+        $this->_catalogFeedClient->method('isUserConnected')->willReturn(true);
+        $this->_catalogFeedClient->method('updateCatalogItems')->willReturn(true);
+        $this->_pinterestHelper->method('isCatalogAndRealtimeUpdatesEnabled')->willReturn(true);
+
+        $success = $this->_catalogProductSaveObserver->execute($observer);
+        $this->assertTrue($success);
+        $this->assertEquals($cacheValue, $this->_catalogProductSaveObserver->data_for_unittest);
+    }
+
+    public function testExecuteWithinSpecialPriceDates()
+    {
+        $all_data = [];
+        $observer = new Observer([
+            "product" => new DataObject([
+                "id" => 4,
+                "entity_id" => 4,
+                "store_id" => 1,
+                "price" => "12.0",
+                "special_price" => "8.0",
+                "special_from_date" => date("Y-m-d H:i:s", time()),
+                "special_to_date" => date("Y-m-d H:i:s", time() + 3600),
+                "quantity_and_stock_status" => [
+                    "qty" => "0"
+                ],
+                "stock_data" => [
+                    "is_in_stock"=> "1",
+                    "qty" => "1"
+                ],
+                "sku" => "111"
+            ])
+        ]);
+
+        $cacheValue = json_encode([
+            "item_id"  => "4_111",
             "attributes" => [
                 "price" => "12.0 USD",
                 "sale_price" => "8.0 USD",

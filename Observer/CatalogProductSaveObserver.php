@@ -10,6 +10,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Action\Context;
 use Pinterest\PinterestMagento2Extension\Helper\LocaleList;
 use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
+use Pinterest\PinterestMagento2Extension\Helper\ProductExporter;
 use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 
@@ -177,6 +178,30 @@ class CatalogProductSaveObserver implements ObserverInterface
     }
 
     /**
+     * Check if special price field should be set for the current product.
+     * Adds check as magento allows special price dates to be empty
+     *
+     * @param Product $product
+     * @param string special price
+     */
+    protected function getSpecialPrice($product)
+    {
+        if(isset($product["special_price"])) {
+            $now = time();
+            $validPriceBefore = $product["special_to_date"] ? strtotime($product["special_to_date"]) >= $now : true;
+            $validPriceAfter = $product["special_from_date"] ? strtotime($product["special_from_date"]) <= $now : true;
+            if($validPriceAfter && $validPriceBefore) {
+                return $product["special_price"];
+            } else {
+                return null;
+            }
+        } else {
+            $this->_appLogger->info("special_price not set");
+            return null;
+        }
+    }
+
+    /**
      * Define execute
      *
      * @param Observer $observer
@@ -207,7 +232,7 @@ class CatalogProductSaveObserver implements ObserverInterface
             $product_id = $product["entity_id"];
             $store_id = $product["store_id"];
             $sku = $product["sku"] ?? null;
-            $special_price = $product["special_price"] ?? null;
+            $special_price = $this->getSpecialPrice($product);
             $price = $product["price"];
             $stock_status = $product["quantity_and_stock_status"] ?? [];
             $stock_data = $product["stock_data"] ?? [];
@@ -222,7 +247,7 @@ class CatalogProductSaveObserver implements ObserverInterface
             }
 
             $data = [
-                "item_id"  => $sku,
+                "item_id"  => ProductExporter::getUniqueId($product),
                 "attributes" => [
                     "price" => "{$price}{$currency}",
                     "sale_price" => $special_price,

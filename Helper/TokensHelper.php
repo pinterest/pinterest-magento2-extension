@@ -82,6 +82,7 @@ class TokensHelper
             }
 
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while refreshing tokens");
             $this->_pinterestHelper->logException($e);
         }
         return false;
