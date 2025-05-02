@@ -111,6 +111,7 @@ class ExchangeMetadata
             }
 
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while PATCHing metadata to Pinterest");
             $this->_pinterestHelper->logException($e);
         }
     }
@@ -144,6 +145,7 @@ class ExchangeMetadata
             }
 
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while POSTing metadata to Pinterest");
             $this->_pinterestHelper->logException($e);
         }
     }

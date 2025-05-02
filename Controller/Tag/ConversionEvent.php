@@ -76,6 +76,7 @@ class ConversionEvent extends Action
                 return $result;
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while processing the conversion event");
             $this->_pinterestHelper->logException($e);
         }
     }

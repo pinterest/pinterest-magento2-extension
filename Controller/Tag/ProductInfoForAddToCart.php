@@ -95,6 +95,7 @@ class ProductInfoForAddToCart extends Action
                 }
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while processing the conversion event");
             $this->_pinterestHelper->logException($e);
         }
     }

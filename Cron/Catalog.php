@@ -103,6 +103,7 @@ class Catalog
                 $response['user_logged_out'] = true;
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("Pinterest catalog cron job failed");
             $this->_pinterestHelper->logException($e);
         }
         $this->_pinterestHelper->logInfo("Pinterest catalog cron job completed");

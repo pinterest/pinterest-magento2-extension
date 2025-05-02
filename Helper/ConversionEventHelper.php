@@ -222,6 +222,7 @@ class ConversionEventHelper
             $this->_lastEventEnqueued = $eventData;
             $this->enqueueEvent($eventData);
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while processing the conversion event");
             $this->_pinterestHelper->logException($e);
         }
     }
@@ -314,6 +315,7 @@ class ConversionEventHelper
                 );
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while posting the conversion event");
             $this->_pinterestHelper->logException($e);
         }
     }

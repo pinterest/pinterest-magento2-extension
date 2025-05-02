@@ -73,6 +73,7 @@ class WebsiteClaimingObserver implements ObserverInterface
                 $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/website_claiming/meta_tag");
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while getting the website claiming html tag");
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -103,6 +104,7 @@ class WebsiteClaimingObserver implements ObserverInterface
                 $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/website_claiming/existing_websites/");
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while getting existing claimed websites");
             $this->_pinterestHelper->logException($e);
         }
         return [];
@@ -161,6 +163,7 @@ class WebsiteClaimingObserver implements ObserverInterface
                 );
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while claiming website ($website) on Pinterest");
             $this->_pinterestHelper->logException($e);
         }
         return false;
@@ -198,6 +201,7 @@ class WebsiteClaimingObserver implements ObserverInterface
                 return $success;
             }
         } catch (\Throwable $e) {
+            $this->_pinterestHelper->logError("An error occurred while claiming website");
             $this->logException($e);
         }
         return false;
