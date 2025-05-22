@@ -1,4 +1,7 @@
 <?php
+
+namespace Pinterest\PinterestMagento2Extension\Test\Unit\Block;
+
 use PHPUnit\Framework\TestCase;
 use Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup;
 use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
