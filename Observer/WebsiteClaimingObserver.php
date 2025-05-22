@@ -53,24 +53,26 @@ class WebsiteClaimingObserver implements ObserverInterface
      *
      * @return true if the call is successful
      */
-    public function getWebsiteClaimingMetaTag()
+    public function getWebsiteClaimingMetaTag($storeId = null)
     {
-        $this->_pinterestHelper->logInfo("Attemping to get the website claiming html tag");
+        $storeSign = $storeId != null ? " for store ($storeId)" : "";
+        $storeErrorMetadata = $storeId != null ? "errors/website_claiming/meta_tag/{$storeId}" : "errors/website_claiming/meta_tag";
+        $this->_pinterestHelper->logInfo("Attemping to get the website claiming html tag" . $storeSign);
         try {
-            $this->_pinterestHelper->resetApiErrorState("errors/website_claiming/meta_tag");
+            $this->_pinterestHelper->resetApiErrorState($storeErrorMetadata);
             $url = $this->_pinterestHttpClient->getV5ApiEndpoint("user_account/websites/verification");
-            $response = $this->_pinterestHttpClient->get($url, $this->_pinterestHelper->getAccessToken());
+            $response = $this->_pinterestHttpClient->get($url, $this->_pinterestHelper->getAccessToken($storeId));
             if (isset($response->metatag) && $response->metatag != null) {
                 /*
                  * Since we are implementing website claiming via HTML tag, we are only saving
                  * the meta tag details
                 */
-                $this->_pinterestHelper->logInfo("Succesfully generated metatag for website claiming");
-                $this->_pinterestHelper->saveMetadata("pinterest/website_claiming/meta_tag", $response->metatag);
+                $this->_pinterestHelper->logInfo("Succesfully generated metatag for website claiming". $storeSign);
+                $this->_pinterestHelper->saveMetadata("pinterest/website_claiming/meta_tag". ($storeId != null ? "/$storeId" : ""), $response->metatag);
                 return true;
             } else {
-                $this->_pinterestHelper->logError("Unable to generate meta tag details");
-                $this->_pinterestHelper->logAndSaveAPIErrors($response, "errors/website_claiming/meta_tag");
+                $this->_pinterestHelper->logError("Unable to generate meta tag details". $storeSign);
+                $this->_pinterestHelper->logAndSaveAPIErrors($response, $storeErrorMetadata);
             }
         } catch (\Throwable $e) {
             $this->_pinterestHelper->logError("An error occurred while getting the website claiming html tag");
@@ -111,10 +113,15 @@ class WebsiteClaimingObserver implements ObserverInterface
     }
 
     /**
-     * Gets the list of all the unclaimed base URLs associated with the magento account
+     * Gets the list of all the unclaimed base URLs associated with the magento account if no storeId is provided.
+     * If storeId is provided, then it gets the list of all the unclaimed base URLs associated with the store.
+     *
      */
-    public function getWebsitesToClaim()
+    public function getWebsitesToClaim($storeId = null)
     {
+        if ($storeId != null) {
+            return [$this->_pinterestHelper->getBaseUrlByStoreId($storeId)];
+        }
         $base_urls = $this->_pinterestHelper->getBaseUrls();
         return array_diff(array_unique($base_urls), $this->getExistingClaimedWebsites());
     }
@@ -125,9 +132,10 @@ class WebsiteClaimingObserver implements ObserverInterface
      * If the API is not successful, we save the error to the metadata
      *
      * @param string $website
+     * @param string $storeId
      * @return true if the call is successful
      */
-    public function claimWebsiteOnPinterest($website)
+    public function claimWebsiteOnPinterest($website, $storeId = null)
     {
         $this->_pinterestHelper->logInfo("Attemping to claim website ($website) on pinterest");
         try {
@@ -137,8 +145,10 @@ class WebsiteClaimingObserver implements ObserverInterface
                 "website" => $website,
                 "verification_method" => "METATAG",
             ];
-            $response = $this->_pinterestHttpClient->post($url, $params, $this->_pinterestHelper->getAccessToken());
-            if (isset($response->status) && $response->status != null) {
+            
+            $response = $this->_pinterestHttpClient->post($url, $params, $this->_pinterestHelper->getAccessToken($storeId));
+            $validStatuses = ["success", "already_verified_by_user"];
+            if (isset($response->status) && $response->status != null && in_array($response->status, $validStatuses)) {
                 /*
                  If status = "success", then the website is claimed successfully
                  If status = "already_verified_by_user", then the website was claimed previously
@@ -180,29 +190,51 @@ class WebsiteClaimingObserver implements ObserverInterface
      * and second is the HTML file. Currently, we are implementing the HTML
      * Tag
      *
-     * @param Observer $observer
      * @return true if the call is successful
      */
-    public function execute(Observer $observer)
+    public function claimWebsite($storeId = null)
     {
-        $this->_pinterestHelper->logInfo("Attemping to claim website");
         try {
-            $success = $this->getWebsiteClaimingMetaTag();
+            $success = $this->getWebsiteClaimingMetaTag($storeId);
             /**
              * Only if we were able to successfully get the website claiming html tag
              * will we try to call to API to claim the website
              */
             if ($success) {
-                $websitesToClaim = $this->getWebsitesToClaim();
+                $websitesToClaim = $this->getWebsitesToClaim($storeId);
                 $success = true;
                 foreach ($websitesToClaim as $website) {
-                    $success &= $this->claimWebsiteOnPinterest($website);
+                    $success &= $this->claimWebsiteOnPinterest($website, $storeId);
                 }
                 return $success;
             }
         } catch (\Throwable $e) {
             $this->_pinterestHelper->logError("An error occurred while claiming website");
             $this->logException($e);
+        }
+        return false;
+    }
+
+    /**
+     * Execute website claiming procedure
+     *
+     * @param Observer $observer
+     */
+    public function execute(Observer $observer)
+    {
+        $this->_pinterestHelper->logInfo("Attemping to claim website");
+        if ($this->_pinterestHelper->isMultistoreOn()) {
+            $storeIds = $this->_pinterestHelper->getMappedStores();
+            $successCount = 0;
+            foreach ($storeIds as $storeId) {
+                if ($this->claimWebsite($storeId)) {
+                    $successCount++;
+                }
+            }
+            $this->_pinterestHelper->logInfo("Successfully claimed website for $successCount stores");
+            return true;
+        } else {
+            return $this->claimWebsite();
         }
         return false;
     }

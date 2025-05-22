@@ -308,11 +308,9 @@ class CatalogFeedClientTest extends TestCase
 
     public function testCreateFeedHelperIdMissingInFeed()
     {
-        
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Missing id in Feed: Test");
         $this->_pinterestHttpClient->expects($this->never())->method("delete");
         $this->_pinterestHttpClient->expects($this->never())->method("post");
+        $this->_pinterestHelper->expects($this->once())->method('logError')->with($this->equalTo("An error occurred while creating missing feed from Pinterest"));
         $response = [
             "items" => [
               [
@@ -329,6 +327,7 @@ class CatalogFeedClientTest extends TestCase
             "name" => "Test"
         ];
         $ret = $this->_catalogFeedClient->createMissingFeedsOnPinterest($data, $existingPinterestFeeds, ["Test"]);
+        $this->assertFalse($ret);
     }
 
     public function testCreateFeedHelperNewInstallWithSameExistingFeeds()
@@ -495,7 +494,21 @@ class CatalogFeedClientTest extends TestCase
         $this->_pinterestHttpClient->method("post")->willReturn(json_decode($response_403));
         $this->_pinterestHttpClient->expects($this->once())->method("getStatus")->willReturn(403);
         $this->_pinterestHelper->expects($this->once())->method("logInfo");
-        $ret = $this->_catalogFeedClient->updateCatalogItems('en_US', ['test'=> 'test']);
+        $ret = $this->_catalogFeedClient->updateCatalogItems('en_US', ['test'=> 'test'], 0);
         $this->assertEquals($ret, false);
+    }
+
+
+    public function testCreateAllFeedsSuccessWithMultiSite()
+    {
+        $this->_localeList->method('getListLocaleForAllStores')->willReturn([1=>"US\nen_US", 2=>"GB\nen_GB"]);
+        $this->_pinterestHelper->method('isMultistoreOn')->willReturn(true);
+        $this->_pinterestHelper->method('getMappedStores')->willReturn([1,2]);
+        $this->_pinterestHelper->method('getMediaBaseUrlByStoreId')->willReturn("https://abc.com/");
+        $this->_savedFile->method('getFileSystemPath')->willReturn("/dev/null");
+        $this->_savedFile->method('getExportUrl')->willReturn("www.pinterest.com/media/Pinterest/catalogs");
+        $this->_pinterestHttpClient->method("post")->willReturn(json_decode(CatalogFeedClientTest::POST_RESPONSE_200));
+        $ret = $this->_catalogFeedClient->createAllFeeds(true);
+        $this->assertEquals(2, $ret);
     }
 }

@@ -1,5 +1,7 @@
 <?php /* @var Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup $block */ ?>
-<?php if ($block->isTagEnabled()) {
+<?php
+$storeId = $block->getCurrentStoreId();
+if ($block->isTagEnabled($storeId)) {
     $productDetails = $block->getProductDetails();
     $currency = $block->getCurrency();
     ?>
@@ -11,9 +13,9 @@
         ], function ($) {
             var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
             $(document).ready(function () {
-                let ajaxData = {};
+                let ajaxData = {storeId: "<?= $storeId ?>"};
                 let pintrkData = {};
-                <?php if (!empty($productDetails)) { ?>
+            <?php if (!empty($productDetails)) { ?>
                     var productData = {
                         product_id: "<?= $escaper->escapeJs($productDetails["product_id"])  ?>",
                         product_price: <?= $productDetails["product_price"] ?>,
@@ -24,7 +26,8 @@
                     ajaxData = {
                             productData,
                             order_quantity: 0,
-                            currency: "<?= $currency ?>"
+                            currency: "<?= $currency ?>",
+                            storeId: "<?= $storeId ?>"
                         }
                     pintrkData = {
                         line_items: [productData],

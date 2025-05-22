@@ -1,5 +1,7 @@
 <?php /* @var Pinterest\PinterestMagento2Extension\Block\Tag\AddToCart $block */ ?>
-<?php if ($block->isTagEnabled()) { ?>
+<?php
+$storeId = $block->getCurrentStoreId();
+if ($block->isTagEnabled($storeId)) { ?>
     <!-- Pinterest Add to Cart Tag Code -->
     <script>
         require([
@@ -21,6 +23,9 @@
                         $.ajax({
                             url: product_info_url,
                             type: "post",
+                            data: {
+                                store_id: "<?= $storeId ?>"
+                            },
                             dataType: "json",
                             success: function (res) {
                                 if (res.event_id) {

@@ -75,13 +75,13 @@ class DisconnectHelper
      *
      * @return bool if the call was successful
      */
-    private function deleteMetadataFromPinterest()
+    private function deleteMetadataFromPinterest($storeId = null)
     {
         $this->_pinterestHelper->logInfo("Deleting metadata from Pinterest");
         try {
-            $businessAccount = $this->_pinterestHelper->getExternalBusinessId();
+            $businessAccount = $this->_pinterestHelper->getExternalBusinessId($storeId);
             $url = $this->_pinterestHttpClient->getV5ApiEndpoint("integrations/commerce/".$businessAccount);
-            $response = $this->_pinterestHttpClient->delete($url, $this->_pinterestHelper->getAccessToken());
+            $response = $this->_pinterestHttpClient->delete($url, $this->_pinterestHelper->getAccessToken($storeId));
             if ($response->getStatusCode() === 204 || $response->getStatusCode() === 404) {
                 /**
                  * If status code is 204, then we have deleted the metadata successfully
@@ -102,27 +102,30 @@ class DisconnectHelper
     }
 
     /**
-     * Delete all feeds created in Magento
-     *
+     * Delete all feeds for a store
+     * 
+     * @param string $storeId
      * @return bool if the call was successful
      */
-    public function deleteFeedsFromPinterest()
+    public function deleteFeedsFromPinterest($storeId = null)
     {
+        $baseMetadataKey = "pinterest/info/feed_ids";
+        $metadataFeedKey = $storeId != null ? $baseMetadataKey . "/{$storeId}" : $baseMetadataKey;
         $this->_pinterestHelper->logInfo("Deleting feeds from Pinterest");
-        $feedIds = $this->_pinterestHelper->getMetadataValue("pinterest/info/feed_ids") ?
-            json_decode($this->_pinterestHelper->getMetadataValue("pinterest/info/feed_ids")) :
+        $feedIds = $this->_pinterestHelper->getMetadataValue($metadataFeedKey) ?
+            json_decode($this->_pinterestHelper->getMetadataValue($metadataFeedKey)) :
             [];
         $unsuccessfulDeletes = [];
         foreach ($feedIds as $feedId) {
-            if (!$this->_catalogFeedClient->deleteFeed($feedId)) {
+            if (!$this->_catalogFeedClient->deleteFeed($feedId, $storeId)) {
                 $unsuccessfulDeletes[] = $feedId;
             }
         }
         // Update db state
         if (count($unsuccessfulDeletes) == 0) {
-            $this->_pinterestHelper->deleteMetadata("pinterest/info/feed_ids");
+            $this->_pinterestHelper->deleteMetadata($metadataFeedKey);
         } else {
-            $this->_pinterestHelper->saveMetadata("pinterest/info/feed_ids", json_encode($unsuccessfulDeletes));
+            $this->_pinterestHelper->saveMetadata($metadataFeedKey, json_encode($unsuccessfulDeletes));
         }
         return count($unsuccessfulDeletes) == 0;
     }
@@ -137,39 +140,46 @@ class DisconnectHelper
      * 4) Delete catalog xml files
      * 5) Flush cache
      *
+     * @param string $storeId
      * @return bool successful
      */
-    public function disconnectAndCleanup()
+    public function disconnectAndCleanup($storeId = null)
     {
-        if ($this->_pinterestHelper->isUserConnected()) {
+        if ($this->_pinterestHelper->isUserConnected($storeId)) {
             $error_types = [];
             $this->_pinterestHelper->logInfo("Attemping to disconnect from Pinterest");
 
-            $successDeleteFeeds = $this->deleteFeedsFromPinterest();
+            $successDeleteFeeds = $this->deleteFeedsFromPinterest($storeId);
             if (!$successDeleteFeeds) {
                 array_push($error_types, "deleteFeedsFromPinterest");
             };
             $success = $successDeleteFeeds;
 
-            $successDeletePinterestMetadata = $this->deleteMetadataFromPinterest();
+            $successDeletePinterestMetadata = $this->deleteMetadataFromPinterest($storeId);
             if (!$successDeletePinterestMetadata) {
                 array_push($error_types, "deletePinterestMetadata");
             };
             $success &= $successDeletePinterestMetadata;
 
             // flush log cache before delete access token
-            $this->_loggingHelper->flushCache();
+            $this->_loggingHelper->flushCache($storeId);
 
-            $successDeletePluginMetadata = $this->_pinterestHelper->deleteAllMetadata();
+            $successDeletePluginMetadata = false;
+            if($storeId != null){
+                $successDeletePluginMetadata = $this->_pinterestHelper->deleteMetadataForStore($storeId);
+            } else {
+                $successDeletePluginMetadata = $this->_pinterestHelper->deleteAllMetadata();
+            }
+
             if (!$successDeletePluginMetadata) {
                 array_push($error_types, "deletePluginMetadata");
             };
             $success &= $successDeletePluginMetadata;
 
             $this->_pinterestHelper->logInfo("Deleting all catalogs from: ".SavedFile::DIRECTORY_NAME_PATH);
-            $this->_savedFile->deleteCatalogs();
+            $this->_savedFile->deleteCatalogs($storeId);
             $this->_pinterestHelper->logInfo("flush cache during disconnect");
-            $this->_pinterestHelper->flushCache();
+            $this->_pinterestHelper->flushCache($storeId);
 
             $result = $this->_resultJsonFactory->create();
             $result->setData(["errorTypes" => $error_types, "success" => $success]);

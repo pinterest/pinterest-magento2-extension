@@ -35,6 +35,7 @@ class ConversionsApiObserver implements ObserverInterface
             $observer->getData("event_id"),
             $observer->getData("event_name"),
             $observer->getData("custom_data"),
+            $observer->getData("store_id"),
         );
     }
 }

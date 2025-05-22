@@ -5,6 +5,8 @@ namespace Pinterest\PinterestMagento2Extension\Block\Adminhtml;
 use Pinterest\PinterestMagento2Extension\Helper\PluginErrorHelper;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\CustomerDataHelper;
+use Magento\Framework\UrlInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Registry;
@@ -40,6 +42,11 @@ class Setup extends Template
     protected $_customerDataHelper;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $_storeManager;
+
+    /**
      * @param Context $context
      * @param PluginErrorHelper $pluginErrorHelper
      * @param PinterestHelper $pinterestHelper
@@ -55,6 +62,7 @@ class Setup extends Template
         EventManager $eventManager,
         Registry $registry,
         CustomerDataHelper $customerDataHelper,
+        StoreManagerInterface $storeManager,
         array $data = []
     ) {
         $this->_pluginErrorHelper = $pluginErrorHelper;
@@ -62,6 +70,7 @@ class Setup extends Template
         $this->_eventManager = $eventManager;
         $this->_registry = $registry;
         $this->_customerDataHelper = $customerDataHelper;
+        $this->_storeManager = $storeManager;
         parent::__construct($context, $data);
     }
 
@@ -99,24 +108,36 @@ class Setup extends Template
     }
 
     /**
+     * Get current store id
+     *
+     * @return number
+     */
+    public function getCurrentStoreId()
+    {
+        return $this->_pinterestHelper->getCurrentStoreId();
+    }
+
+    /**
      * Checks if the user has valid connection to pinterest
+     * @param int $storeId
      *
      * @return bool
      */
-    public function isUserConnected()
+    public function isUserConnected($storeId = null)
     {
-        return $this->_pinterestHelper->isUserConnected();
+        return $this->_pinterestHelper->isUserConnected($storeId);
     }
 
     /**
      * Returns true if the tag is enabled
+     * @param int $storeId
      *
      * @return bool
      */
-    public function isTagEnabled()
+    public function isTagEnabled($storeId = null)
     {
-        return $this->isUserConnected() &&
-            $this->_pinterestHelper->isConversionConfigEnabled();
+        return $this->isUserConnected($storeId) &&
+            $this->_pinterestHelper->isConversionConfigEnabled($storeId);
     }
 
     /**
@@ -124,19 +145,20 @@ class Setup extends Template
      *
      * @param string
      */
-    public function getMetaTag()
+    public function getMetaTag($storeId = null)
     {
-        return $this->_pinterestHelper->getMetadataValue("pinterest/website_claiming/meta_tag");
+        return $this->_pinterestHelper->getMetadataValue("pinterest/website_claiming/meta_tag" . ($storeId != null ? "/$storeId" : ""));
     }
 
     /**
      * Gets metadata for tag_id value
+     * @param int $storeId
      *
      * @param string
      */
-    public function getTagId()
+    public function getTagId($storeId = null)
     {
-        return $this->_pinterestHelper->getMetadataValue("pinterest/info/tag_id");
+        return $this->_pinterestHelper->getMetadataValue($this->_pinterestHelper->getInfoByStoreAndName("tag_id", $storeId));
     }
 
     /**
@@ -202,9 +224,9 @@ class Setup extends Template
      *
      * @return int
      */
-    public function isLdpEnabled()
+    public function isLdpEnabled($store_id = null)
     {
-        return (int) $this->_pinterestHelper->isLdpEnabled();
+        return (int) $this->_pinterestHelper->isLdpEnabled($store_id);
     }
 
     /**
@@ -273,6 +295,59 @@ class Setup extends Template
             "clientId" => $this->_pinterestHelper->getClientId(),
             "locale" => $this->_pinterestHelper->getUserLocale()
         ];
+    }
+
+    /**
+     * Returns configuration after connecting for multistore.
+     *
+     * @return array
+     */
+    public function scriptConfigMultistore($storeId)
+    {
+        $metadata = $this->_pinterestHelper->getPartnerMetadata($storeId);
+        return [
+            "pinterestBaseUrl" => $this->_pinterestHelper->getPinterestBaseUrl(),
+            "iframeVersion" =>  (PinterestHelper::IFRAME_VERSION),
+            "accessToken" => $this->_pinterestHelper->getAccessToken($storeId),
+            "advertiserId" => $this->_pinterestHelper->getAdvertiserId($storeId),
+            "merchantId" => $this->_pinterestHelper->getMerchantId($storeId),
+            "tagId" => ($this ->_pinterestHelper->getTagId($storeId)? $this ->_pinterestHelper->getTagId($storeId): ""),                    
+            "disconnectURL" => $this->_pinterestHelper->getUrl("pinterestadmin/Setup/DisconnectMultisite"),
+            "setupURL" => $this->_pinterestHelper->getUrl("pinterestadmin/Setup/Index"),
+            "errors" => $this->_pluginErrorHelper->getAllStoredErrors(),
+            "partnerMetadata" => $metadata,
+            "clientId" => $this->_pinterestHelper->getClientId(),
+            "businessId" => $this->_pinterestHelper->getExternalBusinessId($storeId),
+            "locale" => $this->_pinterestHelper->getUserLocale(),
+            "settingsURL" => $this->_pinterestHelper->getUrl(PinterestHelper::ADMINHTML_SETTINGS_URI),
+            "siteId" => $storeId,
+            "siteName" => $metadata["storeName"],
+            "siteURL" => $metadata["baseUrl"]
+        ];
+    }
+    
+    /**
+     * Returns website list
+     *
+     * @return string
+     */
+    public function getWebsites()
+    {
+        return $this->_pinterestHelper->getStoresData();
+    }
+
+    /**
+     * Returns connected stores ids
+     *
+     * @return array
+     */
+    public function getConnectedStoreIds()
+    {
+        $connectedStores = $this->_pinterestHelper->getMetadataValue("pinterest/multisite/stores");
+        if ($connectedStores == null || strlen($connectedStores) == 0) {
+            return [];
+        }
+        return array_map([$this, 'scriptConfigMultistore'], explode(",", $connectedStores));
     }
 
     /**

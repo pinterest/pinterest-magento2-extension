@@ -9,7 +9,7 @@
             <label>Configurations</label>
             <tab>Pinterest_PinterestMagento2Extension</tab>
             <resource>Pinterest_PinterestMagento2Extension::PinterestConfig</resource>
-            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="1">
                 <label>General</label>
                 <field id="client_id" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Client ID</label>
@@ -23,14 +23,14 @@
                     <validate>required-entry no-whitespace</validate>
                     <frontend_model>Pinterest\PinterestMagento2Extension\Block\Adminhtml\System\Config\DisableField</frontend_model>
                 </field>
-                <field id="pinterest_catalog_enabled" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="pinterest_catalog_enabled" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Catalog Ingestion</label>
                     <comment>Allow catalog ingestion to Pinterest</comment>
                     <validate>required-entry no-whitespace</validate>
                     <source_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestCatalogConfigList</source_model>
                     <backend_model>Pinterest\PinterestMagento2Extension\Model\Config\PinterestCatalogConfigBackend</backend_model>
                 </field>
-                <field id="pinterest_conversion_enabled" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="pinterest_conversion_enabled" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Conversion tracking</label>
                     <comment>Send clientside and serverside conversion events. To update this setting, disconnect and reconnect your Pinterest business account to Adobe Commerce.</comment>
                     <validate>required-entry no-whitespace</validate>

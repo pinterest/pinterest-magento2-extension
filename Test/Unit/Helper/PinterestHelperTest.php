@@ -25,6 +25,7 @@ use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Cookie\Helper\Cookie;
 use Magento\Framework\Stdlib\CookieManagerInterface;
+use Magento\Checkout\Model\Session as CheckoutSession;
 
 class PinterestHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -118,6 +119,11 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
      */
     protected $_dbHelper;
 
+    /**
+     * @var CheckoutSession
+     */
+    protected $_checkoutSession;
+
     public function setUp() : void
     {
         $this->_context = $this->createMock(Context::class);
@@ -137,6 +143,7 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_cookieManager = $this->createMock(CookieManagerInterface::class);
         $this->_loggingHelper = $this->createMock(LoggingHelper::class);
         $this->_dbHelper = $this->createMock(DbHelper::class);
+        $this->_checkoutSession = $this->createMock(CheckoutSession::class);
         
         $this->_pinterestHelper = new PinterestHelper(
             $this->_context,
@@ -155,7 +162,8 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
             $this->_cookie,
             $this->_cookieManager,
             $this->_loggingHelper,
-            $this->_dbHelper
+            $this->_dbHelper,
+            $this->_checkoutSession
         );
     }
 
@@ -188,6 +196,15 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_dbHelper->method('getUpdatedAt')->willReturn("now");
         $isUserConnected = $this->_pinterestHelper->isUserConnected();
         
+        $this->assertTrue($isUserConnected);
+    }
+
+    public function testIsUserConnectedWithStoreId()
+    {
+        $storeId = "1";
+        $this->_dbHelper->method('getUpdatedAt')->willReturn("now");
+        $this->_dbHelper->method('getMetadataValue')->willReturnMap([['pinterest/token/1/expires_in', 1000]]);
+        $isUserConnected = $this->_pinterestHelper->isUserConnected($storeId);
         $this->assertTrue($isUserConnected);
     }
 
@@ -225,7 +242,7 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
 
     public function testGetLastAddedItemsToCart()
     {
-        $this->_cart->method('getQuote')->willReturnCallback(function () {
+        $this->_checkoutSession->method('getQuote')->willReturnCallback(function () {
             $quoteMock = $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
                 ->setMethods(['getAllVisibleItems'])
@@ -255,7 +272,7 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
 
     public function testGetLastAddedItemsToCartReturnMultiple()
     {
-        $this->_cart->method('getQuote')->willReturnCallback(function () {
+        $this->_checkoutSession->method('getQuote')->willReturnCallback(function () {
             $quoteMock = $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
                 ->setMethods(['getAllVisibleItems'])
@@ -285,7 +302,7 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
 
     public function testGetLastAddedItemsToCartFilterVirtualItemsInConfigurableProducts()
     {
-        $this->_cart->method('getQuote')->willReturnCallback(function () {
+        $this->_checkoutSession->method('getQuote')->willReturnCallback(function () {
             $quoteMock = $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
                 ->setMethods(['getAllVisibleItems'])
@@ -320,5 +337,20 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(strpos($str, $hexChar), true);
         $str = $this->_pinterestHelper->trimUTF8string($str);
         $this->assertEquals(strpos($str, $hexChar), false);
+    }
+
+    public function testDeleteMetadataForLastStore()
+    {
+        $this->_dbHelper->method('getMetadataValue')->with('pinterest/multisite/stores')->willReturn("1");
+        $this->_dbHelper->method('deleteAllMetadata')->willReturn(true);
+        $this->assertTrue($this->_pinterestHelper->deleteMetadataForStore("1"));
+    }
+
+    public function testDeleteMetadataForStore()
+    {
+        $this->_dbHelper->method('getMetadataValue')->with('pinterest/multisite/stores')->willReturn("2,3,5");
+        $this->_dbHelper->expects($this->once())->method('saveMetadata')->with('pinterest/multisite/stores', "2,5");
+        $this->_dbHelper->method('deleteAllMetadataForStore')->with("3")->willReturn(true);
+        $this->assertTrue($this->_pinterestHelper->deleteMetadataForStore("3"));
     }
 }

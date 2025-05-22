@@ -7,6 +7,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Pinterest\PinterestMagento2Extension\Constants\ConfigSetting;
 use Pinterest\PinterestMagento2Extension\Constants\FeatureFlag;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
+use Magento\Store\Model\ScopeInterface;
 use InvalidArgumentException;
 
 class ConfigHelper
@@ -45,37 +46,37 @@ class ConfigHelper
     /**
      * Enable catalogs feature in config
      */
-    public function enableCatalogsFeature()
+    public function enableCatalogsFeature($storeId = null)
     {
-        $this->setFeatureFlag("pinterest_catalog_enabled", ConfigSetting::ENABLED);
-        $this->_pinterestHelper->logInfo("enabled catalog feature");
+        $this->setFeatureFlag("pinterest_catalog_enabled", ConfigSetting::ENABLED, $storeId);
+        $this->_pinterestHelper->logInfo($storeId ? "enabled catalog feature for store: " . $storeId : "enabled catalog feature");
     }
 
     /**
      * Disable catalogs feature in config
      */
-    public function disableCatalogsFeature()
+    public function disableCatalogsFeature($storeId = null)
     {
-        $this->setFeatureFlag("pinterest_catalog_enabled", ConfigSetting::DISABLED);
-        $this->_pinterestHelper->logInfo("disabled catalog feature");
+        $this->setFeatureFlag("pinterest_catalog_enabled", ConfigSetting::DISABLED, $storeId);
+        $this->_pinterestHelper->logInfo($storeId ? "disabled catalog feature for store: " . $storeId : "disabled catalog feature");
     }
 
     /**
      * Enable conversions feature in config
      */
-    public function enableConversionsFeature()
+    public function enableConversionsFeature($storeId = null)
     {
-        $this->setFeatureFlag("pinterest_conversion_enabled", ConfigSetting::ENABLED);
-        $this->_pinterestHelper->logInfo("enabled conversions feature");
+        $this->setFeatureFlag("pinterest_conversion_enabled", ConfigSetting::ENABLED, $storeId);
+        $this->_pinterestHelper->logInfo($storeId ? "enabled conversions feature for store: " . $storeId : "enabled conversions feature");
     }
 
     /**
      * Disable conversions feature in config
      */
-    public function disableConversionsFeature()
+    public function disableConversionsFeature($storeId = null)
     {
-        $this->setFeatureFlag("pinterest_conversion_enabled", ConfigSetting::DISABLED);
-        $this->_pinterestHelper->logInfo("disabled conversions feature");
+        $this->setFeatureFlag("pinterest_conversion_enabled", ConfigSetting::DISABLED, $storeId);
+        $this->_pinterestHelper->logInfo($storeId ? "disabled conversions feature for store: " . $storeId : "disabled conversions feature");
     }
 
     /**
@@ -86,7 +87,7 @@ class ConfigHelper
      * @throws InvalidArgumentException
      * @return void
      */
-    public function saveFeatureFlags($flagsArray)
+    public function saveFeatureFlags($flagsArray, $storeId = null)
     {
         if (!(array_key_exists(FeatureFlag::TAG, $flagsArray) &&
               array_key_exists(FeatureFlag::CAPI, $flagsArray) &&
@@ -95,14 +96,14 @@ class ConfigHelper
         }
 
         if ($flagsArray[FeatureFlag::TAG] === true && $flagsArray[FeatureFlag::CAPI] === true) {
-            $this->enableConversionsFeature();
+            $this->enableConversionsFeature($storeId);
         } else {
-            $this->disableConversionsFeature();
+            $this->disableConversionsFeature($storeId);
         }
         if ($flagsArray[FeatureFlag::CATALOG] === true) {
-            $this->enableCatalogsFeature();
+            $this->enableCatalogsFeature($storeId);
         } else {
-            $this->disableCatalogsFeature();
+            $this->disableCatalogsFeature($storeId);
         }
     }
 
@@ -112,12 +113,11 @@ class ConfigHelper
      * @param string $flag - name of flag
      * @param string $setting - enabled/disabled
      */
-    protected function setFeatureFlag($flag, $setting)
+    protected function setFeatureFlag($flag, $setting, $scopeId = 0)
     {
         $path = 'PinterestConfig/general/' . $flag;
         $value = $setting;
-        $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
-        $scopeId = 0 ;
+        $scope = $scopeId != 0 ? ScopeInterface::SCOPE_STORES : ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
         $this->_writerInterface->save($path, $value, $scope, $scopeId);
     }
 }

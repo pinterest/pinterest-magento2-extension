@@ -9,6 +9,27 @@ define(['jquery', 'domReady!'], function($){
                 }
             }
 
+            const disconnectMultisiteHandler = (data) => {
+                if (data.success) {
+                    window.location.assign(config.setupURL);
+                    return;
+                }
+                // error states
+                if (data.errorTypes.includes("deletePluginMetadata")) {
+                    let error = {
+                        "integration_error_id": "ERROR_DELETE_PLUGIN_METADATA",
+                    };
+                    document.getElementById('pinterest-iframe').contentWindow.postMessage({
+                        type: 'integrationErrors',
+                        payload: {
+                            errors: [error],
+                        }
+                    }, config.pinterestBaseUrl);
+                } else {
+                    window.location.assign(config.adminhtmlSetupUri + ("?error=ERROR_DISCONNECT"));
+                }
+            };
+
             /**
              * Does a Get call to the Delete connection controller
              */
@@ -57,7 +78,14 @@ define(['jquery', 'domReady!'], function($){
                         }, config.pinterestBaseUrl);
                     }
                     if (data.type === 'pinterestDelete') {
-                        disconnectConnection();
+                        if(config.siteId) {
+                            $.getJSON(`${config.disconnectURL}?storeId=${config.siteId}`, disconnectMultisiteHandler);
+                        } else {
+                            disconnectConnection();
+                        }
+                    }
+                    if (data.type === 'pinterestBack') {
+                        window.location.replace(config.setupURL);
                     }
                 }
 

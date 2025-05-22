@@ -48,12 +48,12 @@ class ExchangeMetadata
      * @return array $params
      */
 
-    protected function constructParams($method)
+    protected function constructParams($method, $storeId = null)
     {
-        $conversionsEnabled = $this->_pinterestHelper->isConversionConfigEnabled();
-        $catalogEnabled = $this->_pinterestHelper->isCatalogConfigEnabled();
-        $gdprEnabled = $this->_pinterestHelper->isGdprEnabled();
-        $ldpEnabled = $this->_pinterestHelper->isLdpEnabled();
+        $conversionsEnabled = $this->_pinterestHelper->isConversionConfigEnabled($storeId);
+        $catalogEnabled = $this->_pinterestHelper->isCatalogConfigEnabled($storeId);
+        $gdprEnabled = $this->_pinterestHelper->isGdprEnabled($storeId);
+        $ldpEnabled = $this->_pinterestHelper->isLdpEnabled($storeId);
         $featureFlags = [
             FeatureFlag::CATALOG => $catalogEnabled,
             FeatureFlag::TAG => $conversionsEnabled,
@@ -66,18 +66,18 @@ class ExchangeMetadata
             "iframe_version" => PinterestHelper::IFRAME_VERSION,
         ];
         $params = [
-            "connected_merchant_id" => $this->_pinterestHelper->getMerchantId(),
-            "connected_advertiser_id" => $this->_pinterestHelper->getAdvertiserId(),
+            "connected_merchant_id" => $this->_pinterestHelper->getMerchantId($storeId),
+            "connected_advertiser_id" => $this->_pinterestHelper->getAdvertiserId($storeId),
             "partner_primary_email" => $this->_pinterestHelper->getStoreEmail(),
             "partner_metadata" => json_encode($partner_metadata_param),
             // TODO add partner_access_token
         ];
-        $tagId = $this->_pinterestHelper->getTagId();
+        $tagId = $this->_pinterestHelper->getTagId($storeId);
         if ($tagId) {
             $params["connected_tag_id"] = $tagId;
         }
         if ($method == "POST") {
-            $params["external_business_id"] = $this->_pinterestHelper->getExternalBusinessId();
+            $params["external_business_id"] = $this->_pinterestHelper->getExternalBusinessId($storeId);
         }
         return $params;
     }
@@ -121,21 +121,21 @@ class ExchangeMetadata
      *
      * @param boolean success
      */
-    public function postMetadata()
+    public function postMetadata($storeId = null)
     {
         try {
             $this->_pluginErrorHelper->clearError("errors/metadata_post");
-            $params = $this->constructParams("POST");
+            $params = $this->constructParams("POST", $storeId);
             $url = $this->_pinterestHttpClient->getV5ApiEndpoint("integrations/commerce");
     
-            $response = $this->_pinterestHttpClient->post($url, $params, $this->_pinterestHelper->getAccessToken());
+            $response = $this->_pinterestHttpClient->post($url, $params, $this->_pinterestHelper->getAccessToken($storeId));
 
             if (isset($response->code)) {
                 $errorData = ['errorCode' => $response->code,'errorMessage' => $response->message];
                 $this->_pluginErrorHelper->logAndSaveError(
-                    "errors/metadata_post",
+                    $storeId ? "errors/metadata_post for storeId:" . $storeId : "errors/metadata_post",
                     $errorData,
-                    "Failed to POST metadata to Pinterest",
+                    $storeId ? "Failed to POST metadata to Pinterest for storeId: " . $storeId : "Failed to POST metadata to Pinterest",
                     IntegrationErrorId::ERROR_CONNECT_NOT_BLOCKING
                 );
                 return false;
@@ -145,7 +145,7 @@ class ExchangeMetadata
             }
 
         } catch (\Throwable $e) {
-            $this->_pinterestHelper->logError("An error occurred while POSTing metadata to Pinterest");
+            $this->_pinterestHelper->logError($storeId ? "An error occurred while POSTing metadata to Pinterest, for storeId: " . $storeId : "An error occurred while POSTing metadata to Pinterest");
             $this->_pinterestHelper->logException($e);
         }
     }

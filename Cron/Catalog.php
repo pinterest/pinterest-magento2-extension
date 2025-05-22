@@ -87,7 +87,7 @@ class Catalog
         $response = [];
         $response['success'] = false;
         try {
-            if ($this->_pinterestHelper->isUserConnected()) {
+            if ($this->_pinterestHelper->isUserConnected() || $this->_pinterestHelper->isMultistoreOn()) {
                 $response['user_logged_out'] = false;
                 if ($this->_pinterestHelper->isCatalogAndRealtimeUpdatesEnabled()) {
                     $this->_pinterestHelper->logInfo("Pinterest catalog cron job calling productExporter");

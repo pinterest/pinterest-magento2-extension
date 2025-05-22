@@ -245,11 +245,11 @@ class LoggingHelper
     /**
      * Flush log cache (sends logs to Pinterest first)
      */
-    public function flushCache()
+    public function flushCache($storeId = null)
     {
         $cacheState = json_decode($this->getCacheState(), true);
         if (array_key_exists("logs", $cacheState) && count($cacheState["logs"]) > 0) {
-            $this->sendCachedLogs($cacheState["logs"]);
+            $this->sendCachedLogs($cacheState["logs"], $storeId);
         }
     }
 
@@ -258,9 +258,9 @@ class LoggingHelper
      *
      * @param array $logs
      */
-    protected function sendCachedLogs($logs)
+    protected function sendCachedLogs($logs, $storeId = null)
     {
-        $accessToken = $this->_dbHelper->getAccessToken();
+        $accessToken = $this->_dbHelper->getAccessToken($storeId);
         if ($accessToken == null) {
             // Wait to send logs until access token is saved in DB. This may happen on initial connection
             return;

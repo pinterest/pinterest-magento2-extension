@@ -218,4 +218,90 @@ class CatalogProductSaveObserverTest extends TestCase
         $this->assertTrue($success);
         $this->assertEquals($cacheValue, $this->_catalogProductSaveObserver->data_for_unittest);
     }
+
+    public function testExecuteMultiStoreDefaultView()
+    {
+        $all_data = [];
+        $observer = new Observer([
+            "product" => new DataObject([
+                "entity_id" => 4,
+                "id" => 4,
+                "store_id" => "0",
+                "price" => "12.0",
+                "special_price" => "8.0",
+                "quantity_and_stock_status" => [
+                    "qty" => "0"
+                ],
+                "stock_data" => [
+                    "is_in_stock"=> "1",
+                    "qty" => "1"
+                ],
+                "sku" => "111",
+                "store_ids" => ["1", "2", "4", "5"]
+            ])
+        ]);
+
+        $data = [
+            "item_id"  => "4_111",
+            "attributes" => [
+                "price" => "12.0 USD",
+                "sale_price" => "8.0 USD",
+                "availability" => "in stock"
+            ],
+        ];
+        $cacheValue = json_encode($data);
+        $this->_pinterestHelper->method('getMappedStores')->willReturn(["1", "2", "3"]);
+        $this->_pinterestHelper->method('isCatalogAndRealtimeUpdatesEnabled')->willReturn(true);
+        $this->_pinterestHelper->method('isMultistoreOn')->willReturn(true);
+        $this->_localehelper->expects($this->exactly(2))->method('getCurrency')->willReturn("USD");
+        $this->_localehelper->expects($this->exactly(2))->method('getLocale')->willReturn("en_US");
+        $this->_catalogFeedClient->method('updateCatalogItems')->willReturn(true);
+
+        $success = $this->_catalogProductSaveObserver->execute($observer);
+        $this->assertTrue($success);
+        $this->assertEquals($cacheValue, $this->_catalogProductSaveObserver->data_for_unittest);
+    }
+
+    public function testExecuteMultiStoreSingleStore()
+    {
+        $all_data = [];
+        $observer = new Observer([
+            "product" => new DataObject([
+                "entity_id" => 4,
+                "id" => 4,
+                "store_id" => "1",
+                "price" => "12.0",
+                "special_price" => "8.0",
+                "quantity_and_stock_status" => [
+                    "qty" => "0"
+                ],
+                "stock_data" => [
+                    "is_in_stock"=> "1",
+                    "qty" => "1"
+                ],
+                "sku" => "111",
+                "store_ids" => ["1", "2", "3", "4"]
+            ])
+        ]);
+
+        $data = [
+            "item_id"  => "4_111",
+            "attributes" => [
+                "price" => "12.0 USD",
+                "sale_price" => "8.0 USD",
+                "availability" => "in stock"
+            ],
+        ];
+        $cacheValue = json_encode($data);
+        $this->_pinterestHelper->method('getMappedStores')->willReturn(["1", "2", "3"]);
+        $this->_pinterestHelper->method('isCatalogAndRealtimeUpdatesEnabled')->willReturn(true);
+        $this->_pinterestHelper->method('isMultistoreOn')->willReturn(true);
+        $this->_localehelper->expects($this->once())->method('getCurrency')->willReturn("USD");
+        $this->_localehelper->expects($this->once())->method('getLocale')->willReturn("en_US");
+        $this->_catalogFeedClient->method('updateCatalogItems')->willReturn(true);
+
+        $success = $this->_catalogProductSaveObserver->execute($observer);
+        $this->assertTrue($success);
+        $this->assertEquals($cacheValue, $this->_catalogProductSaveObserver->data_for_unittest);
+    }
 }

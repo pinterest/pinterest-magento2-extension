@@ -79,14 +79,15 @@ class ProductInfoForAddToCart extends Action
     public function execute()
     {
         try {
-            if (!$this->_pinterestHelper->isUserOptedOutOfTracking()) {
-                $last_product_items = $this->_pinterestHelper->getLastAddedItemsToCart();
+            $storeId = $this->getRequest()->getParam("store_id", null);
+            if (!$this->_pinterestHelper->isUserOptedOutOfTracking($storeId)) {
+                $last_product_items = $this->_pinterestHelper->getLastAddedItemsToCart($storeId);
                 if ($last_product_items) {
                     $response_data = $this->getProductInfo($last_product_items);
                     if (count($response_data) > 0) {
                         $event_id = EventIdGenerator::guidv4();
                         $response_data["event_id"] = $event_id;
-                        $this->trackAddToCartEvent($event_id, $response_data);
+                        $this->trackAddToCartEvent($event_id, $response_data, $storeId);
                         // Send data back to Tag event sender
                         $result = $this->_resultJsonFactory->create();
                         $result->setData(array_filter($response_data));
@@ -105,9 +106,10 @@ class ProductInfoForAddToCart extends Action
      *
      * @param string $eventId
      * @param array $response_data
+     * @param int $storeId
      * @return void
      */
-    public function trackAddToCartEvent($eventId, $response_data)
+    public function trackAddToCartEvent($eventId, $response_data, $storeId = null)
     {
         $this->_eventManager->dispatch(
             "pinterest_commereceintegrationextension_add_to_cart_after",
@@ -120,6 +122,7 @@ class ProductInfoForAddToCart extends Action
                     "value" => $response_data["value"],
                     "currency" => $response_data["currency"],
                 ],
+                "store_id" => $storeId
             ]
         );
     }

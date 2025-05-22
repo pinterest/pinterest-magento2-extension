@@ -1,9 +1,11 @@
 <?php /* @var Pinterest\PinterestMagento2Extension\Block\Tag\Checkout $block */ ?>
-<?php if ($block->isTagEnabled()) {
+<?php
+$storeId = $block->getCurrentStoreId();
+if ($block->isTagEnabled($storeId)) {
     $eventId = Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator::guidv4();
     $productDetails = $block->getProductDetails();
     $currency = $block->getCurrency();
-    $block->trackCheckoutEvent($eventId, $productDetails, $currency);
+    $block->trackCheckoutEvent($eventId, $productDetails, $currency, $storeId);
     ?>
     <!-- Pinterest Checkout Tag Code -->
     <script>

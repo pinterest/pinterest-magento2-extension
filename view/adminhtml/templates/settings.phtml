@@ -1,0 +1,13 @@
+<?php /** @var Pinterest\PinterestMagento2Extension\Block\Adminhtml\Settings $block */
+$storeId = $block->getStoreId();
+$config = $block->scriptConfigMultistore($storeId);
+?>
+<div>
+    <script type="text/javascript">
+        require(['app_script'], function(initScript) {
+            const SETTINGS_PAGE = "<?= $config['pinterestBaseUrl'] ?>/business/commerce-integrations/apps/<?= $config['iframeVersion'] ?>/settings/<?= $config['locale'] ? "?locale=".$config['locale'] : "" ?>&enableBackButton=true";
+            initScript(<?php print(json_encode($config, JSON_UNESCAPED_SLASHES)) ?>, SETTINGS_PAGE);
+        });
+    </script>
+    <iframe id="pinterest-iframe" width="700px" height="1300px" frameBorder="0"></iframe>
+</div>
