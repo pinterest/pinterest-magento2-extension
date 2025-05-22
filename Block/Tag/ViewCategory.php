@@ -10,6 +10,7 @@ use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Registry;
+use Magento\Store\Model\StoreManagerInterface;
 
 class ViewCategory extends Setup
 {
@@ -28,6 +29,7 @@ class ViewCategory extends Setup
      * @param Registry $registry
      * @param CustomerDataHelper $customerDataHelper
      * @param PricingHelper $pricingHelper
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Context $context,
@@ -36,7 +38,8 @@ class ViewCategory extends Setup
         EventManager $eventManager,
         Registry $registry,
         CustomerDataHelper $customerDataHelper,
-        PricingHelper $pricingHelper
+        PricingHelper $pricingHelper,
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct(
             $context,
@@ -44,7 +47,8 @@ class ViewCategory extends Setup
             $pinterestHelper,
             $eventManager,
             $registry,
-            $customerDataHelper
+            $customerDataHelper,
+            $storeManager
         );
         $this->_pricingHelper = $pricingHelper;
     }

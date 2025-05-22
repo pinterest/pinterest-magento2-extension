@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pinterest\PinterestMagento2Extension\Helper;
 
-use Magento\InventorySalesApi\Api\IsProductSalableInterface;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\Category;
@@ -82,9 +82,9 @@ class ProductExporter
     private $pinterestHelper;
 
     /**
-     * @var IsProductSalableInterface
+     * @var StockRegistryInterface
      */
-    private $isProductSalable;
+    protected $stockRegistryInterface;
 
     /**
      * @var Logger
@@ -105,7 +105,7 @@ class ProductExporter
      * @param PluginErrorHelper $pluginErrorHelper
      * @param StoreManagerInterface $storeManager
      * @param ConfigurableProductType $configurableProductType
-     * @param IsProductSalableInterface $isProductSalable
+     * @param StockRegistryInterface $stockRegistryInterface
      */
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
@@ -118,7 +118,7 @@ class ProductExporter
         PluginErrorHelper $pluginErrorHelper,
         StoreManagerInterface $storeManager,
         ConfigurableProductType $configurableProductType,
-        IsProductSalableInterface $isProductSalable,
+        StockRegistryInterface $stockRegistryInterface,
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->savedFile = $savedFile;
@@ -132,7 +132,7 @@ class ProductExporter
         $this->configurableProductType = $configurableProductType;
         $this->lastProcessTime = 0;
         $this->productsData = null;
-        $this->isProductSalable = $isProductSalable;
+        $this->stockRegistryInterface = $stockRegistryInterface;
     }
 
     /**
@@ -148,17 +148,24 @@ class ProductExporter
 
         $data = [];
         $success = 0;
-        $stores = $this->storeManager->getStores();
+        $stores = [];
+        $isMultistore = $this->pinterestHelper->isMultistoreOn();
+        if ($this->pinterestHelper->isMultistoreOn()) {
+            $stores = $this->pinterestHelper->getMappedStores();
+        } else {
+            $stores = array_map(function ($store) {
+                return $store->getId();
+            }, $this->storeManager->getStores());
+        }
         $country_locales = $this->localelist->getListLocaleForAllStores();
-        foreach ($stores as $store) {
-            $storeId = $store->getId();
+        foreach ($stores as $storeId) {
             $baseUrl = $this->pinterestHelper->getMediaBaseUrlByStoreId($storeId) ?? "";
             $country_locale = $country_locales[$storeId];
-            $key = "{$country_locale}\n{$baseUrl}";
-            $this->appLogger->info("Store{$store->getId()} processing started,locale={$country_locale}");
+            $key = "{$country_locale}\n{$baseUrl}". ($isMultistore ? "\n{$storeId}" : "") ;
+            $this->appLogger->info("Store{$storeId} processing started,locale={$country_locale}");
             $content = $this->productsData ?? $this->prepareData($storeId);
             $data[$key] = array_merge($data[$key] ?? [], $content);
-            $this->appLogger->info("Store{$store->getId()} processed,locale={$country_locale}");
+            $this->appLogger->info("Store{$storeId} processed,locale={$country_locale}");
         }
 
         $this->pinterestHelper->logInfo("Processed all stores. Advanced = ".(microtime(true) - $time_start));
@@ -268,7 +275,8 @@ class ProductExporter
         $collection = $this->collectionFactory->create();
 
         // use type_id to filter out variants items here. variants will be through a different function.
-        $collection->addStoreFilter($storeId)
+        $collection->setStoreId($storeId)
+                   ->addStoreFilter($storeId)
                    ->addAttributeToFilter('status', Status::STATUS_ENABLED)
                    ->addAttributeToFilter('type_id', ProductType::TYPE_SIMPLE)
                    ->addFieldToFilter([['attribute'=>'visibility',
@@ -470,14 +478,18 @@ class ProductExporter
         $country = $pair[0];
         $locale = $pair[1];
         $baseUrl = $pair[2];
+        $storeId = null;
+        if (count($pair) > 3) {
+            $storeId = $pair[3];
+        }
         $this->pluginErrorHelper->clearError("errors/catalog_export/{$locale}");
 
-        $this->absolute_path = $this->savedFile->getFileSystemPath($baseUrl, $locale, true);
+        $this->absolute_path = $this->savedFile->getFileSystemPath($baseUrl, $locale, true, $storeId);
         $this->appLogger->info("Country={$country},Locale={$locale},XML size=" . count($content));
         $this->appLogger->info("SaveTo=" . $this->absolute_path);
-        $this->appLogger->info("URL=" . $this->savedFile->getExportUrl($baseUrl, $locale));
+        $this->appLogger->info("URL=" . $this->savedFile->getExportUrl($baseUrl, $locale, $storeId));
         $xml = new SimpleXMLElement(
-            '<rss xmlns:g="http://base.google.com/ns/1.0" />'
+            '<?xml version="1.0" encoding="utf-8"?><rss xmlns:g="http://base.google.com/ns/1.0" />'
         );
         $xml->addAttribute('version', '2.0');
         $xml->addChild('channel');
@@ -538,7 +550,7 @@ class ProductExporter
     public static function getUniqueId($product)
     {
         $productId = $product->getId();
-        return $productId."_".$product->getSku();
+        return $productId . "_" . $product->getSku();
     }
 
     /**
@@ -673,7 +685,7 @@ class ProductExporter
      */
     private function getProductAvailability($product)
     {
-        if ($this->isProductSalable->execute($product->getSku(), 1)) {
+        if ($this->stockRegistryInterface->getStockItem($product->getId())->getIsInStock()) {
             return "in stock";
         } else {
             return "out of stock";

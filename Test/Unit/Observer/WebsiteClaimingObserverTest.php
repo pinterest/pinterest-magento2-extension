@@ -71,20 +71,33 @@ class WebsiteClaimingObserverTest extends TestCase
     public function testClaimWebsiteTrueIfAPIisSuccessful()
     {
         $this->_pinterestHttpClient->method("post")->willReturn(json_decode(json_encode([
-            "status" => "Website Claimed!"
+            "website" => "www.pinterest.com",
+            "status" => "success",
+            "verified_at" => "2022-12-14T21:03:01.602000"
         ])));
-        $success = $this->_websiteClaimingObserver->claimWebsiteOnPinterest("www.pinterest.com");
-        $this->assertTrue($success);
+        $response = $this->_websiteClaimingObserver->claimWebsiteOnPinterest("www.pinterest.com");
+        $this->assertTrue($response);
     }
 
-    public function testClaimWensiteFalseIfAPIisUnsuccessful()
+    public function testClaimWebsiteFalseIfAPIisUnsuccessful()
     {
         $this->_pinterestHttpClient->method("post")->willReturn(json_decode(json_encode([
             "code" => "1",
-            "message" => "Authentication Error",
+            "message" => "Authentication Error"
         ])));
-        $success = $this->_websiteClaimingObserver->claimWebsiteOnPinterest("www.pinterest.com");
-        $this->assertFalse($success);
+        $response = $this->_websiteClaimingObserver->claimWebsiteOnPinterest("www.pinterest.com");
+        $this->assertFalse($response);
+    }
+
+    public function testClaimWebsiteFalseIfAPIisFailure()
+    {
+        $this->_pinterestHttpClient->method("post")->willReturn(json_decode(json_encode([
+            "website" => "www.pinterest.com",
+            "status" => "unexpected_error",
+            "verified_at" => "2022-12-14T21:03:01.602000"
+        ])));
+        $response = $this->_websiteClaimingObserver->claimWebsiteOnPinterest("www.pinterest.com");
+        $this->assertFalse($response);
     }
 
     public function testGetExistingWebsitesWithErrorResponse()
@@ -189,4 +202,20 @@ class WebsiteClaimingObserverTest extends TestCase
         $response = $this->_websiteClaimingObserver->getWebsitesToClaim();
         $this->assertEquals(["www.dev.pinterest.com"], array_values($response));
     }
+
+    public function testClaimWebsiteForStore()
+    {
+        $website = "testWebsite";
+        $expectedPayload = ["website" => $website, "verification_method" => "METATAG"];
+        $storeId = "1";
+        $token = "testAccessToken";
+        $mockURL = "pinterestClaimURL";
+        $this->_pinterestHelper->expects($this->exactly(2))->method("getAccessToken")->with($storeId)->willReturn($token);
+        $this->_pinterestHttpClient->method("getV5ApiEndpoint")->willReturn($mockURL);
+        $this->_pinterestHttpClient->expects($this->once())->method("get")->with($mockURL, $token)->willReturn(json_decode('{"metatag": "someTag"}'));
+        $this->_pinterestHttpClient->expects($this->once())->method("post")->with($mockURL, $expectedPayload, $token)->willReturn(json_decode('{"status": "success"}'));
+        $this->_pinterestHelper->expects($this->once())->method("getBaseUrlByStoreId")->with($storeId)->willReturn($website);
+        $this->assertTrue($this->_websiteClaimingObserver->claimWebsite($storeId) === 1);
+    }
+
 }

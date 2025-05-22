@@ -3,7 +3,7 @@
 namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 
 use SimpleXMLElement;
-use Magento\InventorySalesApi\Api\IsProductSalableInterface;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Category;
@@ -33,7 +33,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
     protected $_productExporter;
     protected $_productRepository;
     protected $_collectionFactory;
-    protected $_isProductSalable;
+    protected $_stockRegistryInterface;
     protected $_storeManager;
     protected $_reflection;
     protected $_logger;
@@ -50,7 +50,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
         $this->_localelist = $this->createMock(LocaleList::class);
         $this->_productRepository = $this->createMock(ProductRepositoryInterface::class);
         $this->_collectionFactory = $this->createMock(CollectionFactory::class);
-        $this->_isProductSalable = $this->createMock(IsProductSalableInterface::class);
+        $this->_stockRegistryInterface = $this->createMock(StockRegistryInterface::class);
         $this->_storeManager = $this->createMock(StoreManagerInterface::class);
         $this->_logger = $this->createMock(Logger::class);
         $this->_pluginErrorHelper = $this->createMock(PluginErrorHelper::class);
@@ -67,7 +67,7 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
             $this->_pluginErrorHelper,
             $this->_storeManager,
             $this->configurableProductType,
-            $this->_isProductSalable,
+            $this->_stockRegistryInterface,
         );
         $this->_reflection = new \ReflectionClass($this->_productExporter);
 
@@ -121,5 +121,40 @@ class ProductExporterTest extends \PHPUnit\Framework\TestCase
         $this->_pinterestHelper->method('getMediaBaseUrlByStoreId')->willReturn("https://abc.com/");
         $this->_savedFile->method('getExportUrl')->willReturn("url");
         $this->assertEquals(["url", "url"], $this->_productExporter->getOutputUrls());
+    }
+
+
+    public function testSaveProcessExportMultistoreEnabled()
+    {
+        $this->_pinterestHelper->method('isMultistoreOn')->willReturn(true);
+        $this->_pinterestHelper->method('getMappedStores')->willReturn([1]);
+        $this->_localelist->method('getListLocaleForAllStores')->willReturn([1 =>"US\nen_US"]);
+        $this->_savedFile->method('isEnabled')->willReturn(true);
+        $this->_savedFile->method('getFileSystemPath')->willReturn("/dev/null");
+        $this->setPrivateProperty($this->_productExporter, "productsData", []);
+        $this->assertEquals(1, $this->_productExporter->processExport());
+        $this->assertEquals("/dev/null", $this->getPrivateProperty($this->_productExporter, "absolute_path"));
+    }
+
+
+    public function testMultiStoreExport()
+    {
+        $this->_pinterestHelper->method('isMultistoreOn')->willReturn(true);
+        $this->_pinterestHelper->method('getMappedStores')->willReturn([$this->storeMock1->getId(), $this->storeMock2->getId()]);
+        $this->_localelist->method('getListLocaleForAllStores')->willReturn([1=>"US\nen_US", 2=>"GB\nen_GB"]);
+        $this->_pinterestHelper->method('getMediaBaseUrlByStoreId')->willReturn("https://abc.com/");
+        $this->_savedFile->method('isEnabled')->willReturn(true);
+        $this->_savedFile->method('getFileSystemPath')->willReturn("/dev/null");
+        $this->setPrivateProperty($this->_productExporter, "productsData", []);
+        $this->assertEquals(2, $this->_productExporter->processExport());
+        $this->assertEquals("/dev/null", $this->getPrivateProperty($this->_productExporter, "absolute_path"));
+    }
+
+    public function testUniqueId()
+    {
+        $productMock = $this->createMock(\Magento\Catalog\Model\Product::class);
+        $productMock->method('getId')->willReturn(1);
+        $productMock->method('getSku')->willReturn("123");
+        $this->assertEquals("1_123", ProductExporter::getUniqueId($productMock));
     }
 }

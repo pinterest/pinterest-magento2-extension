@@ -64,10 +64,10 @@ class SavedFile extends AbstractHelper
      * @param string $locale
      * @return string
      */
-    public function getExportUrl($baseUrl, $locale)
+    public function getExportUrl($baseUrl, $locale, $storeId = null)
     {
         $fileName = $this->getXmlFileName();
-        $directoryPath = $this->getDirectoryPath($baseUrl, $locale);
+        $directoryPath = $this->getDirectoryPath($baseUrl, $locale, $storeId);
         return $baseUrl . $directoryPath . $fileName;
     }
 
@@ -78,10 +78,10 @@ class SavedFile extends AbstractHelper
      * @param string $locale
      * @param bool $checkAndCreateFolder
      */
-    public function getFileSystemPath($baseUrl, $locale, $checkAndCreateFolder)
+    public function getFileSystemPath($baseUrl, $locale, $checkAndCreateFolder, $storeId = null)
     {
         $fileName = $this->getXmlFileName();
-        $directoryPath = $this->getDirectoryPath($baseUrl, $locale);
+        $directoryPath = $this->getDirectoryPath($baseUrl, $locale, $storeId);
         $filesystem_prefix = $this->getFileSystemPrefix(DirectoryList::MEDIA);
         $absolute_path = $filesystem_prefix.$directoryPath.$fileName;
 
@@ -98,9 +98,9 @@ class SavedFile extends AbstractHelper
      * @param string $locale
      * @return string
      */
-    public function getDirectoryPath($baseUrl, $locale)
+    public function getDirectoryPath($baseUrl, $locale, $storeId = null)
     {
-        $ext = $locale."_".substr(hash('sha256', $baseUrl), 0, 6);
+        $ext = ($storeId != null ? "{$storeId}_" : "").$locale."_".substr(hash('sha256', $baseUrl), 0, 6);
         $ret = self::DIRECTORY_NAME_PATH.$ext;
         if (!str_ends_with($ret, "/")) {
             $ret .= "/";
@@ -134,11 +134,23 @@ class SavedFile extends AbstractHelper
     }
 
     /**
-     * Delete all catalog files and subfolders
+     * Delete all catalog files and subfolders for a store. 
+     * If the storeId is not provided, it deletes all the catalogs directory
      */
-    public function deleteCatalogs()
+    public function deleteCatalogs($storeId = null)
     {
-        $filesystem_prefix = $this->getFileSystemPrefix(DirectoryList::MEDIA);
-        $this->_file->rmdirRecursive($filesystem_prefix.SavedFile::DIRECTORY_NAME_PATH);
+        if($storeId == null){
+            $filesystem_prefix = $this->getFileSystemPrefix(DirectoryList::MEDIA);
+            $this->_file->rmdirRecursive($filesystem_prefix.SavedFile::DIRECTORY_NAME_PATH);
+        } else {
+            $directoryPath = $this->getFileSystemPrefix(DirectoryList::MEDIA).SavedFile::DIRECTORY_NAME_PATH;
+            $this->_file->cd($directoryPath);
+            foreach($this->_file->ls(File::GREP_DIRS) as $catalogDir) {
+                $dirName = $catalogDir['text'];
+                if(preg_match("/^".$storeId."_.+/", $dirName)){
+                    $this->_file->rmdir($dirName, true);
+                }
+            }
+        }
     }
 }

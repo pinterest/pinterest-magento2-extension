@@ -45,27 +45,28 @@ class ConversionEvent extends Action
     public function execute()
     {
         try {
-            if (!$this->_pinterestHelper->isUserOptedOutOfTracking()) {
+            $data = $this->getRequest()->getParam("data", null);
+            $storeId = $data != null && array_key_exists('storeId', $data) ? $data["storeId"] : null;
+            if (!$this->_pinterestHelper->isUserOptedOutOfTracking($storeId)) {
                 $response_data = [];
                 $event_id = EventIdGenerator::guidv4();
                 $response_data["event_id"] = $event_id;
                 $event_name = $this->getRequest()->getParam("event_name", null);
-                $data = $this->getRequest()->getParam("data", null);
                 if ($event_name) {
                     switch ($event_name) {
                         case 'page_visit':
                             if ($data && array_key_exists("productData", $data)
                                       && array_key_exists("currency", $data)) {
-                                $this->trackPageVisitEvent($event_id, $data["productData"], $data["currency"]);
+                                $this->trackPageVisitEvent($event_id, $storeId, $data["productData"], $data["currency"]);
                             } else {
-                                $this->trackPageVisitEvent($event_id);
+                                $this->trackPageVisitEvent($event_id, $storeId);
                             }
                             break;
                         case 'search':
-                            $this->trackSearchEvent($event_id, $data["search_query"]);
+                            $this->trackSearchEvent($event_id, $data["search_query"], $storeId);
                             break;
                         case 'view_category':
-                            $this->trackViewCategoryEvent($event_id, $data["productDetails"], $data["currency"]);
+                            $this->trackViewCategoryEvent($event_id, $data["productDetails"], $data["currency"], $storeId);
                             break;
                         default:
                     }
@@ -85,10 +86,11 @@ class ConversionEvent extends Action
      * Dispatch the page visit event with the required data
      *
      * @param string $eventId
+     * @param int $storeId
      * @param array $productDetails
      * @param string $currency
      */
-    public function trackPageVisitEvent($eventId, $productDetails = null, $currency = null)
+    public function trackPageVisitEvent($eventId, $storeId = null, $productDetails = null, $currency = null)
     {
         if ($productDetails && $currency) {
             $custom_data = [
@@ -106,6 +108,7 @@ class ConversionEvent extends Action
             "event_id" => $eventId,
             "event_name" => "page_visit",
             "custom_data" => $custom_data,
+            "store_id" => $storeId
         ]);
     }
     
@@ -114,8 +117,9 @@ class ConversionEvent extends Action
      *
      * @param string $eventId
      * @param string $searchTerm
+     * @param int $storeId
      */
-    public function trackSearchEvent($eventId, $searchTerm)
+    public function trackSearchEvent($eventId, $searchTerm, $storeId = null)
     {
         $this->_eventManager->dispatch(
             "pinterest_commereceintegrationextension_search_after",
@@ -125,6 +129,7 @@ class ConversionEvent extends Action
                 "custom_data" => [
                     "search_string" => $searchTerm
                 ],
+                "store_id" => $storeId
             ]
         );
     }
@@ -135,8 +140,9 @@ class ConversionEvent extends Action
      * @param string $eventId
      * @param array $productDetails
      * @param string $currency
+     * @param int $storeId
      */
-    public function trackViewCategoryEvent($eventId, $productDetails, $currency)
+    public function trackViewCategoryEvent($eventId, $productDetails, $currency, $storeId = null)
     {
         $this->_eventManager->dispatch("pinterest_commereceintegrationextension_view_category_after", [
             "event_id" => $eventId,
@@ -147,6 +153,7 @@ class ConversionEvent extends Action
                 "contents" => isset($productDetails['contents']) ? $productDetails["contents"] : [],
                 "content_category" =>  isset($productDetails['category']) ? $productDetails["category"] : ''
             ],
+            "store_id" => $storeId
         ]);
     }
 }

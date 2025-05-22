@@ -1,9 +1,11 @@
 <?php /** @var Pinterest\PinterestMagento2Extension\Block\Adminhtml\Setup $block */ ?>
-<?php if ($block->isUserConnected()) { ?>
+<?php
+$storeId = $block->getCurrentStoreId();
+if ($block->isUserConnected($storeId)) { ?>
     <!-- Pinterest HTML Tag -->
-    <?= $block->getMetaTag() ?>
+    <?= $block->getMetaTag($storeId) ?>
     <!-- End of Pinterest HTML Tag -->
-    <?php if ($block->isTagEnabled()) { ?>
+    <?php if ($block->isTagEnabled($storeId)) { ?>
         <!-- Pinterest Pixel Base Code -->
         <script type="text/javascript">
             !function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(
@@ -12,7 +14,7 @@
                 t=document.createElement("script");t.async=!0,t.src=e;var
                 r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
             window.pintrk.partnerData={"np":"adobe"};
-            <?php if ($block->isLdpEnabled()) { ?>
+            <?php if ($block->isLdpEnabled($storeId)) { ?>
                 var state = "<?= $escaper->escapeJs($block->getHashedState())?>";
                 var country = "<?= $escaper->escapeJs($block->getHashedCountry())?>";
                 pintrk('set', {
@@ -38,9 +40,9 @@
                     var config = {
                         "isCookieRestrictionModeEnabled": <?= /* @noEscape */ $block->isCookieRestrictionModeEnabled() ?>,
                         "currentWebsite": <?= /* @noEscape */ $block->getCurrentWebsiteId() ?>,
-                        "cookieName": "<?= /* @noEscape */ $block->getGDPRCookieName() ?>",
-                        "isGdprEnabled": <?= /* @noEscape */ $block->isGdprEnabled() ?>,
-                        "gdprOption": <?= /* @noEscape */ $block->getGdprOption() ?>
+                        "cookieName": "<?= /* @noEscape */ $block->getGDPRCookieName($storeId) ?>",
+                        "isGdprEnabled": <?= /* @noEscape */ $block->isGdprEnabled($storeId) ?>,
+                        "gdprOption": <?= /* @noEscape */ $block->getGdprOption($storeId) ?>
                     }
                     var getCookie = function(name) {
                         var value = `; ${document.cookie}`;
@@ -78,7 +80,7 @@
                     }
                     return true;
                 }());
-            pintrk("load", "<?= $block->getTagId() ?>", {
+            pintrk("load", "<?= $block->getTagId($storeId) ?>", {
                     <?php if ($block->getHashedEmailId()) { ?>
                         "em": "<?= $block->getHashedEmailId() ?>"
                     <?php } ?>

@@ -11,6 +11,7 @@ use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Registry;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Checkout extends Setup
 {
@@ -36,6 +37,8 @@ class Checkout extends Setup
      * @param CustomerDataHelper $customerDataHelper
      * @param Session $session
      * @param PricingHelper $pricingHelper
+     * @param StoreManagerInterface $storeManager
+     *
      */
     public function __construct(
         Context $context,
@@ -45,7 +48,8 @@ class Checkout extends Setup
         Registry $registry,
         CustomerDataHelper $customerDataHelper,
         Session $session,
-        PricingHelper $pricingHelper
+        PricingHelper $pricingHelper,
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct(
             $context,
@@ -53,7 +57,8 @@ class Checkout extends Setup
             $pinterestHelper,
             $eventManager,
             $registry,
-            $customerDataHelper
+            $customerDataHelper,
+            $storeManager
         );
         $this->_session = $session;
         $this->_pricingHelper = $pricingHelper;
@@ -65,8 +70,9 @@ class Checkout extends Setup
      * @param string $eventId
      * @param array $productDetails
      * @param string $currency
+     * @param int $storeId
      */
-    public function trackCheckoutEvent($eventId, $productDetails, $currency)
+    public function trackCheckoutEvent($eventId, $productDetails, $currency, $storeId = null)
     {
         $this->_eventManager->dispatch("pinterest_commereceintegrationextension_checkout_after", [
             "event_id" => $eventId,
@@ -79,6 +85,7 @@ class Checkout extends Setup
                 "num_items" => $productDetails["num_items"],
                 "order_id" => $productDetails["order_id"]
             ],
+            "store_id" => $storeId
         ]);
     }
 

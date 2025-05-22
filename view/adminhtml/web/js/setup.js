@@ -1,7 +1,14 @@
 define(['domReady!'], function(){
     "use strict";
-        return function initScript(config, setup_url)  {
-
+        return function initScript(config, setup_url, websites, connectedWebsites) {
+            if (window.opener) {
+                // if iframe had opened this window
+                if(window.opener.parent) {
+                    window.opener.parent.location.reload();
+                    window.close();
+                }
+            }
+            
             const params = new URL(location.href).searchParams;
             const error = params.get('error');
 
@@ -21,6 +28,8 @@ define(['domReady!'], function(){
                             state: config.state,
                             use_middleware: true,
                             partner_metadata: config.partnerMetadata,
+                            websites,
+                            connectedWebsites
                         }
                     }, config.pinterestBaseUrl);
                     if (error){

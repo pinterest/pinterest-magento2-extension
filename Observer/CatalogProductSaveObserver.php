@@ -24,6 +24,7 @@ class CatalogProductSaveObserver implements ObserverInterface
     public const RECENT_SAVE = "pinterest_product_id_recents";
     public const IN_STOCK = 'in stock';
     public const OUT_OF_STOCK = 'out of stock';
+    public const ALL_STORE_VIEWS_ID = 0;
 
     /**
      * @var mixed
@@ -103,9 +104,10 @@ class CatalogProductSaveObserver implements ObserverInterface
      *
      * @return array product_ids to be emitted
      */
-    protected function emitIds($new_id)
+    protected function emitIds($new_id, $store_id)
     {
-        $data = $this->cache->load(self::RECENT_SAVE) ?? "";
+        $key = self::RECENT_SAVE . $store_id;
+        $data = $this->cache->load($key) ?? "";
         if ($data == "") {
             $data = json_encode(["start_time" => time(), "ids" => []]);
         }
@@ -113,7 +115,7 @@ class CatalogProductSaveObserver implements ObserverInterface
         if ($new_id !== null) {
             if (! in_array($new_id, $meta["ids"]??[])) {
                 $meta["ids"] []= $new_id;
-                $this->cache->save(json_encode($meta), self::RECENT_SAVE, self::CACHE_TAGS);
+                $this->cache->save(json_encode($meta), $key, self::CACHE_TAGS);
             }
         }
         $ret_ids = $meta["ids"] ?? [];
@@ -129,20 +131,20 @@ class CatalogProductSaveObserver implements ObserverInterface
      * @param string $locale
      * @param mixed $new_id
      */
-    protected function checkQueue($locale, $new_id)
+    protected function checkQueue($locale, $new_id, $store_id)
     {
         $empty_json = json_decode("");
-        $emitIds = $this->emitIds($new_id);
+        $emitIds = $this->emitIds($new_id, $store_id);
         if (count($emitIds) > 0) {
             // reset cache in case other updates happend before we send updates.
-            $this->cache->save(json_encode(["start_time" => time()]), self::RECENT_SAVE, self::CACHE_TAGS);
+            $this->cache->save(json_encode(["start_time" => time()]), self::RECENT_SAVE . $store_id, self::CACHE_TAGS);
 
             $items = [];
             foreach ($emitIds as $product_id) {
-                $items [] = json_decode($this->cache->load(self::CACHE_KEY_PREFIX . $product_id)) ?? $empty_json;
+                $items [] = json_decode($this->cache->load(self::CACHE_KEY_PREFIX . $product_id . $store_id)) ?? $empty_json;
             }
 
-            $this->_catalogFeedClient->updateCatalogItems($locale, $items);
+            $this->_catalogFeedClient->updateCatalogItems($locale, $items, $store_id);
             $this->splash($items);
         }
     }
@@ -166,9 +168,9 @@ class CatalogProductSaveObserver implements ObserverInterface
      *
      * @return bool
      */
-    protected function isChanged($product_id, $json_data)
+    protected function isChanged($product_id, $json_data, $store_id)
     {
-        $cacheKey = self::CACHE_KEY_PREFIX . $product_id;
+        $cacheKey = self::CACHE_KEY_PREFIX . $product_id . $store_id;
         $cacheValue = $this->cache->load($cacheKey);
         if ($json_data == $cacheValue) {
             return false;
@@ -192,45 +194,21 @@ class CatalogProductSaveObserver implements ObserverInterface
             $validPriceAfter = $product["special_from_date"] ? strtotime($product["special_from_date"]) <= $now : true;
             if($validPriceAfter && $validPriceBefore) {
                 return $product["special_price"];
-            } else {
-                return null;
             }
-        } else {
-            $this->_appLogger->info("special_price not set");
-            return null;
         }
+        
+        return null;
     }
 
     /**
-     * Define execute
-     *
-     * @param Observer $observer
-     *
-     * @return bool
+     * Updates the product information after detecting changes
+     * @param Product $product
+     * @param string $store_id
      */
-    public function execute(Observer $observer)
+    protected function updateProduct($product, $store_id)
     {
-
         try {
-            if (!$this->_pinterestHelper->isCatalogAndRealtimeUpdatesEnabled()) {
-                return false;
-            }
-
-            /**
-             * there are two methods to get product's information
-             *
-             * a) $product= $this->_productloader->getById($product_id); or
-             * b) $product = $observer->getProduct();
-             *
-             * we choose method b) as it's already loaded in the context and the product object contains more
-             * information like extension_attributes. To view all attributes, see
-             *
-             * $this->_appLogger->info("Observer:". print_r($product->debug(), true));
-             *
-             */
-            $product = $observer->getProduct();
             $product_id = $product["entity_id"];
-            $store_id = $product["store_id"];
             $sku = $product["sku"] ?? null;
             $special_price = $this->getSpecialPrice($product);
             $price = $product["price"];
@@ -256,15 +234,60 @@ class CatalogProductSaveObserver implements ObserverInterface
             ];
             $json_data = json_encode($data);
             $this->data_for_unittest = $json_data;
-            $is_updated = $this->isChanged($product_id, $json_data);
-            $this->checkQueue($locale, $is_updated? $product_id : null);
+            $is_updated = $this->isChanged($product_id, $json_data, $store_id);
+            $this->checkQueue($locale, $is_updated? $product_id : null, $store_id);
+            
             return $is_updated;
+
         } catch (\Throwable $e) {
             $this->_messageManager->addError(
                 "Exception when sending notification, message: {$e}"
             );
-            $is_updated = false;
+            return false;
         }
+    }
+
+    /**
+     * Define execute
+     *
+     * @param Observer $observer
+     *
+     * @return bool
+     */
+    public function execute(Observer $observer)
+    {
+        if (!$this->_pinterestHelper->isCatalogAndRealtimeUpdatesEnabled()) {
+            return false;
+        }
+        /**
+         * there are two methods to get product's information
+         *
+         * a) $product= $this->_productloader->getById($product_id); or
+         * b) $product = $observer->getProduct();
+         *
+         * we choose method b) as it's already loaded in the context and the product object contains more
+         * information like extension_attributes. To view all attributes, see
+         *
+         * $this->_appLogger->info("Observer:". print_r($product->debug(), true));
+         *
+         */
+
+         $product = $observer->getProduct();
+         if($this->_pinterestHelper->isMultistoreOn()){
+            $storeIds = $product["store_id"] == self::ALL_STORE_VIEWS_ID ? $product->getStoreIds() : [$product["store_id"]];
+            $connectedStores = $this->_pinterestHelper->getMappedStores();
+            $filterNonConnected = function($id) use ($connectedStores){
+                return in_array($id, $connectedStores);
+            };
+            $success = true;
+            foreach(array_filter($storeIds, $filterNonConnected) as $storeId){
+                $success &= $this->updateProduct($product, $storeId);
+            }
+            
+            return $success == TRUE;
+         } else {
+            return $this->updateProduct($product, $product["store_id"]);
+         }
     }
 
      /**

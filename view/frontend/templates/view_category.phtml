@@ -1,4 +1,6 @@
-<?php if ($block->isTagEnabled()) {
+<?php
+$storeId = $block->getCurrentStoreId();
+if ($block->isTagEnabled($storeId)) {
     $eventId = Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator::guidv4();
     $productDetails = $block->getAllProductDetails();
     $currency = $block->getCurrency();
@@ -10,12 +12,13 @@
         ], function ($) {
             var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
             $(document).ready(function () {
-                let ajaxData = {};
+                let ajaxData = {storeId: "<?= $storeId ?>"};
                 let pintrkData = {};
                 <?php if (!empty($productDetails)) { ?>
                     ajaxData = {
                         productDetails: <?= json_encode($productDetails) ?>,
-                        currency: "<?= $currency ?>"
+                        currency: "<?= $currency ?>",
+                        storeId: "<?= $storeId ?>"
                     }
                     pintrkData = {
                         line_items: <?= json_encode($productDetails["line_tems"]) ?>,

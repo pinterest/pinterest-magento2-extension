@@ -72,4 +72,27 @@ class DbHelperTest extends \PHPUnit\Framework\TestCase
         $value = $this->_dbHelper->getMetadataValue($mockKey);
         $this->assertTrue($value == $mockValue);
     }
+    
+    public function testGetAccessTokenDefaultStore()
+    {
+        $encryptedToken = 'encryptedToken';
+        $decryptedToken = 'decryptedToken';
+        $this->_encryptor->method('decrypt')->with($encryptedToken)->willReturn($decryptedToken);
+        $this->_metadataFactory->method('create')->willReturn($this->createRowWithValue([
+            'pinterest/token/access_token' => $encryptedToken
+        ]));
+        $this->assertEquals($decryptedToken, $this->_dbHelper->getAccessToken());
+    }
+
+    public function testGetAccessTokenSpecificStore()
+    {
+        $store = 'store1';
+        $encryptedToken = 'encryptedToken';
+        $decryptedToken = 'decryptedToken';
+        $this->_encryptor->method('decrypt')->with($encryptedToken)->willReturn($decryptedToken);
+        $this->_metadataFactory->method('create')->willReturn($this->createRowWithValue([
+            'pinterest/token/store1/access_token' => $encryptedToken
+        ]));
+        $this->assertEquals($decryptedToken, $this->_dbHelper->getAccessToken($store));
+    }
 }

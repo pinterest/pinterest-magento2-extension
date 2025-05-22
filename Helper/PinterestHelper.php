@@ -20,6 +20,7 @@ use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Pinterest\PinterestMagento2Extension\Helper\EventIdGenerator;
 use Magento\Catalog\Model\CategoryFactory;
 use Magento\Backend\Model\Auth\Session;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Cache\Manager;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductFactory;
@@ -31,6 +32,7 @@ use Magento\Framework\Stdlib\CookieManagerInterface;
 use Pinterest\PinterestMagento2Extension\Helper\ProductExporter;
 use Pinterest\PinterestMagento2Extension\Helper\LoggingHelper;
 use Pinterest\PinterestMagento2Extension\Helper\DbHelper;
+use Pinterest\PinterestMagento2Extension\Constants\MetadataName;
 
 class PinterestHelper extends AbstractHelper
 {
@@ -44,6 +46,7 @@ class PinterestHelper extends AbstractHelper
     public const PINTEREST_LDP_ENABLED='PinterestConfig/ldp/enabled';
     public const REDIRECT_URI='pinterestadmin/Setup/PinterestToken';
     public const ADMINHTML_SETUP_URI='pinterestadmin/Setup/Index';
+    public const ADMINHTML_SETTINGS_URI='pinterestadmin/Setup/Settings';
     public const MODULE_NAME='Pinterest_PinterestMagento2Extension';
     public const IFRAME_VERSION='v2';
     public const CMS_DEFAULT_COOKIE_NAME='PinterestMagento2ExtensionConsentCookie';
@@ -129,6 +132,11 @@ class PinterestHelper extends AbstractHelper
     protected $_dbHelper;
 
     /**
+     * @var CheckoutSession
+     */
+    protected $_checkoutSession;
+
+    /**
      *
      * @param Context $context
      * @param ObjectManagerInterface $objectManager
@@ -165,7 +173,8 @@ class PinterestHelper extends AbstractHelper
         Cookie $cookie,
         CookieManagerInterface $cookieManager,
         LoggingHelper $loggingHelper,
-        DbHelper $dbHelper
+        DbHelper $dbHelper,
+        CheckoutSession $checkoutSession,
     ) {
         parent::__construct($context);
         $this->_objectManager = $objectManager;
@@ -184,6 +193,25 @@ class PinterestHelper extends AbstractHelper
         $this->_cookieManager = $cookieManager;
         $this->_loggingHelper = $loggingHelper;
         $this->_dbHelper = $dbHelper;
+        $this->_checkoutSession = $checkoutSession;
+    }
+
+    public function getTokenByStoreAndName($name, $store = null)
+    {
+        $pinterest_token_prefix = MetadataName::PINTEREST_TOKEN_PREFIX;
+        if ($store != null) {
+            $pinterest_token_prefix = $pinterest_token_prefix . $store . '/';
+        }
+        return $pinterest_token_prefix . $name;
+    }
+
+    public function getInfoByStoreAndName($name, $store = null)
+    {
+        $pinterest_info_prefix = MetadataName::PINTEREST_INFO_PREFIX;
+        if ($store != null) {
+            $pinterest_info_prefix = $pinterest_info_prefix . $store . '/';
+        }
+        return $pinterest_info_prefix . $name;
     }
 
     /**
@@ -213,9 +241,19 @@ class PinterestHelper extends AbstractHelper
      *
      * @return boolean true/false
      */
-    public function isCatalogConfigEnabled()
+    public function isCatalogConfigEnabled($store_id = null)
     {
-        return strcmp($this->scopeConfig->getValue(self::PINTEREST_CATALOG_ENABLED_PATH), ConfigSetting::ENABLED) == 0;
+        if ($store_id == null) {
+            return strcmp($this->scopeConfig->getValue(self::PINTEREST_CATALOG_ENABLED_PATH), ConfigSetting::ENABLED) == 0;
+        }
+        return strcmp(
+            $this->scopeConfig->getValue(
+                self::PINTEREST_CATALOG_ENABLED_PATH,
+                ScopeInterface::SCOPE_STORE,
+                $store_id
+            ),
+            ConfigSetting::ENABLED
+        ) == 0;
     }
 
     /**
@@ -223,10 +261,20 @@ class PinterestHelper extends AbstractHelper
      *
      * @return boolean true/false
      */
-    public function isConversionConfigEnabled()
+    public function isConversionConfigEnabled($store_id = null)
     {
+        if ($store_id == null) {
+            return strcmp(
+                $this->scopeConfig->getValue(self::PINTEREST_CONVERSION_ENABLED_PATH),
+                ConfigSetting::ENABLED
+            ) == 0;
+        }
         return strcmp(
-            $this->scopeConfig->getValue(self::PINTEREST_CONVERSION_ENABLED_PATH),
+            $this->scopeConfig->getValue(
+                self::PINTEREST_CONVERSION_ENABLED_PATH,
+                ScopeInterface::SCOPE_STORE,
+                $store_id
+            ),
             ConfigSetting::ENABLED
         ) == 0;
     }
@@ -236,9 +284,16 @@ class PinterestHelper extends AbstractHelper
      *
      * @return bool
      */
-    public function isLdpEnabled()
+    public function isLdpEnabled($store_id = null)
     {
-        return $this->scopeConfig->getValue(self::PINTEREST_LDP_ENABLED) == 1;
+        if ($store_id == null) {
+            return $this->scopeConfig->getValue(self::PINTEREST_LDP_ENABLED) == 1;
+        }
+        return $this->scopeConfig->getValue(
+            self::PINTEREST_LDP_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $store_id
+        ) == 1;
     }
 
     /**
@@ -301,10 +356,12 @@ class PinterestHelper extends AbstractHelper
      * @param string $advertiserId
      * @return string
      */
-    public function generateExternalBusinessId($advertiserId)
+    public function generateExternalBusinessId($advertiserId, $storeId = null)
     {
         $this->logInfo("Generating new External Business Id");
-        $storeId = $this->_storeManager->getStore()->getId();
+        if ($storeId == null) {
+            $storeId = $this->_storeManager->getStore()->getId();
+        }
         $baseUrl = parse_url($this->_storeManager->getStore()->getBaseUrl())["host"];
         return uniqid("magento_pins_" . $storeId . "_" . $baseUrl . "_" . $advertiserId . "_");
     }
@@ -356,9 +413,13 @@ class PinterestHelper extends AbstractHelper
      *
      * @return Array[Item]|null
      */
-    public function getLastAddedItemsToCart()
+    public function getLastAddedItemsToCart($storeId = null)
     {
-        $quote = $this->_cart->getQuote();
+        $store = $this->_storeManager->getStore($storeId);
+        $this->_storeManager->setCurrentStore($store);
+
+        $quote = $this->_checkoutSession->getQuote();
+
         if ($quote) {
             $items = $quote->getAllVisibleItems();
             $lastModifiedItems = [];
@@ -432,6 +493,26 @@ class PinterestHelper extends AbstractHelper
     public function getStores()
     {
         return $this->_storeManager->getStores(true);
+    }
+
+    /**
+     * Get all stores data
+     */
+    public function getStoresData()
+    {
+        $stores = $this->_storeManager->getStores();
+        $websites = [];
+        foreach ($stores as $store) {
+            $websites[] = [
+                "id" => $store->getId(),
+                "name" => $store->getName(),
+                "url" => $store->getBaseUrl(
+                    UrlInterface::URL_TYPE_WEB,
+                    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'
+                )
+            ];
+        }
+        return array_values($websites);
     }
 
     /**
@@ -576,6 +657,34 @@ class PinterestHelper extends AbstractHelper
     }
 
     /**
+     * Delete all the metadata values for a store
+     * 
+     * @param string $storeId
+     */
+    public function deleteMetadataForStore($storeId)
+    {
+        $storesKey = 'pinterest/multisite/stores';
+        $connectedStores = $this->getMetadataValue($storesKey);
+        if($connectedStores && strlen($connectedStores) == 1){
+            return $this->deleteAllMetadata();
+        } else {
+            $remainingStores = array_filter(explode(',', $connectedStores), function($store) use ($storeId) {
+                return strcmp($store, $storeId) != 0;
+            });
+            
+            $this->saveMetadata($storesKey, implode(',', $remainingStores));
+            $success = $this->_dbHelper->deleteAllMetadataForStore($storeId);
+            if ($success) {
+                $this->logInfo("Successfully deleted all metadata from database.");
+            } else {
+                // do not cache the exception message, as it may contain sensitive data
+                $this->logError("Failed to delete all metadata from database.");
+            }
+            return $success;
+        }
+    }
+
+    /**
      * Used to get encrypted data from the db
      *
      * @param string $metadataKey
@@ -588,15 +697,16 @@ class PinterestHelper extends AbstractHelper
     /**
      * Checks if the user has valid connection to pinterest
      *
+     * @param string $storeId
      * @return bool
      */
-    public function isUserConnected()
+    public function isUserConnected($storeId = null)
     {
-        $expires_in = $this->getMetadataValue('pinterest/token/expires_in');
-        if (null == $this->getMetadataValue('pinterest/token/expires_in')) {
+        $expires_in = $this->getMetadataValue($this->getTokenByStoreAndName("expires_in", $storeId));
+        if (null == $expires_in) {
             return false;
         }
-        $token_issued = strtotime($this->getUpdatedAt('pinterest/token/access_token'));
+        $token_issued = strtotime($this->getUpdatedAt($this->getTokenByStoreAndName("access_token", $storeId)));
         $now = time();
         if ($expires_in != null && $now < $token_issued+$expires_in) {
             // TODO make an API request to check if token is valid
@@ -626,13 +736,15 @@ class PinterestHelper extends AbstractHelper
      *
      * @return array
      */
-    public function getPartnerMetadata()
+    public function getPartnerMetadata($storeId = null)
     {
+        $sortByStore = $storeId != null;
         return [
             "magentoVersion" => $this->getMagentoVersion(),
             "pluginVersion" => $this->getPluginVersion(),
             "phpVersion" => PHP_VERSION,
-            "baseUrl" => $this->getBaseUrl()
+            "baseUrl" => $sortByStore ? $this->getBaseUrlByStoreId($storeId) : $this->getBaseUrl(),
+            "storeName" => $sortByStore ? $this->getStoreById($storeId)->getName() : null,
         ];
     }
 
@@ -641,9 +753,48 @@ class PinterestHelper extends AbstractHelper
      *
      * @return string\null
      */
-    public function getAccessToken()
+    public function getAccessToken($store = null)
     {
+        return $this->_dbHelper->getAccessToken($store);
+    }
+
+    /**
+     * Get access token from metadata
+     *
+     * @return string\null
+     */
+    public function getDefaultAccessToken()
+    {
+        $mapped_stores = $this->getMetadataValue("pinterest/multisite/stores");
+        if ($mapped_stores != null && strlen($mapped_stores) != 0) {
+            $stores = explode(',', $mapped_stores);
+            return $this->_dbHelper->getAccessToken($stores[0]);
+        }
+
         return $this->_dbHelper->getAccessToken();
+    }
+
+
+    /**
+     * Check if multisite is enabled
+     *
+     * @return number
+     */
+    public function isMultistoreOn()
+    {
+        return $this->getMetadataValue("ui/multisite") == "true";
+    }
+
+
+    /**
+     * Get current store id
+     *
+     * @return number
+     */
+    public function getCurrentStoreId()
+    {
+        // TODO: Throw exception if store is not available after removing feature flag
+        return $this->isMultistoreOn() ? $this->_storeManager->getStore()->getId() : null;
     }
 
     /**
@@ -651,9 +802,9 @@ class PinterestHelper extends AbstractHelper
      *
      * @return string\null
      */
-    public function getExternalBusinessId()
+    public function getExternalBusinessId($store = null)
     {
-        return $this->getMetadataValue("pinterest/info/business_id");
+        return $this->getMetadataValue($this->getInfoByStoreAndName("business_id", $store));
     }
 
     /**
@@ -661,9 +812,9 @@ class PinterestHelper extends AbstractHelper
      *
      * @return string\null
      */
-    public function getAdvertiserId()
+    public function getAdvertiserId($store = null)
     {
-        return $this->getMetadataValue("pinterest/info/advertiser_id");
+        return $this->getMetadataValue($this->getInfoByStoreAndName("advertiser_id", $store));
     }
 
     /**
@@ -671,9 +822,9 @@ class PinterestHelper extends AbstractHelper
      *
      * @return string\null
      */
-    public function getMerchantId()
+    public function getMerchantId($store = null)
     {
-        return $this->getMetadataValue("pinterest/info/merchant_id");
+        return $this->getMetadataValue($this->getInfoByStoreAndName("merchant_id", $store));
     }
 
     /**
@@ -681,9 +832,9 @@ class PinterestHelper extends AbstractHelper
      *
      * @return string\null
      */
-    public function getClientHash()
+    public function getClientHash($store = null)
     {
-        return $this->getEncryptedMetadata("pinterest/info/client_hash");
+        return $this->getEncryptedMetadata($this->getTokenByStoreAndName("client_hash", $store));
     }
 
     /**
@@ -691,18 +842,18 @@ class PinterestHelper extends AbstractHelper
      *
      * @return string\null
      */
-    public function getRefreshToken()
+    public function getRefreshToken($store = null)
     {
-        return $this->getEncryptedMetadata("pinterest/token/refresh_token");
+        return $this->getEncryptedMetadata($this->getTokenByStoreAndName("refresh_token", $store));
     }
     /**
      * Get tag Id from metadata
      *
      * @return string\null
      */
-    public function getTagId()
+    public function getTagId($store = null)
     {
-        return $this->getMetadataValue("pinterest/info/tag_id");
+        return $this->getMetadataValue($this->getInfoByStoreAndName("tag_id", $store));
     }
 
     /**
@@ -736,7 +887,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function logInfo($message)
     {
-        $this->_loggingHelper->logInfo($message, $this->getAccessToken());
+        $this->_loggingHelper->logInfo($message, $this->getDefaultAccessToken());
     }
 
     /**
@@ -746,7 +897,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function logError($message)
     {
-        $this->_loggingHelper->logError($message, $this->getAccessToken());
+        $this->_loggingHelper->logError($message, $this->getDefaultAccessToken());
     }
 
     /**
@@ -756,7 +907,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function logWarning($message)
     {
-        $this->_loggingHelper->logWarning($message, $this->getAccessToken());
+        $this->_loggingHelper->logWarning($message, $this->getDefaultAccessToken());
     }
 
     /**
@@ -823,7 +974,16 @@ class PinterestHelper extends AbstractHelper
      */
     public function isCatalogAndRealtimeUpdatesEnabled()
     {
-        return $this->isCatalogConfigEnabled() && $this->isUserConnected();
+        if ($this->isMultistoreOn()) {
+            foreach ($this->getMappedStores() as $storeId) {
+                if ($this->isCatalogConfigEnabled($storeId) && $this->isUserConnected($storeId)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return $this->isCatalogConfigEnabled() && $this->isUserConnected();
+        }
     }
 
     /**
@@ -859,16 +1019,16 @@ class PinterestHelper extends AbstractHelper
      *
      * @return bool
      */
-    public function isUserOptedOutOfTracking()
+    public function isUserOptedOutOfTracking($storeId = null)
     {
-        if (!$this->isGdprEnabled()) {
+        if (!$this->isGdprEnabled($storeId)) {
             return false;
         } elseif ($this->isCookieRestrictionModeEnabled()
-                    && $this->getGdprOption() == PinterestGDPROptions::USE_COOKIE_RESTRICTION_MODE) {
+                    && $this->getGdprOption($storeId) == PinterestGDPROptions::USE_COOKIE_RESTRICTION_MODE) {
             return $this->_cookie->isUserNotAllowSaveCookie();
-        } elseif ($this->getGdprOption() == PinterestGDPROptions::IF_COOKIE_NOT_EXIST) {
+        } elseif ($this->getGdprOption($storeId) == PinterestGDPROptions::IF_COOKIE_NOT_EXIST) {
             // Allowed to track if cookie value is set to truthy value
-            $value = $this->_cookieManager->getCookie($this->getGDPRCookieName(), null);
+            $value = $this->_cookieManager->getCookie($this->getGDPRCookieName($storeId), null);
             if ($value == null ||
                 (is_bool($value) && $value == false) ||
                 (is_string($value) && strtolower($value) == "false") ||
@@ -877,7 +1037,7 @@ class PinterestHelper extends AbstractHelper
                 return true;
             }
             return false;
-        } elseif ($this->getGdprOption() == PinterestGDPROptions::CMS_COOKIE_BOT) {
+        } elseif ($this->getGdprOption($storeId) == PinterestGDPROptions::CMS_COOKIE_BOT) {
             // Allowed to track if cookie value is not set to {consent: true}
             $value = $this->_cookieManager->getCookie(self::CMS_DEFAULT_COOKIE_NAME, null);
             if ($value == null) {
@@ -964,5 +1124,19 @@ class PinterestHelper extends AbstractHelper
         }
         // Remove invalid UTF8 Characters
         return preg_replace('/[\x00-\x1F\x7F]/u', '', $str);
+    }
+
+    /**
+     * Get mapped store ids
+     *
+     * @return Array
+     */
+    public function getMappedStores()
+    {
+        $mapped_stores = $this->getMetadataValue("pinterest/multisite/stores");
+        if ($mapped_stores != null && strlen($mapped_stores) != 0) {
+            return explode(',', $mapped_stores);
+        }
+        return [];
     }
 }

@@ -5,6 +5,7 @@ namespace Pinterest\PinterestMagento2Extension\Helper;
 use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
 use Magento\Framework\Encryption\EncryptorInterface;
+use Pinterest\PinterestMagento2Extension\Constants\MetadataName;
 
 class DbHelper
 {
@@ -129,6 +130,30 @@ class DbHelper
     }
 
     /**
+     * Delete metadata for a specific store
+     *
+     * @param string $storeId
+     */
+    public function deleteAllMetadataForStore($storeId)
+    {
+        try {
+            $collection = $this->_metadataFactory->create()->getCollection();
+            $collection->addFieldToFilter('metadata_key', [['like' => MetadataName::PINTEREST_INFO_PREFIX . $storeId . '%'], 
+                ['like' => MetadataName::PINTEREST_TOKEN_PREFIX . $storeId . '%'],
+                ['eq' => 'pinterest/website_claiming/meta_tag/' . $storeId],
+                ['eq' => 'pinterest/info/feed_ids/' . $storeId]]);
+            foreach ($collection as $item) {
+                $item->delete();
+            }
+            $this->_logger->info("Successfully deleted connection details from database");
+            return true;
+        } catch (\Throwable $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
+
+    /**
      * Delete all the metadata values
      */
     public function deleteAllMetadata()
@@ -161,8 +186,14 @@ class DbHelper
      *
      * @return string\null
      */
-    public function getAccessToken()
+    public function getAccessToken($store = null)
     {
-        return $this->getEncryptedMetadata("pinterest/token/access_token");
+        $pinterest_token_prefix = MetadataName::PINTEREST_TOKEN_PREFIX;
+
+        if ($store != null) {
+            $pinterest_token_prefix =  $pinterest_token_prefix . $store . '/';
+        }
+
+        return $this->getEncryptedMetadata($pinterest_token_prefix . "access_token");
     }
 }

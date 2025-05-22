@@ -82,6 +82,16 @@ class ConversionEventHelper
     }
 
     /**
+     * Fetch cache name by store id
+     *
+     * @param int $storeId
+     */
+    private function fetchCacheName($storeId = null)
+    {
+        return $storeId != null ? self::RECENT_SAVE . "_" . $storeId : self::RECENT_SAVE;
+    }
+
+    /**
      * Get client user agent
      */
     private function getUserAgent()
@@ -115,8 +125,10 @@ class ConversionEventHelper
 
     /**
      * Creates all the data required to captures user info
+     * @param int $storeId
+     *
      */
-    private function createUserData()
+    private function createUserData($storeId = null)
     {
         $user_data = [
             "client_ip_address" => $this->getClientIP(),
@@ -158,7 +170,7 @@ class ConversionEventHelper
         if ($this->_customerDataHelper->getZipCode()) {
             $user_data["zp"] = [$this->_customerDataHelper->hash($this->_customerDataHelper->getZipCode())];
         }
-        if ($this->_pinterestHelper->isLdpEnabled()) {
+        if ($this->_pinterestHelper->isLdpEnabled($storeId)) {
             $user_data["opt_out_type"] = "LDP";
         }
 
@@ -167,20 +179,23 @@ class ConversionEventHelper
 
     /**
      * Returns the conversions API Access Token
+     * @param int $storeId
      *
      * TODO: Remove once the tokens are unified
      */
-    private function getAccessToken()
+    private function getAccessToken($storeId = null)
     {
-        return $this->_pinterestHelper->getEncryptedMetadata("pinterest/token/access_token");
+        return $this->_pinterestHelper->getEncryptedMetadata($this->_pinterestHelper->getTokenByStoreAndName("access_token", $storeId));
     }
 
     /**
      * Gets the API endpoint to send the conversions API request to
+     * @param int $storeId
+     *
      */
-    private function getAPIEndPoint()
+    private function getAPIEndPoint($storeId = null)
     {
-        $advertiserId = $this->_pinterestHelper->getMetadataValue("pinterest/info/advertiser_id");
+        $advertiserId = $this->_pinterestHelper->getMetadataValue($this->_pinterestHelper->getInfoByStoreAndName("advertiser_id", $storeId));
         return $this->_pinterestHttpClient->getV5ApiEndpoint("ad_accounts/$advertiserId/events");
     }
 
@@ -190,16 +205,17 @@ class ConversionEventHelper
      * @param string $eventId
      * @param string $eventName
      * @param array $customData
+     * @param int $storeId
      * @return array
      */
-    public function createEventPayload($eventId, $eventName, $customData = [])
+    public function createEventPayload($eventId, $eventName, $customData = [], $storeId = null)
     {
         return [
             "event_name" => $eventName,
             "action_source" => "web",
             "event_time" => time(),
             "event_id" => $eventId,
-            "user_data" => $this->createUserData(),
+            "user_data" => $this->createUserData($storeId),
             "partner_name" => "ss-adobe",
             "custom_data" => array_merge($customData, [ "np" => "ss-adobe" ])
         ];
@@ -211,16 +227,17 @@ class ConversionEventHelper
      * @param string $eventId
      * @param string $eventName
      * @param array $customData
+     * @param int $storeId
      */
-    public function processConversionEvent($eventId, $eventName, $customData = [])
+    public function processConversionEvent($eventId, $eventName, $customData = [], $storeId = null)
     {
-        if ($this->_disableTag || $this->_pinterestHelper->isUserOptedOutOfTracking()) {
+        if ($this->_disableTag || $this->_pinterestHelper->isUserOptedOutOfTracking($storeId)) {
             return;
         }
         try {
-            $eventData = $this->createEventPayload($eventId, $eventName, $customData);
+            $eventData = $this->createEventPayload($eventId, $eventName, $customData, $storeId);
             $this->_lastEventEnqueued = $eventData;
-            $this->enqueueEvent($eventData);
+            $this->enqueueEvent($eventData, $storeId);
         } catch (\Throwable $e) {
             $this->_pinterestHelper->logError("An error occurred while processing the conversion event");
             $this->_pinterestHelper->logException($e);
@@ -237,10 +254,11 @@ class ConversionEventHelper
 
     /**
      * Get the batch metadata
+     * @param int $storeId
      */
-    private function getCacheMetadata()
+    private function getCacheMetadata($storeId = null)
     {
-        $cacheData = $this->_cache->load(self::RECENT_SAVE);
+        $cacheData = $this->_cache->load($this->fetchCacheName($storeId));
         if (!$cacheData) {
             $cacheData = $this->getInitialCacheState();
         }
@@ -251,41 +269,45 @@ class ConversionEventHelper
      * Set batch metadata
      *
      * @param string $cacheState
+     * @param int $storeId
      */
-    private function setCacheMetadata($cacheState)
+    private function setCacheMetadata($cacheState, $storeId = null)
     {
-        $this->_cache->save($cacheState, self::RECENT_SAVE, self::CACHE_TAGS);
+        $this->_cache->save($cacheState, $this->fetchCacheName($storeId), self::CACHE_TAGS);
     }
 
     /**
      * Reset batch Metadata
+     * @param int $storeId
      */
-    private function resetCacheMetadata()
+    private function resetCacheMetadata($storeId = null)
     {
-        $this->_cache->save($this->getInitialCacheState(), self::RECENT_SAVE, self::CACHE_TAGS);
+        $this->_cache->save($this->getInitialCacheState(), $this->fetchCacheName($storeId), self::CACHE_TAGS);
     }
     
     /**
      * Enqueue event to the Queue and if the batch criteria is met, post all events and reset queue
      *
      * @param array $eventData
+     * @param int $storeId
      */
-    public function enqueueEvent($eventData)
+    public function enqueueEvent($eventData, $storeId = null)
     {
         if (str_contains($this->getUserAgent(), 'Pinterestbot')) {
             return;
         }
 
-        $meta = json_decode($this->getCacheMetadata(), true);
+        $meta = json_decode($this->getCacheMetadata($storeId), true);
         $meta["data"][] = $eventData;
+        
         // If batch processing criteria is met, we post the event and reset the queue
         if (time() - $meta["start_time"] > self::MAX_HOLD_SECONDS || count($meta["data"]) >= self::CACHE_MAX_ITEMS) {
-            $this->resetCacheMetadata();
+            $this->resetCacheMetadata($storeId);
             $this->postEvent([
                 "data" => $meta["data"]
-            ]);
+            ], $storeId);
         } else {
-            $this->setCacheMetadata(json_encode($meta));
+            $this->setCacheMetadata(json_encode($meta), $storeId);
         }
     }
 
@@ -293,11 +315,12 @@ class ConversionEventHelper
      * Call the pinterest conversions API enpoint
      *
      * @param array $params
+     * @param int $storeId
      */
-    private function postEvent($params)
+    private function postEvent($params, $storeId = null)
     {
         try {
-            $response = $this->_pinterestHttpClient->post($this->getAPIEndPoint(), $params, $this->getAccessToken());
+            $response = $this->_pinterestHttpClient->post($this->getAPIEndPoint($storeId), $params, $this->getAccessToken($storeId));
             if (isset($response->events) && is_array($response->events)) {
                 foreach ($response->events as $event) {
                     if ($event->error_message) {
@@ -315,7 +338,7 @@ class ConversionEventHelper
                 );
             }
         } catch (\Throwable $e) {
-            $this->_pinterestHelper->logError("An error occurred while posting the conversion event");
+            $this->_pinterestHelper->logError("An error occurred while posting the conversion event for store: " . $storeId);
             $this->_pinterestHelper->logException($e);
         }
     }
