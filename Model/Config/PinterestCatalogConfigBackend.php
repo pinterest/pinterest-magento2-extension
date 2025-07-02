@@ -61,8 +61,8 @@ class PinterestCatalogConfigBackend extends \Magento\Framework\App\Config\Value
         ExchangeMetadata $exchangeMetadata,
         CatalogFeedClient $catalogFeedClient,
         DisconnectHelper $disconnectHelper,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->_pinterestHelper = $pinterestHelper;
