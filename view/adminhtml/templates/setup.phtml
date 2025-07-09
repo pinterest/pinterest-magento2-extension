@@ -4,8 +4,8 @@ $config = $block->scriptConfigBeforeConnect()
 <div>
     <script type="text/javascript">
         require(['setup_script'], function(initScript) {
-            const SETUP_PAGE = "<?= $config['pinterestBaseUrl'] ?>/business/commerce-integrations/apps/<?= $config['iframeVersion'] ?>/connect/<?= $config['locale'] ? "?locale=".$config['locale'] : "" ?>";
-            initScript(<?php print(json_encode($config, JSON_UNESCAPED_SLASHES)) ?>, SETUP_PAGE, <?php print(json_encode($block->getWebsites())) ?>, <?php print(json_encode($block->getConnectedStoreIds())) ?>);
+            const SETUP_PAGE = "<?= $escaper->escapeJs($config['pinterestBaseUrl']) ?>/business/commerce-integrations/apps/<?= $escaper->escapeJs($config['iframeVersion']) ?>/connect/<?= $escaper->escapeJs($config['locale'] ? "?locale=".$config['locale'] : "") ?>";
+            initScript(<?= /* @noEscape */ json_encode($config, JSON_UNESCAPED_SLASHES) ?>, SETUP_PAGE, <?= /* @noEscape */ json_encode($block->getWebsites()) ?>, <?= /* @noEscape */ json_encode($block->getConnectedStoreIds()) ?>);
         });
     </script>
     <iframe id="pinterest-iframe" onload="this.width=screen.width;this.height=screen.height;" frameBorder="0"></iframe>

@@ -6,20 +6,20 @@
     ], function ($) {
         function registerAllFeeds() {
             params = {};
-            var generalError = `<?= __('There was an issue regenerating your catalog. Please refresh the page or trying again later.') ?>`;
-            new Ajax.Request('<?= $block->getAjaxUrl() ?>', {
+            var generalError = `<?= $escaper->escapeHtml(__('There was an issue regenerating your catalog. Please refresh the page or trying again later.')) ?>`;
+            new Ajax.Request('<?= /* @noEscape */ $block->getAjaxUrl() ?>', {
                 loaderArea: false,
                 asynchronous: true,
                 parameters: params,
                 onSuccess: function (transport) {
                     var response = JSON.parse(transport.responseText);
                     if (response && response.success) {
-                        $('#messages .message-success span.message-text').text(`<?= __("Success") ?>`);
+                        $('#messages .message-success span.message-text').text(`<?= $escaper->escapeHtml(__("Success")) ?>`);
                         $('#messages .message-success').show();
                         $('#messages .message-success').delay(8000).fadeOut();
                     } else {
                         var errorMessage = response && response.user_logged_out ? 
-                            `<?= __('You must be logged into Pinterest to access this setting') ?>` : 
+                            `<?= $escaper->escapeHtml(__('You must be logged into Pinterest to access this setting')) ?>` : 
                             generalError
                         $('#messages .message-error span.message-text').text(errorMessage);
                         $('#messages .message-error').show();

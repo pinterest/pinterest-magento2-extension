@@ -24,7 +24,7 @@ if ($block->isTagEnabled($storeId)) { ?>
                             url: product_info_url,
                             type: "post",
                             data: {
-                                store_id: "<?= $storeId ?>"
+                                store_id: "<?= $escaper->escapeJs($storeId) ?>"
                             },
                             dataType: "json",
                             success: function (res) {

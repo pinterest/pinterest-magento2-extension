@@ -13,26 +13,26 @@ if ($block->isTagEnabled($storeId)) {
         ], function ($) {
             var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
             $(document).ready(function () {
-                let ajaxData = {storeId: "<?= $storeId ?>"};
+                let ajaxData = {storeId: "<?= $escaper->escapeJs($storeId) ?>"};
                 let pintrkData = {};
             <?php if (!empty($productDetails)) { ?>
                     var productData = {
                         product_id: "<?= $escaper->escapeJs($productDetails["product_id"])  ?>",
-                        product_price: <?= $productDetails["product_price"] ?>,
+                        product_price: <?= $escaper->escapeJs($productDetails["product_price"]) ?>,
                         product_name: "<?= $escaper->escapeJs($productDetails["product_name"]) ?>",
                         product_quantity: 1,
-                        product_category: <?= json_encode($productDetails["product_category"]) ?>
+                        product_category: <?= /* @noEscape */ json_encode($productDetails["product_category"]) ?>
                     }
                     ajaxData = {
                             productData,
                             order_quantity: 0,
-                            currency: "<?= $currency ?>",
-                            storeId: "<?= $storeId ?>"
+                            currency: "<?= $escaper->escapeJs($currency) ?>",
+                            storeId: "<?= $escaper->escapeJs($storeId) ?>"
                         }
                     pintrkData = {
                         line_items: [productData],
                         order_quantity: 0,
-                        currency: "<?= $currency ?>"
+                        currency: "<?= $escaper->escapeJs($currency) ?>"
                     }
                 <?php } ?>
 

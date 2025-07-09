@@ -12,17 +12,17 @@ if ($block->isTagEnabled($storeId)) {
         ], function ($) {
             var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
             $(document).ready(function () {
-                let ajaxData = {storeId: "<?= $storeId ?>"};
+                let ajaxData = {storeId: "<?= $escaper->escapeJs($storeId) ?>"};
                 let pintrkData = {};
                 <?php if (!empty($productDetails)) { ?>
                     ajaxData = {
-                        productDetails: <?= json_encode($productDetails) ?>,
-                        currency: "<?= $currency ?>",
-                        storeId: "<?= $storeId ?>"
+                        productDetails: <?= /* @noEscape */ json_encode($productDetails) ?>,
+                        currency: "<?= $escaper->escapeJs($currency) ?>",
+                        storeId: "<?= $escaper->escapeJs($storeId) ?>"
                     }
                     pintrkData = {
-                        line_items: <?= json_encode($productDetails["line_tems"]) ?>,
-                        currency: "<?= $currency ?>"
+                        line_items: <?= /* @noEscape */ json_encode($productDetails["line_tems"]) ?>,
+                        currency: "<?= $escaper->escapeJs($currency) ?>"
                     }
                 <?php } ?>
 
