@@ -31,6 +31,7 @@ class DisconnectMultisite extends Action
     /**
      * @param Context $context
      * @param DisconnectHelper $disconnectHelper
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,

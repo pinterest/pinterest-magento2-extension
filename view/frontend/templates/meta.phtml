@@ -3,7 +3,7 @@
 $storeId = $block->getCurrentStoreId();
 if ($block->isUserConnected($storeId)) { ?>
     <!-- Pinterest HTML Tag -->
-    <?= $block->getMetaTag($storeId) ?>
+    <?= /* @noEscape */ $block->getMetaTag($storeId) ?>
     <!-- End of Pinterest HTML Tag -->
     <?php if ($block->isTagEnabled($storeId)) { ?>
         <!-- Pinterest Pixel Base Code -->
@@ -80,9 +80,9 @@ if ($block->isUserConnected($storeId)) { ?>
                     }
                     return true;
                 }());
-            pintrk("load", "<?= $block->getTagId($storeId) ?>", {
+            pintrk("load", "<?= /* @noEscape */ $block->getTagId($storeId) ?>", {
                     <?php if ($block->getHashedEmailId()) { ?>
-                        "em": "<?= $block->getHashedEmailId() ?>"
+                        "em": "<?= /* @noEscape */ $block->getHashedEmailId() ?>"
                     <?php } ?>
             });
             pintrk("page");

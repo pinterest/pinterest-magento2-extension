@@ -10,12 +10,12 @@ if ($block->isTagEnabled($storeId)) {
     <!-- Pinterest Checkout Tag Code -->
     <script>
         pintrk('track', 'checkout', {
-            event_id: "<?= $eventId ?>",
-            order_quantity: <?= $productDetails["num_items"] ?>,
-            currency: "<?= $currency ?>",
-            value: <?= $productDetails["value"] ?>,
-            order_id: "<?= $productDetails["order_id"] ?>",
-            line_items: <?= json_encode($productDetails["line_tems"]) ?>
+            event_id: "<?= $escaper->escapeJs($eventId) ?>",
+            order_quantity: <?= $escaper->escapeJs($productDetails["num_items"]) ?>,
+            currency: "<?= $escaper->escapeJs($currency) ?>",
+            value: <?= $escaper->escapeJs($productDetails["value"]) ?>,
+            order_id: "<?= $escaper->escapeJs($productDetails["order_id"]) ?>",
+            line_items: <?= /* @noEscape */ json_encode($productDetails["line_tems"]) ?>
         });
     </script>
     <!-- End of Pinterest Checkout Tag Code -->

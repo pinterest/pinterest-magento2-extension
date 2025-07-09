@@ -4,8 +4,8 @@ $config = $block->scriptConfigAfterConnect()
 <div>
     <script type="text/javascript">
         require(['app_script'], function(initScript) {
-            const SETTINGS_PAGE = "<?= $config['pinterestBaseUrl'] ?>/business/commerce-integrations/apps/<?= $config['iframeVersion'] ?>/settings/<?= $config['locale'] ? "?locale=".$config['locale'] : "" ?>";
-            initScript(<?php print(json_encode($config, JSON_UNESCAPED_SLASHES)) ?>, SETTINGS_PAGE);
+            const SETTINGS_PAGE = "<?= $escaper->escapeJs($config['pinterestBaseUrl']) ?>/business/commerce-integrations/apps/<?= $escaper->escapeJs($config['iframeVersion']) ?>/settings/<?= $escaper->escapeJs($config['locale'] ? "?locale=".$config['locale'] : "") ?>";
+            initScript(<?= /* @noEscape */ json_encode($config, JSON_UNESCAPED_SLASHES) ?>, SETTINGS_PAGE);
         });
     </script>
     <iframe id="pinterest-iframe" width="700px" height="1300px" frameBorder="0"></iframe>

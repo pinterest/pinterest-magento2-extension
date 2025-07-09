@@ -13,14 +13,14 @@ if ($block->isTagEnabled($storeId)) {
         ], function ($) {
             var conversionEventUrl = "<?= /* @noEscape */ $block->getConversionEventUrl() ?>";
             $(document).ready(function () {
-                var search_query = "<?= $search_query ?>"
+                var search_query = "<?= $escaper->escapeJs($search_query) ?>"
                 $.ajax({
                     url: conversionEventUrl,
                     data: {
                         event_name: 'search',
                         data: {
                             search_query,
-                            storeId: "<?= $storeId ?>"
+                            storeId: "<?= $escaper->escapeJs($storeId) ?>"
                         }
                     },
                     type: "post",
