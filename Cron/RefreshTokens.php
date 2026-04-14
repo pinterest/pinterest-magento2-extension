@@ -46,6 +46,18 @@ class RefreshTokens
                 $this->_pinterestHelper->logError("Job to refresh Pinterest tokens failed.");
             }
         }
+
+        if($this->_pinterestHelper->isMultistoreOn()){
+            foreach ($this->_pinterestHelper->getMappedStores() as $storeId) {
+                $success = $this->_tokensHelper->refreshStoreToken($storeId);
+                if ($success) {
+                    $this->_pinterestHelper->logInfo("Job to refresh Pinterest tokens successful. Store: " . $storeId);
+                } else {
+                    $this->_pinterestHelper->logError("Job to refresh Pinterest tokens failed. Store: " . $storeId);
+                }
+            }
+        }
+
         $this->_pinterestHelper->logInfo("Pinterest token refresh cron job ended");
     }
 }

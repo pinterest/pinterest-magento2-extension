@@ -5,7 +5,9 @@ namespace Pinterest\PinterestMagento2Extension\Test\Unit\Helper;
 use Pinterest\PinterestMagento2Extension\Helper\DbHelper;
 use Pinterest\PinterestMagento2Extension\Logger\Logger;
 use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
+use Pinterest\PinterestMagento2Extension\Model\Metadata;
 use Magento\Framework\Encryption\EncryptorInterface;
+use Magento\Framework\Model\AbstractModel;
 
 class DbHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -43,7 +45,7 @@ class DbHelperTest extends \PHPUnit\Framework\TestCase
     {
         $metadataRow = $this->getMockBuilder(Metadata::class)
                   ->disableOriginalConstructor()
-                  ->setMethods(['load', 'save', 'setData'])
+                  ->onlyMethods(['load', 'save', 'setData'])
                   ->getMock();
         if ($keyValueArray == null) {
             $metadataRow->method('load')->willReturn(null);
@@ -52,9 +54,9 @@ class DbHelperTest extends \PHPUnit\Framework\TestCase
                 $value = $keyValueArray[$metadataKey];
                 $abstractMock = $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['getData'])
+                ->onlyMethods(['getData'])
                 ->getMock();
-                $abstractMock->method('getData')->willReturn($value);
+                $abstractMock->method('getData')->with('metadata_value')->willReturn($value);
                 return $abstractMock;
             });
         }

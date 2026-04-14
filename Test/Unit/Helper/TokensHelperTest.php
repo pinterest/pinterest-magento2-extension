@@ -6,6 +6,7 @@ use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\TokensHelper;
 use Pinterest\PinterestMagento2Extension\Model\Metadata;
 use Pinterest\PinterestMagento2Extension\Model\MetadataFactory;
+use Pinterest\PinterestMagento2Extension\Constants\MetadataName;
 use Magento\Framework\Model\AbstractModel;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
 
@@ -39,33 +40,11 @@ class TokensHelperTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function createRowWithValue($keyValueArray)
-    {
-        $metadataRow = $this->getMockBuilder(Metadata::class)
-                  ->disableOriginalConstructor()
-                  ->setMethods(['load'])
-                  ->getMock();
-        if ($keyValueArray == null) {
-            $metadataRow->method('load')->willReturn(null);
-        } else {
-            $metadataRow->method('load')->willReturnCallback(function ($metadataKey) use ($keyValueArray) {
-                $value = $keyValueArray[$metadataKey];
-                $abstractMock = $this->getMockBuilder(AbstractModel::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['getData'])
-                ->getMock();
-                $abstractMock->method('getData')->willReturn($value);
-                return $abstractMock;
-            });
-        }
-        return $metadataRow;
-    }
-
     private function saveRowMock()
     {
         return $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['setData', 'save'])
+                ->onlyMethods(['setData', 'save'])
                 ->getMock();
     }
 
@@ -94,4 +73,48 @@ class TokensHelperTest extends \PHPUnit\Framework\TestCase
         $success = $this->_tokensHelper->refreshTokens();
         $this->assertFalse($success);
     }
+
+    public function testStoreRefreshTokenCaseSuccess()
+    {
+        $mockStoreId = '1';
+        $prefix = MetadataName::PINTEREST_TOKEN_PREFIX . $mockStoreId . '/';
+        $invocationCount = 0;                                                                                                                                                     
+        $this->_pinterestHelper->expects($this->exactly(4))                                                                                                                                     
+            ->method('saveMetadata')                                                                                                                                                            
+            ->willReturnCallback(function ($key, $value) use (&$invocationCount, &$prefix) {                                                                                                              
+                $invocationCount++;                                                                                                                                                             
+                match ($invocationCount) {                                                                                                                                                      
+                    1 => $this->assertEquals([$prefix . 'token_type', 'Bearer'], [$key, $value]),                                                                                         
+                    2 => $this->assertEquals([$prefix . 'expires_in', '50'], [$key, $value]),                                                                                             
+                    3 => $this->assertEquals([$prefix . 'scope', 'ads:read ads:write'], [$key, $value]),                                                                                  
+                    4 => $this->assertEquals([$prefix . 'refresh_token_expires_in', '100'], [$key, $value]),                                                                              
+                };                                                                                                                                                                              
+            }); 
+
+        $mock = $this->saveRowMock();
+        $this->_metadataFactory->method("create")->willReturn($mock);
+        $this->_pinterestHttpClient->method("post")->willReturn(json_decode(json_encode([
+            "access_token" => "12345abcdef",
+            "token_type" => "Bearer",
+            "expires_in" => "50",
+            "scope" => "ads:read ads:write",
+            "refresh_token" => "12345abcdef",
+            "refresh_token_expires_in" => "100"
+        ])));
+        $success = $this->_tokensHelper->refreshStoreToken($mockStoreId);
+        $this->assertTrue($success);
+    }
+
+    public function testStoreRefreshTokenCaseFailure()
+    {
+        $mockStoreId = '1';
+        $mock = $this->saveRowMock();
+        $this->_metadataFactory->method("create")->willReturn($mock);
+        $this->_pinterestHttpClient->method("post")->willReturn(json_decode(json_encode([
+            "message" => "something other than an access token"
+        ])));
+        $success = $this->_tokensHelper->refreshStoreToken($mockStoreId);
+        $this->assertFalse($success);
+    }
+
 }

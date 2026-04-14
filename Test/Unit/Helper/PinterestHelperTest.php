@@ -171,7 +171,7 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
     {
         return $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['getBaseUrl'])
+                ->addMethods(['getBaseUrl'])
                 ->getMock();
     }
 
@@ -179,7 +179,7 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
     {
         return $this->getMockBuilder(Session::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['getUser'])
+                ->addMethods(['getUser'])
                 ->getMock();
     }
 
@@ -245,19 +245,19 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_checkoutSession->method('getQuote')->willReturnCallback(function () {
             $quoteMock = $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['getAllVisibleItems'])
+                ->addMethods(['getAllVisibleItems'])
                 ->getMock();
             $quoteMock->method('getAllVisibleItems')->willReturnCallback(function () {
                 $itemMock01 = $this->getMockBuilder(AbstractModel::class)
                     ->disableOriginalConstructor()
-                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->addMethods(['getProductType','getUpdatedAt'])
                     ->getMock();
                 $itemMock01->method('getProductType')->willReturn(Type::TYPE_SIMPLE);
                 $itemMock01->method('getUpdatedAt')->willReturn("001");
 
                 $itemMock02 = $this->getMockBuilder(AbstractModel::class)
                     ->disableOriginalConstructor()
-                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->addMethods(['getProductType','getUpdatedAt'])
                     ->getMock();
                 $itemMock02->method('getProductType')->willReturn(Type::TYPE_SIMPLE);
                 $itemMock02->method('getUpdatedAt')->willReturn("002");
@@ -275,19 +275,19 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_checkoutSession->method('getQuote')->willReturnCallback(function () {
             $quoteMock = $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['getAllVisibleItems'])
+                ->addMethods(['getAllVisibleItems'])
                 ->getMock();
             $quoteMock->method('getAllVisibleItems')->willReturnCallback(function () {
                 $itemMock01 = $this->getMockBuilder(AbstractModel::class)
                     ->disableOriginalConstructor()
-                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->addMethods(['getProductType','getUpdatedAt'])
                     ->getMock();
                 $itemMock01->method('getProductType')->willReturn(Type::TYPE_SIMPLE);
                 $itemMock01->method('getUpdatedAt')->willReturn("002");
 
                 $itemMock02 = $this->getMockBuilder(AbstractModel::class)
                     ->disableOriginalConstructor()
-                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->addMethods(['getProductType','getUpdatedAt'])
                     ->getMock();
                 $itemMock02->method('getProductType')->willReturn(Type::TYPE_SIMPLE);
                 $itemMock02->method('getUpdatedAt')->willReturn("002");
@@ -305,19 +305,19 @@ class PinterestHelperTest extends \PHPUnit\Framework\TestCase
         $this->_checkoutSession->method('getQuote')->willReturnCallback(function () {
             $quoteMock = $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['getAllVisibleItems'])
+                ->addMethods(['getAllVisibleItems'])
                 ->getMock();
             $quoteMock->method('getAllVisibleItems')->willReturnCallback(function () {
                 $itemMock01 = $this->getMockBuilder(AbstractModel::class)
                     ->disableOriginalConstructor()
-                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->addMethods(['getProductType','getUpdatedAt'])
                     ->getMock();
                 $itemMock01->method('getProductType')->willReturn(Configurable::TYPE_CODE);
                 $itemMock01->method('getUpdatedAt')->willReturn("002");
 
                 $itemMock02 = $this->getMockBuilder(AbstractModel::class)
                     ->disableOriginalConstructor()
-                    ->setMethods(['getProductType','getUpdatedAt'])
+                    ->addMethods(['getProductType','getUpdatedAt'])
                     ->getMock();
                 $itemMock02->method('getProductType')->willReturn("virtual");
                 $itemMock02->method('getUpdatedAt')->willReturn("002");

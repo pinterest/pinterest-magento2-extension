@@ -834,7 +834,7 @@ class PinterestHelper extends AbstractHelper
      */
     public function getClientHash($store = null)
     {
-        return $this->getEncryptedMetadata($this->getTokenByStoreAndName("client_hash", $store));
+        return $this->getEncryptedMetadata($this->getInfoByStoreAndName("client_hash", $store));
     }
 
     /**
