@@ -10,6 +10,7 @@ use Pinterest\PinterestMagento2Extension\Helper\SavedFile;
 use Pinterest\PinterestMagento2Extension\Helper\CatalogFeedClient;
 
 use Magento\Framework\App\Request\Http;
+use \Magento\Framework\Model\AbstractModel;
 use PHPUnit\Framework\TestCase;
 
 use Magento\Framework\Webapi\Exception as HTTPExceptionCodes;
@@ -201,7 +202,7 @@ class CatalogFeedClientTest extends TestCase
     {
         return $this->getMockBuilder(AbstractModel::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['getStatusCode', 'getBody'])
+                ->addMethods(['getStatusCode', 'getBody'])
                 ->getMock();
     }
 

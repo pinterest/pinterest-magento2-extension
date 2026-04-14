@@ -4,6 +4,7 @@ namespace Pinterest\PinterestMagento2Extension\Helper;
 
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHelper;
 use Pinterest\PinterestMagento2Extension\Helper\PinterestHttpClient;
+use Pinterest\PinterestMagento2Extension\Constants\MetadataName;
 
 class TokensHelper
 {
@@ -31,18 +32,16 @@ class TokensHelper
     }
 
     /**
-     * Requests and stores new access and refresh tokens.
-     *
-     * @return true if the call is successful
+     * Calls the refresh API for the token and stores the results in $tokenPrefix
+     * 
+     * @return true if token is refreshed successfully
      */
-    public function refreshTokens()
-    {
+    private function callRefreshApi($refreshToken, $clientHash, $tokenPrefix) {
         $this->_pinterestHelper->logInfo("Attempting to refresh tokens");
-        try {
+        try { 
             $this->_pinterestHelper->resetApiErrorState("errors/refresh_tokens");
             $url = $this->_pinterestHttpClient->getV5ApiEndpoint("oauth/token");
-            $refreshToken = $this->_pinterestHelper->getRefreshToken();
-            $authorization = ("Basic " . ($this->_pinterestHelper->getClientHash()));
+            $authorization = ("Basic " . $clientHash);
             $payload = [
                 'grant_type' => 'refresh_token',
                 'refresh_token' => $refreshToken,
@@ -57,19 +56,18 @@ class TokensHelper
             );
 
             if ($response && isset($response->access_token)) {
-
-                $this->_pinterestHelper->saveEncryptedMetadata('pinterest/token/access_token', $response->access_token);
-                $this->_pinterestHelper->saveMetadata('pinterest/token/token_type', $response->token_type);
-                $this->_pinterestHelper->saveMetadata('pinterest/token/expires_in', $response->expires_in);
-                $this->_pinterestHelper->saveMetadata('pinterest/token/scope', $response->scope);
+                $this->_pinterestHelper->saveEncryptedMetadata($tokenPrefix . 'access_token', $response->access_token);
+                $this->_pinterestHelper->saveMetadata($tokenPrefix . 'token_type', $response->token_type);
+                $this->_pinterestHelper->saveMetadata($tokenPrefix . 'expires_in', $response->expires_in);
+                $this->_pinterestHelper->saveMetadata($tokenPrefix . 'scope', $response->scope);
                 if (isset($response->refresh_token) && isset($response->refresh_token_expires_in)
                     && strlen($response->refresh_token) > 0 && strlen($response->refresh_token_expires_in) > 0) {
                     $this->_pinterestHelper->saveEncryptedMetadata(
-                        'pinterest/token/refresh_token',
+                        $tokenPrefix . 'refresh_token',
                         $response->refresh_token
                     );
                     $this->_pinterestHelper->saveMetadata(
-                        'pinterest/token/refresh_token_expires_in',
+                        $tokenPrefix . 'refresh_token_expires_in',
                         $response->refresh_token_expires_in
                     );
                 };
@@ -86,5 +84,30 @@ class TokensHelper
             $this->_pinterestHelper->logException($e);
         }
         return false;
+    }
+
+
+    /**
+     * Requests and stores new access and refresh tokens for $storeId.
+     *
+     * @return true if the call is successful
+     */
+    public function refreshStoreToken($storeId)
+    {
+        $refreshToken = $this->_pinterestHelper->getRefreshToken($storeId);
+        $clientHash = $this->_pinterestHelper->getClientHash($storeId);
+        return $this->callRefreshApi($refreshToken, $clientHash, MetadataName::PINTEREST_TOKEN_PREFIX . $storeId . '/');
+    }
+
+    /**
+     * Requests and stores new access and refresh tokens.
+     *
+     * @return true if the call is successful
+     */
+    public function refreshTokens()
+    {
+        $refreshToken = $this->_pinterestHelper->getRefreshToken();
+        $clientHash = $this->_pinterestHelper->getClientHash();
+        return $this->callRefreshApi($refreshToken, $clientHash, MetadataName::PINTEREST_TOKEN_PREFIX);
     }
 }

@@ -55,10 +55,16 @@ class ConfigHelperTest extends \PHPUnit\Framework\TestCase
         ];
         $expectedPath1 = 'PinterestConfig/general/pinterest_conversion_enabled';
         $expectedPath2 = 'PinterestConfig/general/pinterest_catalog_enabled';
-        $this->_writerInterface->expects($this->any())->method("save")->withConsecutive(
-            [$expectedPath1, ConfigSetting::ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0],
-            [$expectedPath2, ConfigSetting::DISABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0]
-        );
+        $invocationCount = 0;
+        $this->_writerInterface->expects($this->any())
+            ->method("save")
+            ->willReturnCallback(function ($path, $value, $scope, $scopeId) use (&$invocationCount, $expectedPath1, $expectedPath2) {                                                              
+                $invocationCount++;  
+                match ($invocationCount) {                                                                                                                                   
+                    1 => $this->assertEquals([$expectedPath1, ConfigSetting::ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0], [$path, $value, $scope, $scopeId]),                     
+                    2 => $this->assertEquals([$expectedPath2, ConfigSetting::DISABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0], [$path, $value, $scope, $scopeId]),                    
+                };                                                                                                                                                                          
+            }); 
         $this->_configHelper->saveFeatureFlags($mockFeatureFlagsArray);
     }
 
@@ -71,10 +77,16 @@ class ConfigHelperTest extends \PHPUnit\Framework\TestCase
         ];
         $expectedPath1 = 'PinterestConfig/general/pinterest_conversion_enabled';
         $expectedPath2 = 'PinterestConfig/general/pinterest_catalog_enabled';
-        $this->_writerInterface->expects($this->any())->method("save")->withConsecutive(
-            [$expectedPath1, ConfigSetting::DISABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0],
-            [$expectedPath2, ConfigSetting::ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0]
-        );
+        $invocationCount = 0;
+        $this->_writerInterface->expects($this->any())
+            ->method("save")
+            ->willReturnCallback(function ($path, $value, $scope, $scopeId) use (&$invocationCount, $expectedPath1, $expectedPath2) {                                                              
+                $invocationCount++;  
+                match ($invocationCount) {                                                                                                                                   
+                    1 => $this->assertEquals([$expectedPath1, ConfigSetting::DISABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0], [$path, $value, $scope, $scopeId]),                     
+                    2 => $this->assertEquals([$expectedPath2, ConfigSetting::ENABLED, ScopeConfigInterface::SCOPE_TYPE_DEFAULT, 0], [$path, $value, $scope, $scopeId]),                    
+                };                                                                                                                                                                          
+            });
         $this->_configHelper->saveFeatureFlags($mockFeatureFlagsArray);
     }
 
