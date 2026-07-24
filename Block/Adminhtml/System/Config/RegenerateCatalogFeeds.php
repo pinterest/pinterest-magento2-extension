@@ -46,7 +46,7 @@ class RegenerateCatalogFeeds extends Field
         if ($this->_pinterestHelper->isCatalogAndRealtimeUpdatesEnabled()) {
             return parent::render($element);
         }
-        return null;
+        return '';
     }
 
     /**
